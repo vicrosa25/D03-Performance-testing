@@ -1,0 +1,1552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- * PopulateDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="brotherhood1" />
+		<property name="password" value="479e3180a45b21ea8e88beb0c45aa8ed" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="super" />
+		<property name="password" value="1b3231655cebb7a1f783eddf27d254ca" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="brotherhood2" />
+		<property name="password" value="88f1b810c40cd63107fb758fef4d77db" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="BROTHERHOOD" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="member1" />
+		<property name="password" value="c7764cfed23c5ca3bb393308a0da2306" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MEMBER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount6" class="security.UserAccount">
+		<property name="username" value="member2" />
+		<property name="password" value="88ed421f060aadcacbd63f28d889797f" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MEMBER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount7" class="security.UserAccount">
+		<property name="username" value="chapter1" />
+		<property name="password" value="178494d73a41f7d68e80f685324d3662" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CHAPTER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount8" class="security.UserAccount">
+		<property name="username" value="chapter2" />
+		<property name="password" value="07a29f2348d728fad16c5260823f93ef" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CHAPTER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount9" class="security.UserAccount">
+		<property name="username" value="sponsor1" />
+		<property name="password" value="42c63ad66d4dc07ed17753772bef96d6" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount10" class="security.UserAccount">
+		<property name="username" value="sponsor2" />
+		<property name="password" value="3dc67f80a03324e01b1640f45d107485" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount11" class="security.UserAccount">
+		<property name="username" value="chapter3" />
+		<property name="password" value="4cf7b4e4bb6d429f0f08bc498e397d81" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CHAPTER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Administrators *************************************************************************** -->
+	<bean id="admin1" class="domain.Administrator">
+		<property name="name" value="admin" />
+		<property name="username" value="admin" />
+		<property name="middleName" value="middlename1" />
+		<property name="surname" value="surname1" />
+		<property name="email" value="admin1@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="admin1 18" />
+		<property name="UserAccount" ref="userAccount1" />
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity1" />
+			</list>
+		</property>
+		<property name="messageBoxes">
+			<list>
+				<ref bean="admin1-spam" />
+				<ref bean="admin1-in" />
+				<ref bean="admin1-out" />
+				<ref bean="admin1-trash" />
+				<ref bean="admin1-notification" />
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Members **************************************************************************************** -->
+	<bean id="member1" class="domain.Member">
+		<property name="name" value="member1" />
+		<property name="username" value="member1" />
+		<property name="surname" value="member1" />
+		<property name="email" value="member1@mail.com" />
+		<property name="UserAccount" ref="userAccount5" />
+		<property name="finder" ref="finder1" />
+		<!-- <property name="isSpammer" value="false" /> -->
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity2" />
+			</list>
+		</property>
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
+				<ref bean="request2" />
+			</list>
+		</property>
+		<property name="enrols">
+			<list>
+				<ref bean="enrol1" />
+			</list>
+		</property>
+		<property name="messageBoxes">
+			<list>
+				<ref bean="member1-in" />
+				<ref bean="member1-out" />
+				<ref bean="member1-spam" />
+				<ref bean="member1-trash" />
+				<ref bean="member1-notification" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member2" class="domain.Member">
+		<property name="name" value="member2" />
+		<property name="username" value="member2" />
+		<property name="surname" value="member2" />
+		<property name="email" value="member2@mail.com" />
+		<property name="UserAccount" ref="userAccount6" />
+		<property name="finder" ref="finder2" />
+		<!-- <property name="isSpammer" value="false" /> -->
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity3" />
+			</list>
+		</property>
+		<property name="requests">
+			<list>
+				<ref bean="request3" />
+				<ref bean="request4" />
+			</list>
+		</property>
+		<property name="enrols">
+			<list>
+				<ref bean="enrol2" />
+			</list>
+		</property>
+		<property name="messageBoxes">
+			<list>
+				<ref bean="member2-in" />
+				<ref bean="member2-out" />
+				<ref bean="member2-spam" />
+				<ref bean="member2-trash" />
+				<ref bean="member2-notification" />
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Brotherhoods **************************************************************************************** -->
+	<bean id="brotherhood1" class="domain.Brotherhood">
+		<property name="name" value="brotherhood1" />
+		<property name="username" value="brotherhood1" />
+		<property name="surname" value="brotherhood1" />
+		<property name="email" value="broterhood1@mail.com" />
+		<property name="title" value="brotherhood1" />
+		<property name="establishment" value="2019/01/30" />
+		<property name="UserAccount" ref="userAccount2" />
+		<property name="area" ref="area1" />
+		<property name="history" ref="history1" />
+		<!-- <property name="isSpammer" value="false" /> -->
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity4" />
+			</list>
+		</property>
+		<property name="coaches">
+			<list>
+				<ref bean="coach1" />
+			</list>
+		</property>
+		<property name="enrols">
+			<list>
+				<ref bean="enrol1" />
+			</list>
+		</property>
+		<property name="messageBoxes">
+			<list>
+				<ref bean="brotherhood1-in" />
+				<ref bean="brotherhood1-out" />
+				<ref bean="brotherhood1-spam" />
+				<ref bean="brotherhood1-trash" />
+				<ref bean="brotherhood1-notification" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood2" class="domain.Brotherhood">
+		<property name="name" value="brotherhood2" />
+		<property name="username" value="brotherhood2" />
+		<property name="surname" value="brotherhood2" />
+		<property name="email" value="broterhood2@mail.com" />
+		<property name="title" value="brotherhood2" />
+		<property name="establishment" value="2019/02/10" />
+		<property name="UserAccount" ref="userAccount4" />
+		<property name="area" ref="area2" />
+		<property name="history" ref="history2" />
+		<!-- <property name="isSpammer" value="false" /> -->
+		<property name="socialIdentities">
+			<list>
+				<ref bean="socialIdentity5" />
+			</list>
+		</property>
+		<property name="coaches">
+			<list>
+				<ref bean="coach2" />
+			</list>
+		</property>
+		<property name="enrols">
+			<list>
+				<ref bean="enrol2" />
+			</list>
+		</property>
+		<property name="messageBoxes">
+			<list>
+				<ref bean="brotherhood2-in" />
+				<ref bean="brotherhood2-out" />
+				<ref bean="brotherhood2-spam" />
+				<ref bean="brotherhood2-trash" />
+				<ref bean="brotherhood2-notification" />
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Chapers *************************************************************************** -->
+	<bean id="chapter1" class="domain.Chapter">
+		<property name="name" value="chapter1" />
+		<property name="title" value="chapter1" />
+		<property name="username" value="chapter1" />
+		<property name="middleName" value="chapter1" />
+		<property name="surname" value="chapter1" />
+		<property name="email" value="chapter1@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="chapter1 18" />
+		<property name="UserAccount" ref="userAccount7" />
+		<property name="area" ref="area1" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="chapter1-spam" />
+				<ref bean="chapter1-in" />
+				<ref bean="chapter1-out" />
+				<ref bean="chapter1-trash" />
+				<ref bean="chapter1-notification" />
+			</list>
+		</property>
+		<property name="proclaims">
+			<list>
+				<ref bean="proclaim1" />
+				<ref bean="proclaim2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter2" class="domain.Chapter">
+		<property name="name" value="chapter2" />
+		<property name="title" value="chapter2" />
+		<property name="username" value="chapter2" />
+		<property name="middleName" value="chapter2" />
+		<property name="surname" value="chapter2" />
+		<property name="email" value="chapter2@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="chapter2 18" />
+		<property name="UserAccount" ref="userAccount8" />
+		<property name="area" ref="area2" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="chapter2-spam" />
+				<ref bean="chapter2-in" />
+				<ref bean="chapter2-out" />
+				<ref bean="chapter2-trash" />
+				<ref bean="chapter2-notification" />
+			</list>
+		</property>
+		<property name="proclaims">
+			<list>
+				<ref bean="proclaim3" />
+				<ref bean="proclaim4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter3" class="domain.Chapter">
+		<property name="name" value="chapter3" />
+		<property name="title" value="chapter3" />
+		<property name="username" value="chapter3" />
+		<property name="middleName" value="chapter3" />
+		<property name="surname" value="chapter3" />
+		<property name="email" value="chapter3@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="chapter3 18" />
+		<property name="UserAccount" ref="userAccount11" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="chapter3-spam" />
+				<ref bean="chapter3-in" />
+				<ref bean="chapter3-out" />
+				<ref bean="chapter3-trash" />
+				<ref bean="chapter3-notification" />
+			</list>
+		</property>
+		<property name="proclaims">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Sponsor *************************************************************************** -->
+	<bean id="sponsor1" class="domain.Sponsor">
+		<property name="name" value="sponsor1" />
+		<property name="username" value="sponsor1" />
+		<property name="middleName" value="middlename1" />
+		<property name="surname" value="surname1" />
+		<property name="email" value="sponsor1@gmail.com" />
+		<property name="phoneNumber" value="656278997" />
+		<property name="address" value="sponsor1 7474" />
+		<property name="UserAccount" ref="userAccount9" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="sponsor1-spam" />
+				<ref bean="sponsor1-in" />
+				<ref bean="sponsor1-out" />
+				<ref bean="sponsor1-trash" />
+				<ref bean="sponsor1-notification" />
+			</list>
+		</property>
+		<property name="sponsorships">
+			<list>
+				<ref bean="sponsorship1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor2" class="domain.Sponsor">
+		<property name="name" value="sponsor2" />
+		<property name="middleName" value="mddlnm2" />
+		<property name="surname" value="surname2" />
+		<property name="email" value="sponsor2@gmail.com" />
+		<property name="phoneNumber" value="656274521" />
+		<property name="address" value="sponsor2 7474" />
+		<property name="UserAccount" ref="userAccount10" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="sponsor2-spam" />
+				<ref bean="sponsor2-in" />
+				<ref bean="sponsor2-out" />
+				<ref bean="sponsor2-trash" />
+				<ref bean="sponsor2-notification" />
+			</list>
+		</property>
+		<property name="sponsorships">
+			<list>
+				<ref bean="sponsorship2" />
+			</list>
+		</property>
+	</bean>
+
+
+
+
+	<!-- HISTORIES AND RECORDS ******************************************************************* -->
+	<bean id="history1" class="domain.History">
+		<property name="inceptionRecord" ref="inceptionRecord1" />
+		<property name="legalRecords">
+			<list>
+				<ref bean="legalRecord1" />
+				<ref bean="legalRecord2" />
+			</list>
+		</property>
+		<property name="recordNumber" value="3" />
+	</bean>
+
+	<bean id="history2" class="domain.History">
+		<property name="inceptionRecord" ref="inceptionRecord2" />
+		<property name="recordNumber" value="1" />
+	</bean>
+
+	<!-- Inception Records ************************************************************************ -->
+	<bean id="inceptionRecord1" class="domain.InceptionRecord">
+		<property name="title" value="Inception bro 1" />
+		<property name="description" value="Inception record" />
+		<property name="pictures">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="inceptionRecord2" class="domain.InceptionRecord">
+		<property name="title" value="Inception bro 2" />
+		<property name="description" value="Inception record" />
+		<property name="pictures">
+			<list></list>
+		</property>
+	</bean>
+
+	<!-- Legal Records ************************************************************************* -->
+	<bean id="legalRecord1" class="domain.LegalRecord">
+		<property name="title" value="Legal bro 1" />
+		<property name="description" value="Legal record" />
+		<property name="legalName" value="Legal name 1" />
+		<property name="vat" value="0.21" />
+		<property name="laws" value="Laws" />
+	</bean>
+
+	<bean id="legalRecord2" class="domain.LegalRecord">
+		<property name="title" value="Legal bro 2" />
+		<property name="description" value="Legal record" />
+		<property name="legalName" value="Legal name 2" />
+		<property name="vat" value="0.21" />
+		<property name="laws" value="Laws" />
+	</bean>
+
+
+	<!-- SocialIdentities *************************************************************************** -->
+	<bean id="socialIdentity1" class="domain.SocialIdentity">
+		<property name="nick" value="admin" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/admin1" />
+		<property name="actor" ref="admin1" />
+	</bean>
+
+	<bean id="socialIdentity2" class="domain.SocialIdentity">
+		<property name="nick" value="member1" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/member1" />
+		<property name="actor" ref="member1" />
+	</bean>
+
+	<bean id="socialIdentity3" class="domain.SocialIdentity">
+		<property name="nick" value="member2" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/member2" />
+		<property name="actor" ref="member2" />
+	</bean>
+
+	<bean id="socialIdentity4" class="domain.SocialIdentity">
+		<property name="nick" value="brotherhood1" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/brotherhood1" />
+		<property name="actor" ref="brotherhood1" />
+	</bean>
+
+	<bean id="socialIdentity5" class="domain.SocialIdentity">
+		<property name="nick" value="brotherhood2" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/brotherhood2" />
+		<property name="actor" ref="brotherhood2" />
+	</bean>
+
+
+	<!-- MessageBoxes *************************************************************************** -->
+
+	<!-- Admin MessageBoxes -->
+	<bean id="admin1-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin1-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin1-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin1-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="admin1-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Member1 MessageBoxes -->
+	<bean id="member1-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member1-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member1-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member1-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member1-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Member2 MessageBoxes -->
+	<bean id="member2-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member2-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member2-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member2-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="member2-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Brotherhood1 MessageBoxes -->
+	<bean id="brotherhood1-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message5" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood1-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood1-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood1-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood1-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Brotherhood2 MessageBoxes -->
+	<bean id="brotherhood2-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood2-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message5" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood2-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood2-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brotherhood2-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Chapter1 MessageBoxes -->
+	<bean id="chapter1-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter1-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter1-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter1-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter1-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Chapter2 MessageBoxes -->
+	<bean id="chapter2-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message1" />
+				<ref bean="message4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter2-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter2-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter2-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter2-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Chapter3 MessageBoxes -->
+	<bean id="chapter3-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter3-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter3-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter3-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="chapter3-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Sponsor1 MessageBoxes -->
+	<bean id="sponsor1-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor1-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor1-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor1-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor1-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+
+	<!-- Sponsor2 MessageBoxes -->
+	<bean id="sponsor2-in" class="domain.MessageBox">
+		<property name="name" value="in" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor2-out" class="domain.MessageBox">
+		<property name="name" value="out" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor2-spam" class="domain.MessageBox">
+		<property name="name" value="spam" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+				<ref bean="message2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor2-notification" class="domain.MessageBox">
+		<property name="name" value="notification" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsor2-trash" class="domain.MessageBox">
+		<property name="name" value="trash" />
+		<property name="isSystemBox" value="true" />
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+
+	<!-- Messages *************************************************************************** -->
+	<bean id="message1" class="domain.Message">
+		<property name="sender" ref="brotherhood1" />
+		<property name="recipients">
+			<list>
+				<ref bean="brotherhood2" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="body example" />
+		<property name="priority" value="LOW" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="brotherhood1-out" />
+				<ref bean="brotherhood2-in" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="message2" class="domain.Message">
+		<property name="sender" ref="sponsor1" />
+		<property name="recipients">
+			<list>
+				<ref bean="sponsor2" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="You have to use cialis" />
+		<property name="priority" value="LOW" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="sponsor1-out" />
+				<ref bean="sponsor2-spam" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="message3" class="domain.Message">
+		<property name="sender" ref="member1" />
+		<property name="recipients">
+			<list>
+				<ref bean="member2" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="You have to use viagra" />
+		<property name="priority" value="LOW" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="member1-out" />
+				<ref bean="member2-spam" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="message4" class="domain.Message">
+		<property name="sender" ref="chapter1" />
+		<property name="recipients">
+			<list>
+				<ref bean="chapter2" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="This is fantastic, amazing" />
+		<property name="priority" value="LOW" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="chapter1-out" />
+				<ref bean="chapter2-in" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="message5" class="domain.Message">
+		<property name="sender" ref="brotherhood2" />
+		<property name="recipients">
+			<list>
+				<ref bean="brotherhood1" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="This is bad, horrible" />
+		<property name="priority" value="LOW" />
+		<property name="messageBoxes">
+			<list>
+				<ref bean="brotherhood2-out" />
+				<ref bean="brotherhood1-in" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Coaches ******************************************************** -->
+	<bean id="coach1" class="domain.Coach">
+		<property name="title" value="Title Coach 1" />
+		<property name="description" value="Description Coach 1" />
+	</bean>
+
+
+	<bean id="coach2" class="domain.Coach">
+		<property name="title" value="Title Coach 2" />
+		<property name="description" value="Description Coach 2" />
+	</bean>
+
+	<bean id="coach3" class="domain.Coach">
+		<property name="title" value="Title Coach 3" />
+		<property name="description" value="Description Coach 3" />
+	</bean>
+
+	<bean id="coach4" class="domain.Coach">
+		<property name="title" value="Title Coach 4" />
+		<property name="description" value="Description Coach 4" />
+	</bean>
+
+
+	<!-- Request **************************************************************************************** -->
+	<bean id="request1" class="domain.Request">
+		<property name="status" value="APPROVED" />
+		<property name="assignedRow" value="2" />
+		<property name="assignedColumn" value="2" />
+		<property name="member" ref="member1" />
+		<property name="procession" ref="procession1" />
+	</bean>
+
+	<bean id="request2" class="domain.Request">
+		<property name="status" value="REJECTED" />
+		<property name="reason" value="Es demasiado gordo, ocuparía dos puestos" />
+		<property name="member" ref="member1" />
+		<property name="procession" ref="procession2" />
+	</bean>
+
+	<bean id="request3" class="domain.Request">
+		<property name="status" value="PENDING" />
+		<property name="member" ref="member2" />
+		<property name="procession" ref="procession1" />
+	</bean>
+
+	<bean id="request4" class="domain.Request">
+		<property name="status" value="APPROVED" />
+		<property name="assignedRow" value="1" />
+		<property name="assignedColumn" value="1" />
+		<property name="member" ref="member2" />
+		<property name="procession" ref="procession2" />
+	</bean>
+
+	<!-- Processions **************************************************************************************** -->
+	<bean id="procession1" class="domain.Procession">
+		<property name="ticker" value="190210-AAAAA" />
+		<property name="title" value="procession1" />
+		<property name="description" value="procession1 description" />
+		<property name="moment" value="2019/04/01" />
+		<property name="draftMode" value="false" />
+		<property name="status" value="APPROVED" />
+		<property name="brotherhood" ref="brotherhood1" />
+		<property name="path" ref="path1" />
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
+				<ref bean="request3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="procession2" class="domain.Procession">
+		<property name="ticker" value="190215-BBBBB" />
+		<property name="title" value="procession2" />
+		<property name="description" value="procession2 description" />
+		<property name="moment" value="2019/06/15" />
+		<property name="brotherhood" ref="brotherhood2" />
+		<property name="draftMode" value="false" />
+		<property name="status" value="SUBMITTED" />
+		<property name="requests">
+			<list>
+				<ref bean="request2" />
+				<ref bean="request4" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Paths **************************************************************************************** -->
+	<bean id="path1" class="domain.Path">
+		<property name="procession" ref="procession1" />
+		<property name="segments">
+			<list>
+				<ref bean="segment1" />
+				<ref bean="segment2" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Segments **************************************************************************************** -->
+	<bean id="segment1" class="domain.Segment">
+		<property name="path" ref="path1" />
+		<property name="originLatitude" value="0.5" />
+		<property name="destinationLongitude" value="10.5" />
+		<property name="destinationLatitude" value="10.5" />
+		<property name="originLongitude" value="0.5" />
+		<property name="originTime" value="2019/06/19 18:00" />
+		<property name="destinationTime" value="2019/06/19 19:00" />
+		<property name="number" value="0" />
+	</bean>
+
+	<bean id="segment2" class="domain.Segment">
+		<property name="path" ref="path1" />
+		<property name="originLatitude" value="10.5" />
+		<property name="destinationLongitude" value="20.5" />
+		<property name="destinationLatitude" value="20.5" />
+		<property name="originLongitude" value="10.5" />
+		<property name="originTime" value="2019/06/19 19:05" />
+		<property name="destinationTime" value="2019/06/19 20:00" />
+		<property name="number" value="1" />
+	</bean>
+
+	<!-- Enrol ************************************************************************************************* -->
+	<bean id="enrol1" class="domain.Enrol">
+		<property name="moment" value="2019/01/19" />
+		<property name="member" ref="member1" />
+		<property name="brotherhood" ref="brotherhood1" />
+		<property name="positions">
+			<list>
+				<ref bean="President" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="enrol2" class="domain.Enrol">
+		<property name="moment" value="2019/01/19" />
+		<property name="member" ref="member2" />
+		<property name="brotherhood" ref="brotherhood2" />
+		<property name="positions">
+			<list>
+				<ref bean="President" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="enrol3" class="domain.Enrol">
+		<property name="moment" value="2019/02/15" />
+		<property name="member" ref="member2" />
+		<property name="brotherhood" ref="brotherhood1" />
+		<property name="positions">
+			<list>
+				<ref bean="Secretary" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- finder ************************************************************************************************** -->
+	<bean id="finder1" class="domain.Finder">
+		<property name="lastUpdate" value="01/01/2000" />
+	</bean>
+
+	<bean id="finder2" class="domain.Finder">
+		<property name="lastUpdate" value="01/01/2000" />
+	</bean>
+
+
+	<!-- positions default **************************************************************************************** -->
+	<bean id="President" class="domain.Position">
+		<property name="spanishName" value="Presidente" />
+		<property name="englishName" value="President" />
+		<property name="enrol">
+			<list>
+				<ref bean="enrol1" />
+				<ref bean="enrol2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="Vice President" class="domain.Position">
+		<property name="spanishName" value="Vicepresidente" />
+		<property name="englishName" value="Vice President" />
+	</bean>
+
+	<bean id="Secretary" class="domain.Position">
+		<property name="spanishName" value="Secretario" />
+		<property name="englishName" value="Secretary" />
+		<property name="enrol">
+			<list>
+				<ref bean="enrol3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="Treasurer" class="domain.Position">
+		<property name="spanishName" value="Tesorero" />
+		<property name="englishName" value="Treasurer" />
+	</bean>
+
+	<bean id="Historian" class="domain.Position">
+		<property name="spanishName" value="Historiador" />
+		<property name="englishName" value="Historian" />
+	</bean>
+
+	<bean id="Fundraiser" class="domain.Position">
+		<property name="spanishName" value="Promotor" />
+		<property name="englishName" value="Fundraiser" />
+	</bean>
+
+	<bean id="Officer" class="domain.Position">
+		<property name="spanishName" value="Vocal" />
+		<property name="englishName" value="Officer" />
+	</bean>
+
+	<!-- areas *********************************************************************************** -->
+	<bean id="area1" class="domain.Area">
+		<property name="name" value="area1" />
+		<property name="brotherhoods">
+			<list>
+				<ref bean="brotherhood1" />
+			</list>
+		</property>
+		<property name="pictures">
+			<list>
+				<ref bean="picture1" />
+				<ref bean="picture2" />
+				<ref bean="picture3" />
+			</list>
+		</property>
+		<property name="chapter" ref="chapter1" />
+	</bean>
+
+	<bean id="area2" class="domain.Area">
+		<property name="name" value="area2" />
+		<property name="brotherhoods">
+			<list>
+				<ref bean="brotherhood2" />
+			</list>
+		</property>
+		<property name="pictures">
+			<list>
+				<ref bean="picture4" />
+				<ref bean="picture5" />
+				<ref bean="picture6" />
+			</list>
+		</property>
+		<property name="chapter" ref="chapter2" />
+	</bean>
+
+	<bean id="area3" class="domain.Area">
+		<property name="name" value="area3" />
+		<property name="brotherhoods">
+			<list>
+			</list>
+		</property>
+		<property name="pictures">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- sponsorship *************************************************************************** -->
+	<bean id="sponsorship1" class="domain.Sponsorship">
+		<property name="banner" value="https://goo.gl/mR1tJ6" />
+		<property name="targetPage" value="http://www.targetPage.com" />
+		<property name="active" value="true" />
+		<property name="creditCard" ref="creditCard1" />
+		<property name="sponsor" ref="sponsor1" />
+		<property name="procession" ref="procession1" />
+	</bean>
+
+	<bean id="sponsorship2" class="domain.Sponsorship">
+		<property name="banner" value="https://goo.gl/IrU3gD" />
+		<property name="targetPage" value="http://www.targetPage.com" />
+		<property name="active" value="true" />
+		<property name="creditCard" ref="creditCard2" />
+		<property name="sponsor" ref="sponsor2" />
+		<property name="procession" ref="procession1" />
+	</bean>
+
+
+	<!-- Credit Cards *************************************************************************** -->
+	<bean id="creditCard1" class="domain.CreditCard">
+		<property name="holderName" value="sponsor1" />
+		<property name="brandName" value="VISA" />
+		<property name="number" value="4414856614566419" />
+		<property name="expiration" value="12/02/15" />
+		<property name="cvvCode" value="123" />
+	</bean>
+
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holderName" value="sponsor2" />
+		<property name="brandName" value="VISA" />
+		<property name="number" value="4877161530824285" />
+		<property name="expiration" value="12/04/23" />
+		<property name="cvvCode" value="123" />
+	</bean>
+
+	<!-- proclaims *************************************************************************** -->
+	<bean id="proclaim1" class="domain.Proclaim">
+		<property name="moment" value="2019/03/12 00:00" />
+		<property name="text" value="New proclaim1" />
+	</bean>
+
+	<bean id="proclaim2" class="domain.Proclaim">
+		<property name="moment" value="2019/01/12 00:00" />
+		<property name="text" value="New proclaim2" />
+	</bean>
+
+	<bean id="proclaim3" class="domain.Proclaim">
+		<property name="moment" value="2019/02/20 00:00" />
+		<property name="text" value="New proclaim3" />
+	</bean>
+
+	<bean id="proclaim4" class="domain.Proclaim">
+		<property name="moment" value="2019/01/09 00:00" />
+		<property name="text" value="New proclaim4" />
+	</bean>
+
+
+
+	<!-- pictures *************************************************************************** -->
+	<bean id="picture1" class="domain.Url">
+		<property name="link"
+			value="https://www.visitasevilla.es/sites/default/files/styles/card_extended_page/public/extended_page/img_card_right/altozano_triana.jpg?itok=9W4ZVUUd" />
+	</bean>
+
+	<bean id="picture2" class="domain.Url">
+		<property name="link"
+			value="https://ep01.epimg.net/elviajero/imagenes/2017/10/25/actualidad/1508938430_500364_1508945034_noticia_normal_recorte1.jpg" />
+	</bean>
+
+	<bean id="picture3" class="domain.Url">
+		<property name="link"
+			value="https://sevillasecreta.co/wp-content/uploads/2016/08/triana.jpg" />
+	</bean>
+
+	<bean id="picture4" class="domain.Url">
+		<property name="link"
+			value="https://i1.wp.com/bartapassevilla.com/wp-content/uploads/2017/10/centro-historico-de-sevilla-aerea.jpg?w=800" />
+	</bean>
+
+	<bean id="picture5" class="domain.Url">
+		<property name="link"
+			value="https://i2.wp.com/bartapassevilla.com/wp-content/uploads/2015/11/Bares-de-tapas-en-el-centro-de-Sevilla.png?w=1024" />
+	</bean>
+
+	<bean id="picture6" class="domain.Url">
+		<property name="link"
+			value="https://espanafascinante.com/wp-content/uploads/galeria_andalucia_sevilla_centro_setas-plaza_bi.jpeg" />
+	</bean>
+
+
+	<!-- configurations *************************************************************************** -->
+	<bean id="configurations" class="domain.Configurations">
+		<property name="cacheTime" value="1" />
+		<property name="finderMaxResult" value="10" />
+		<property name="vat" value="0.21" />
+		<property name="fare" value="10.0" />
+		<property name="countryCode" value="+34" />
+		<property name="title" value="Acme Madruga Co., Inc." />
+		<property name="logo" value="https://www.irishtimes.com/polopoly_fs/1.3426916.1521040386!/image/image.jpg_gen/derivatives/box_620_330/image.jpg" />
+		<property name="spanishMessage"
+			value="¡Bienvenidos a Acme Parade! Tu sitio para organizar desfiles." />
+		<property name="englishMessage"
+			value="Welcome to Acme Parade, the site to organise your parades." />
+		<property name="spamWords">
+			<list>
+				<value>sex</value>
+				<value>viagra</value>
+				<value>cialis</value>
+				<value>one million</value>
+				<value>you've been selected</value>
+				<value>Nigeria</value>
+				<value>sexo</value>
+				<value>un millón</value>
+				<value>ha sido seleccionado</value>
+			</list>
+		</property>
+		<property name="positiveWords">
+			<list>
+				<value>good</value>
+				<value>fantastic</value>
+				<value>excellent</value>
+				<value>great</value>
+				<value>amazing</value>
+				<value>terrific</value>
+				<value>beautiful</value>
+				<value>bueno</value>
+				<value>fantástico</value>
+				<value>excelente</value>
+				<value>gran</value>
+				<value>asombroso</value>
+				<value>terrible</value>
+				<value>bonito</value>
+			</list>
+		</property>
+		<property name="negativeWords">
+			<list>
+				<value>not</value>
+				<value>no</value>
+				<value>bad</value>
+				<value>malo</value>
+				<value>horrible</value>
+				<value>average</value>
+				<value>mediocre</value>
+				<value>disaster</value>
+				<value>desastre</value>
+			</list>
+		</property>
+		<property name="brandName">
+			<list>
+				<value>VISA</value>
+				<value>MCARD</value>
+				<value>DINNERS</value>
+				<value>AMEX</value>
+			</list>
+		</property>
+	</bean>
+</beans>

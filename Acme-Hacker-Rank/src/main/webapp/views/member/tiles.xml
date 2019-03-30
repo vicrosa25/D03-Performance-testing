@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="member/create" extends="master.page">
+		<put-attribute name="title" value="Create Member" />
+		<put-attribute name="body" value="/views/member/create.jsp" />
+	</definition>
+	
+	<definition name="member/edit" extends="master.page">
+		<put-attribute name="title" value="Edit Member" />
+		<put-attribute name="body" value="/views/member/edit.jsp" />
+	</definition>
+	
+	<definition name="member/list" extends="master.page">
+		<put-attribute name="title" value="Member List" />
+		<put-attribute name="body" value="/views/member/list.jsp" />
+	</definition>
+	
+	<definition name="member/brotherhood/display" extends="master.page">
+		<put-attribute name="title" value="Display member" />
+		<put-attribute name="body" value="/views/member/display.jsp" />
+	</definition>
+	
+	<definition name="member/brotherhood/selectPosition" extends="master.page">
+		<put-attribute name="title" value="Select Position" />
+		<put-attribute name="body" value="/views/member/selectPosition.jsp" />
+	</definition>
+	
+	<definition name="member/enrol" extends="master.page">
+		<put-attribute name="title" value="Enrol a Brotherhood" />
+		<put-attribute name="body" value="/views/member/enrol.jsp" />
+	</definition>
+
+</tiles-definitions>

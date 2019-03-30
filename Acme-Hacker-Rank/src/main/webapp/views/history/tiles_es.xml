@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="history/display" extends="master.page">	
+		<put-attribute name="title" value="Historia de hermandad" />
+		<put-attribute name="body" value="/views/history/display.jsp" />
+	</definition>
+
+	<definition name="history/brotherhood/display" extends="master.page">	
+		<put-attribute name="title" value="Historia de hermandad" />
+		<put-attribute name="body" value="/views/history/display.jsp" />
+	</definition>
+
+	<definition name="history/inceptionRecord/brotherhood/addPicture" extends="master.page">	
+		<put-attribute name="title" value="Añadir foto al registro" />
+		<put-attribute name="body" value="/views/history/addPicture.jsp" />
+	</definition>
+
+	<definition name="history/inceptionRecord/brotherhood/edit" extends="master.page">	
+		<put-attribute name="title" value="Informacion Registro Inicial" />
+		<put-attribute name="body" value="/views/history/inceptionRecord.jsp" />
+	</definition>
+
+	<definition name="history/legalRecord/brotherhood/edit" extends="master.page">	
+		<put-attribute name="title" value="Informacion Registro Legal" />
+		<put-attribute name="body" value="/views/history/legalRecord.jsp" />
+	</definition>
+
+	<definition name="history/linkRecord/edit" extends="master.page">	
+		<put-attribute name="title" value="Informacion Registro Enlace" />
+		<put-attribute name="body" value="/views/history/linkRecord.jsp" />
+	</definition>
+	
+	<definition name="history/miscellaneousRecord/brotherhood/edit" extends="master.page">	
+		<put-attribute name="title" value="Informacion Registro" />
+		<put-attribute name="body" value="/views/history/miscellaneousRecord.jsp" />
+	</definition>
+	
+	<definition name="history/periodRecord/brotherhood/edit" extends="master.page">	
+		<put-attribute name="title" value="Informacion Registro Temporal" />
+		<put-attribute name="body" value="/views/history/periodRecord.jsp" />
+	</definition>
+	
+	<definition name="history/periodRecord/brotherhood/pictures" extends="master.page">	
+		<put-attribute name="title" value="Registro Temporal" />
+		<put-attribute name="body" value="/views/history/pictures.jsp" />
+	</definition>
+
+	<definition name="history/periodRecord/brotherhood/addPicture" extends="master.page">	
+		<put-attribute name="title" value="Añadir foto al registro" />
+		<put-attribute name="body" value="/views/history/addPicture.jsp" />
+	</definition>
+	
+</tiles-definitions>

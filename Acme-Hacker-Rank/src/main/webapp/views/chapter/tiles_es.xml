@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="chapter/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de Cabildos" />
+		<put-attribute name="body" value="/views/chapter/list.jsp" />
+	</definition>
+	
+	<definition name="chapter/area/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de Áreas" />
+		<put-attribute name="body" value="/views/chapter/area/list.jsp" />
+	</definition>
+	
+	<definition name="chapter/area/brotherhood/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de Hermandades" />
+		<put-attribute name="body" value="/views/chapter/area/brotherhood/list.jsp" />
+	</definition>
+
+	<definition name="chapter/create" extends="master.page">	
+		<put-attribute name="title" value="Crear chapter" />
+		<put-attribute name="body" value="/views/chapter/create.jsp" />
+	</definition>
+
+	<definition name="chapter/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar chapter" />
+		<put-attribute name="body" value="/views/chapter/edit.jsp" />
+	</definition>
+	
+	<definition name="chapter/area/assign" extends="master.page">	
+		<put-attribute name="title" value="Elije un área" />
+		<put-attribute name="body" value="/views/chapter/area/assign.jsp" />
+	</definition>
+	
+	<definition name="chapter/area/display" extends="master.page">	
+		<put-attribute name="title" value="Ya tienes un Área" />
+		<put-attribute name="body" value="/views/chapter/area/display.jsp" />
+	</definition>
+	
+	<definition name="chapter/parade/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de desfiles" />
+		<put-attribute name="body" value="/views/chapter/parade/list.jsp" />
+	</definition>
+	
+	<definition name="chapter/parade/reject/reasson" extends="master.page">	
+		<put-attribute name="title" value="Anota la razón del rechazo" />
+		<put-attribute name="body" value="/views/chapter/parade/reasson.jsp" />
+	</definition>
+	
+	<definition name="chapter/proclaim/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de anuncios" />
+		<put-attribute name="body" value="/views/chapter/proclaim/list.jsp" />
+	</definition>
+	
+</tiles-definitions>

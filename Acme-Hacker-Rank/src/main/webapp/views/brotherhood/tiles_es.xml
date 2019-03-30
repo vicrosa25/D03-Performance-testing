@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="brotherhood/create" extends="master.page">	
+		<put-attribute name="title" value="Crear Hermandad" />
+		<put-attribute name="body" value="/views/brotherhood/create.jsp" />
+	</definition>
+
+	<definition name="brotherhood/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de Hermandades" />
+		<put-attribute name="body" value="/views/brotherhood/list.jsp" />
+	</definition>
+
+	<definition name="brotherhood/member/list" extends="master.page">	
+		<put-attribute name="title" value="Mis hermandades" />
+		<put-attribute name="body" value="/views/brotherhood/list.jsp" />
+	</definition>
+
+	<definition name="brotherhood/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar perfil" />
+		<put-attribute name="body" value="/views/brotherhood/edit.jsp" />
+	</definition>
+
+	<definition name="brotherhood/addPicture" extends="master.page">	
+		<put-attribute name="title" value="Añadir Imagen" />
+		<put-attribute name="body" value="/views/brotherhood/addPicture.jsp" />
+	</definition>
+	
+</tiles-definitions>

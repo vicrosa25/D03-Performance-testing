@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+	
+	<definition name="segment/brotherhood/create" extends="master.page">	
+		<put-attribute name="title" value="Nuevo segmento" />
+		<put-attribute name="body" value="/views/segment/edit.jsp" />
+	</definition>
+	
+	<definition name="segment/brotherhood/edit" extends="master.page">	
+		<put-attribute name="title" value="Modificar Segmento" />
+		<put-attribute name="body" value="/views/segment/edit.jsp" />
+	</definition>
+	
+</tiles-definitions>
