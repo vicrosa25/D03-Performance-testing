@@ -12,7 +12,7 @@
 	<!-- Artifact identification and properties -->
 
 	<groupId>Design-and-Testing</groupId>
-	<artifactId>Acme-Parade</artifactId>
+	<artifactId>Acme-Hacker-Rank</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
 
@@ -24,8 +24,8 @@
 
 	<!-- Indexing information -->
 
-	<name>Acme Parade</name>
-	<url>http://www.acme-parade.com</url>
+	<name>Acme Hacker Rank</name>
+	<url>http://www.acme-hacker-rank.com</url>
 
 
 	<!-- Sonar Profile section -->
@@ -427,7 +427,7 @@
 		</dependency>
 	</dependencies>
 
-	<description>This system allows people share their favourite Shouts.</description>
+	<description>This system allows ranks Hackers.</description>
 
 </project> 
 
