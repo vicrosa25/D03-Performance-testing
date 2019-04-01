@@ -14,9 +14,6 @@
 	<util:list id="converters">
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StringToAdministratorConverter" />
-		
-		<bean class="converters.AreaToStringConverter" />
-		<bean class="converters.StringToAreaConverter" />
 
 		<bean class="converters.AuthorityToStringConverter" />
 		<bean class="converters.StringToAuthorityConverter" />
@@ -26,79 +23,10 @@
 
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
-
-		<bean class="converters.MemberToStringConverter" />
-		<bean class="converters.StringToMemberConverter" />
-
-		<bean class="converters.BrotherhoodToStringConverter" />
-		<bean class="converters.StringToBrotherhoodConverter" />
-		
-		<bean class="converters.ChapterToStringConverter" />
-		<bean class="converters.StringToChapterConverter" />
-		
-		<bean class="converters.SponsorToStringConverter" />
-		<bean class="converters.StringToSponsorConverter" />
-
-		<bean class="converters.CoachToStringConverter" />
-		<bean class="converters.StringToCoachConverter" />
-
-		<bean class="converters.ProcessionToStringConverter" />
-		<bean class="converters.StringToProcessionConverter" />
-
-		<bean class="converters.RequestToStringConverter" />
-		<bean class="converters.StringToRequestConverter" />
-
-		<bean class="converters.PositionToStringConverter" />
-		<bean class="converters.StringToPositionConverter" />
-
-
-		<bean class="converters.EnrolToStringConverter" />
-		<bean class="converters.StringToEnrolConverter" />
-
-		<bean class="converters.StringToDropoutConverter" />
-		<bean class="converters.DropoutToStringConverter" />
-
-		<bean class="converters.MessageBoxToStringConverter" />
-		<bean class="converters.StringToMessageBoxConverter" />
-
-		<bean class="converters.MessageToStringConverter" />
-		<bean class="converters.StringToMessageConverter" />
-
-		<bean class="converters.FinderToStringConverter" />
-		<bean class="converters.StringToFinderConverter" />
-		
-		<bean class="converters.UrlToStringConverter" />
-		<bean class="converters.StringToUrlConverter" />
 		
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		
-		<bean class="converters.HistoryToStringConverter" />
-		<bean class="converters.StringToHistoryConverter" />
-		
-		<bean class="converters.MiscellaneousRecordToStringConverter" />
-		<bean class="converters.StringToMiscellaneousRecordConverter" />
-		
-		<bean class="converters.InceptionRecordToStringConverter" />
-		<bean class="converters.StringToInceptionRecordConverter" />
-		
-		<bean class="converters.PeriodRecordToStringConverter" />
-		<bean class="converters.StringToPeriodRecordConverter" />
-		
-		<bean class="converters.LegalRecordToStringConverter" />
-		<bean class="converters.StringToLegalRecordConverter" />
-		
-		<bean class="converters.LinkRecordToStringConverter" />
-		<bean class="converters.StringToLinkRecordConverter" />
-		
-		<bean class="converters.ProclaimToStringConverter" />
-		<bean class="converters.StringToProclaimConverter" />
-		
-		<bean class="converters.PathToStringConverter" />
-		<bean class="converters.StringToPathConverter" />
-		
-		<bean class="converters.SegmentToStringConverter" />
-		<bean class="converters.StringToSegmentConverter" />
 
 	</util:list>
 

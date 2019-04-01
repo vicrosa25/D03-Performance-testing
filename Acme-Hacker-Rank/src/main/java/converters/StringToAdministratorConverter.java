@@ -1,3 +1,4 @@
+
 package converters;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,16 +7,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import repositories.AdministratorRepository;
 import domain.Administrator;
+import repositories.AdministratorRepository;
 
 @Component
 @Transactional
-public class StringToAdministratorConverter implements
-		Converter<String, Administrator> {
+public class StringToAdministratorConverter implements Converter<String, Administrator> {
 
 	@Autowired
 	AdministratorRepository administratorRepository;
+
 
 	@Override
 	public Administrator convert(String text) {
@@ -34,5 +35,4 @@ public class StringToAdministratorConverter implements
 		}
 		return result;
 	}
-
 }

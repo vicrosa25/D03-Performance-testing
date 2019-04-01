@@ -35,7 +35,7 @@ public abstract class Actor extends DomainEntity {
 	private String	address;
 	private Boolean	isSpammer;
 	private Boolean	isBanned;
-	private Double 	score;
+	private Double	score;
 
 
 	@NotBlank
@@ -46,7 +46,7 @@ public abstract class Actor extends DomainEntity {
 	public void setName(final String name) {
 		this.name = name;
 	}
-	
+
 	public String getUsername() {
 		return this.username;
 	}
@@ -106,8 +106,7 @@ public abstract class Actor extends DomainEntity {
 	public void setAddress(final String address) {
 		this.address = address;
 	}
-	
-	
+
 	public Boolean getIsSpammer() {
 		return this.isSpammer;
 	}
@@ -124,7 +123,6 @@ public abstract class Actor extends DomainEntity {
 		this.isBanned = isBanned;
 	}
 
-
 	public Double getScore() {
 		return this.score;
 	}
@@ -137,7 +135,7 @@ public abstract class Actor extends DomainEntity {
 	// Relationships ----------------------------------------------------------
 	private UserAccount					userAccount;
 	private Collection<SocialIdentity>	socialIdentities;
-	private Collection<MessageBox>		messageBoxes;
+	//private Collection<MessageBox>		messageBoxes;
 
 
 	// 
@@ -151,7 +149,6 @@ public abstract class Actor extends DomainEntity {
 		this.socialIdentities = socialIdentities;
 	}
 
-
 	@NotNull
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
@@ -162,29 +159,26 @@ public abstract class Actor extends DomainEntity {
 	public void setUserAccount(final UserAccount userAccount) {
 		this.userAccount = userAccount;
 	}
-	
-	
-	@NotNull
-	@Valid
-	@OneToMany(cascade = CascadeType.ALL)
-	public Collection<MessageBox> getMessageBoxes() {
-		return this.messageBoxes;
-	}
 
-	public void setMessageBoxes(Collection<MessageBox> messageBoxes) {
-		this.messageBoxes = messageBoxes;
-	}
-	
-	
+	//	@NotNull
+	//	@Valid
+	//	@OneToMany(cascade = CascadeType.ALL)
+	//	public Collection<MessageBox> getMessageBoxes() {
+	//		return this.messageBoxes;
+	//	}
+	//
+	//	public void setMessageBoxes(Collection<MessageBox> messageBoxes) {
+	//		this.messageBoxes = messageBoxes;
+	//	}
+
 	// Other Methods ------------------------------------------------------
-	public MessageBox getMessageBox(String name) {
-			MessageBox result = null;
-		for (MessageBox box : this.getMessageBoxes())
-			if (box.getName().equals(name))
-				return box;
-		return result;
-	}
-	
+	//	public MessageBox getMessageBox(String name) {
+	//			MessageBox result = null;
+	//		for (MessageBox box : this.getMessageBoxes())
+	//			if (box.getName().equals(name))
+	//				return box;
+	//		return result;
+	//	}
 
 	@Override
 	public String toString() {

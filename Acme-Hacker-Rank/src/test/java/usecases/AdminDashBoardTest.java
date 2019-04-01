@@ -38,7 +38,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query1Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -55,7 +55,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query1Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -71,7 +71,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query2Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -87,7 +87,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query2Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -103,7 +103,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query3Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -119,7 +119,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query3Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -136,7 +136,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query4Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -152,7 +152,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query4Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -169,7 +169,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query5Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -186,7 +186,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query5Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -202,7 +202,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query6Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -218,7 +218,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query6Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -234,7 +234,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query7Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -250,7 +250,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query7Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -266,7 +266,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query8Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -282,7 +282,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query8Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -299,7 +299,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query9Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -315,7 +315,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query9Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -332,7 +332,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query10Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -349,7 +349,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query10Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -365,7 +365,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query11Positive() {
 		super.authenticate("admin");
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -381,7 +381,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query11Negative() {
 		super.authenticate(null);
-		this.adminService.query1();
+		//this.adminService.query1();
 		super.unauthenticate();
 	}
 
