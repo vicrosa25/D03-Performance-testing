@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -27,8 +28,9 @@ public abstract class Actor extends DomainEntity {
 
 	private String	name;
 	private String	username;
-	private String	middleName;
 	private String	surname;
+	private Integer	vat;
+	private Long	cardNumber;
 	private String	photo;
 	private String	email;
 	private String	phoneNumber;
@@ -53,14 +55,6 @@ public abstract class Actor extends DomainEntity {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getMiddleName() {
-		return this.middleName;
-	}
-
-	public void setMiddleName(final String middleName) {
-		this.middleName = middleName;
 	}
 
 	@NotBlank
@@ -131,14 +125,31 @@ public abstract class Actor extends DomainEntity {
 		this.score = score;
 	}
 
+	@NotNull
+	public Integer getVat() {
+		return vat;
+	}
+
+	public void setVat(Integer vat) {
+		this.vat = vat;
+	}
+
+	@NotNull
+	@CreditCardNumber
+	public Long getCardNumber() {
+		return cardNumber;
+	}
+
+	public void setCardNumber(Long cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
 
 	// Relationships ----------------------------------------------------------
 	private UserAccount					userAccount;
 	private Collection<SocialIdentity>	socialIdentities;
-	//private Collection<MessageBox>		messageBoxes;
 
 
-	// 
 	@Valid
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "actor", fetch = FetchType.EAGER)
 	public Collection<SocialIdentity> getSocialIdentities() {
@@ -160,29 +171,9 @@ public abstract class Actor extends DomainEntity {
 		this.userAccount = userAccount;
 	}
 
-	//	@NotNull
-	//	@Valid
-	//	@OneToMany(cascade = CascadeType.ALL)
-	//	public Collection<MessageBox> getMessageBoxes() {
-	//		return this.messageBoxes;
-	//	}
-	//
-	//	public void setMessageBoxes(Collection<MessageBox> messageBoxes) {
-	//		this.messageBoxes = messageBoxes;
-	//	}
-
-	// Other Methods ------------------------------------------------------
-	//	public MessageBox getMessageBox(String name) {
-	//			MessageBox result = null;
-	//		for (MessageBox box : this.getMessageBoxes())
-	//			if (box.getName().equals(name))
-	//				return box;
-	//		return result;
-	//	}
-
 	@Override
 	public String toString() {
-		return "Actor [name=" + this.name + ", middleName=" + this.middleName + ", surname=" + this.surname + "]";
+		return "Actor [name=" + this.name + ", surname=" + this.surname + "]";
 	}
 
 }
