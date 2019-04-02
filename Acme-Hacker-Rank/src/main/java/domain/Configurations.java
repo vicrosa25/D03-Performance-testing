@@ -23,16 +23,11 @@ public class Configurations extends DomainEntity {
 	private int					cacheTime;
 	private int					finderMaxResult;
 	private String				spanishMessage;
-	private String 				englishMessage;
+	private String				englishMessage;
 	private Collection<String>	spamWords;
-	private Collection<String>	positiveWords;
-	private Collection<String>	negativeWords;
 	private String				countryCode;
-	private String 				title;
-	private String 				logo;
-	private Collection<String>	brandName;
-	private Double				vat;
-	private Double				fare;
+	private String				title;
+	private String				logo;
 
 
 	@Range(min = 1, max = 24)
@@ -64,28 +59,6 @@ public class Configurations extends DomainEntity {
 		this.spamWords = spamWords;
 	}
 
-	@NotNull
-	@NotEmpty
-	@ElementCollection
-	public Collection<String> getPositiveWords() {
-		return this.positiveWords;
-	}
-
-	public void setPositiveWords(final Collection<String> positiveWords) {
-		this.positiveWords = positiveWords;
-	}
-
-	@NotNull
-	@NotEmpty
-	@ElementCollection
-	public Collection<String> getNegativeWords() {
-		return this.negativeWords;
-	}
-
-	public void setNegativeWords(final Collection<String> negativeWords) {
-		this.negativeWords = negativeWords;
-	}
-
 	@NotBlank
 	@Pattern(regexp = "([+]?\\d{1,2})")
 	public String getCountryCode() {
@@ -96,13 +69,11 @@ public class Configurations extends DomainEntity {
 		this.countryCode = countryCode;
 	}
 
-
 	@NotEmpty
 	public String getTitle() {
 		return this.title;
 	}
 
-	
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -113,12 +84,10 @@ public class Configurations extends DomainEntity {
 		return this.logo;
 	}
 
-	
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
 
-	
 	@NotBlank
 	public String getSpanishMessage() {
 		return this.spanishMessage;
@@ -140,42 +109,8 @@ public class Configurations extends DomainEntity {
 	public void setFinderMaxResult(int finderMaxResult) {
 		this.finderMaxResult = finderMaxResult;
 	}
-	
-	@NotNull
-	@NotEmpty
-	@ElementCollection
-	public Collection<String> getBrandName() {
-		return this.brandName;
-	}
-	public void setBrandName(final Collection<String> brandName) {
-		this.brandName = brandName;
-	}
-	
-	public Double getVat() {
-		return this.vat;
-	}
-	
-	
-	public void setVat(Double vat) {
-		this.vat = vat;
-	}
-
-	
-	public Double getFare() {
-		return this.fare;
-	}
-
-	
-	public void setFare(Double fare) {
-		this.fare = fare;
-	}
-
-
-	
-
 
 	// Relationships ----------------------------------------------------------
-
 
 	// Other methods
 }

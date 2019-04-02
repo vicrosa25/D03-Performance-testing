@@ -238,15 +238,11 @@
 	<bean id="configurations" class="domain.Configurations">
 		<property name="cacheTime" value="1" />
 		<property name="finderMaxResult" value="10" />
-		<property name="vat" value="0.21" />
-		<property name="fare" value="10.0" />
 		<property name="countryCode" value="+34" />
 		<property name="title" value="Acme Hacker Rank Co., Inc." />
 		<property name="logo" value="https://i.imgur.com/7b8lu4b.png " />
-		<property name="spanishMessage"
-			value="¡Bienvenidos a Acme Parade! Tu sitio para organizar desfiles." />
-		<property name="englishMessage"
-			value="Welcome to Acme Parade, the site to organise your parades." />
+		<property name="spanishMessage" value="¡Bienvenidos a Acme Parade! Tu sitio para organizar desfiles." />
+		<property name="englishMessage" value="Welcome to Acme Parade, the site to organise your parades." />
 		<property name="spamWords">
 			<list>
 				<value>sex</value>
@@ -258,45 +254,6 @@
 				<value>sexo</value>
 				<value>un millón</value>
 				<value>ha sido seleccionado</value>
-			</list>
-		</property>
-		<property name="positiveWords">
-			<list>
-				<value>good</value>
-				<value>fantastic</value>
-				<value>excellent</value>
-				<value>great</value>
-				<value>amazing</value>
-				<value>terrific</value>
-				<value>beautiful</value>
-				<value>bueno</value>
-				<value>fantástico</value>
-				<value>excelente</value>
-				<value>gran</value>
-				<value>asombroso</value>
-				<value>terrible</value>
-				<value>bonito</value>
-			</list>
-		</property>
-		<property name="negativeWords">
-			<list>
-				<value>not</value>
-				<value>no</value>
-				<value>bad</value>
-				<value>malo</value>
-				<value>horrible</value>
-				<value>average</value>
-				<value>mediocre</value>
-				<value>disaster</value>
-				<value>desastre</value>
-			</list>
-		</property>
-		<property name="brandName">
-			<list>
-				<value>VISA</value>
-				<value>MCARD</value>
-				<value>DINNERS</value>
-				<value>AMEX</value>
 			</list>
 		</property>
 	</bean>
