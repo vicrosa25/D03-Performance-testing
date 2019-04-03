@@ -37,7 +37,6 @@ public abstract class Actor extends DomainEntity {
 	private String	address;
 	private Boolean	isSpammer;
 	private Boolean	isBanned;
-	private Double	score;
 
 
 	@NotBlank
@@ -115,14 +114,6 @@ public abstract class Actor extends DomainEntity {
 
 	public void setIsBanned(Boolean isBanned) {
 		this.isBanned = isBanned;
-	}
-
-	public Double getScore() {
-		return this.score;
-	}
-
-	public void setScore(Double score) {
-		this.score = score;
 	}
 
 	@NotNull

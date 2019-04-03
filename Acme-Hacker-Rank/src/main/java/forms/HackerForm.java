@@ -3,7 +3,7 @@ package forms;
 
 import security.UserAccount;
 
-public class ChapterForm {
+public class HackerForm {
 
 	private UserAccount	userAccount;
 	private String		name;
