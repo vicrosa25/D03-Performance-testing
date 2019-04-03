@@ -24,6 +24,9 @@
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
 		
+		<bean class="converters.HackerToStringConverter" />
+		<bean class="converters.StringToHackerConverter" />
+		
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		

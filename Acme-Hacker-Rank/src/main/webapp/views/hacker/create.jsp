@@ -6,44 +6,40 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="member/create.do" modelAttribute="memberForm">
+<form:form action="hacker/create.do" modelAttribute="hackerForm">
 
 	<%-- UserAccount--%>
 
 	<%-- username--%>
-	<acme:textbox code="member.username" path="userAccount.username" />
+	<acme:textbox code="hacker.username" path="userAccount.username" />
 	<br>
 
 	<%-- password--%>
-	<acme:password code="member.password" path="userAccount.password" />
+	<acme:password code="hacker.password" path="userAccount.password" />
 	<br>
 
 	<%-- Name --%>
-	<acme:textbox code="member.name" path="name" />
-	<br>
-
-	<%-- Middlename --%>
-	<acme:textbox code="member.middleName" path="middleName" />
+	<acme:textbox code="hacker.name" path="name" />
 	<br>
 
 	<%-- Surname --%>
-	<acme:textbox code="member.surname" path="surname" />
+	<acme:textbox code="hacker.surname" path="surname" />
 	<br>
 
 	<%-- Photo --%>
-	<acme:textbox code="member.photo" path="photo" />
+	<acme:textbox code="hacker.photo" path="photo" />
 	<br>
 
 	<%-- Phone --%>
-	<acme:textbox code="member.phone" path="phoneNumber" />
+	<acme:textbox code="hacker.phone" path="phoneNumber" />
 	<br>
 
 	<%-- email --%>
-	<acme:textbox code="member.email" path="email" />
+	<acme:textbox code="hacker.email" path="email" />
 	<br>
 
 	<%-- Address --%>
-	<acme:textbox code="member.address" path="address" />
+	<acme:textbox code="hacker.address" path="address" />
 	<br>
 	
 	<%-- Accept Legal term --%>
@@ -80,10 +76,10 @@
 
 	<%-- Buttons --%>
 	<input type="submit" name="save"
-		value="<spring:message code="member.save"/>" 
+		value="<spring:message code="hacker.save"/>" 
 		onClick="javascript: return phoneNumberValidator()" />
 	
 
 
-	<acme:cancel code="member.cancel" url="/" />
+	<acme:cancel code="hacker.cancel" url="/" />
 </form:form>
