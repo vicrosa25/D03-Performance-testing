@@ -27,6 +27,9 @@
 		<bean class="converters.HackerToStringConverter" />
 		<bean class="converters.StringToHackerConverter" />
 		
+		<bean class="converters.ApplicationToStringConverter" />
+		<bean class="converters.StringToApplicationConverter" />
+		
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		

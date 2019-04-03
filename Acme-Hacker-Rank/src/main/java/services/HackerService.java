@@ -23,6 +23,7 @@ import security.UserAccount;
 public class HackerService {
 
 	// Manage Repository
+	@Autowired
 	private HackerRepository	hackerRepository;
 
 	// Supporting services
@@ -43,7 +44,7 @@ public class HackerService {
 		UserAccount userAccount = new UserAccount();
 		Collection<Authority> authorities = new ArrayList<Authority>();
 		Authority authority = new Authority();
-		authority.setAuthority(Authority.ADMIN);
+		authority.setAuthority(Authority.HACKER);
 		authorities.add(authority);
 		userAccount.setAuthorities(authorities);
 
@@ -70,7 +71,7 @@ public class HackerService {
 
 	public Hacker save(final Hacker hacker) {
 		Assert.notNull(hacker);
-		final Hacker result = this.hackerRepository.save(hacker);
+		Hacker result = this.hackerRepository.save(hacker);
 
 		return result;
 	}
@@ -81,30 +82,27 @@ public class HackerService {
 		this.hackerRepository.delete(hacker);
 	}
 
-	/*************************************
+	/**************************************************************
 	 * Reconstruct object, check validity and update binding
-	 *************************************/
+	 **************************************************************/
 
 	/** Form Object **/
 	public Hacker reconstruct(HackerForm hackerForm, BindingResult binding) {
-		Hacker result = new Hacker();
-		try {
-			result = this.findByPrincipal();
-		} catch (final IllegalArgumentException a) {
-			result = this.create();
-		}
+		Hacker result = this.create();
 
+		// UserAccount
 		result.getUserAccount().setPassword(hackerForm.getUserAccount().getPassword());
 		result.getUserAccount().setUsername(hackerForm.getUserAccount().getUsername());
-		result.setUsername(hackerForm.getUserAccount().getUsername());
 
-		result.setAddress(hackerForm.getAddress());
-		result.setEmail(hackerForm.getEmail());
+		// Hacker Attributes
 		result.setName(hackerForm.getName());
-		result.setPhoneNumber(hackerForm.getPhoneNumber());
-		result.setPhoto(hackerForm.getPhoto());
-
 		result.setSurname(hackerForm.getSurname());
+		result.setVat(hackerForm.getVat());
+		result.setCardNumber(hackerForm.getCardNumber());
+		result.setPhoto(hackerForm.getPhoto());
+		result.setEmail(hackerForm.getEmail());
+		result.setPhoneNumber(hackerForm.getPhoneNumber());
+		result.setAddress(hackerForm.getAddress());
 
 		// Default attributes from Actor
 		result.setUsername(hackerForm.getUserAccount().getUsername());
@@ -124,13 +122,14 @@ public class HackerService {
 		Assert.isTrue(this.findByPrincipal().getId() == hacker.getId());
 
 		// Updated attributes
-		result.setAddress(hacker.getAddress());
-		result.setEmail(hacker.getEmail());
 		result.setName(hacker.getName());
-		result.setPhoneNumber(hacker.getPhoneNumber());
-		result.setPhoto(hacker.getPhoto());
 		result.setSurname(hacker.getSurname());
-		result.setName(hacker.getName());
+		result.setVat(hacker.getVat());
+		result.setCardNumber(hacker.getCardNumber());
+		result.setPhoto(hacker.getPhoto());
+		result.setEmail(hacker.getEmail());
+		result.setPhoneNumber(hacker.getPhoneNumber());
+		result.setAddress(hacker.getAddress());
 
 		// Not updated attributes
 		result.setId(temp.getId());
@@ -140,6 +139,7 @@ public class HackerService {
 		result.setIsBanned(temp.getIsBanned());
 
 		// Relantionships from Hacker
+		result.setApplications(temp.getApplications());
 
 		// Relatienships from Actor
 		result.setUserAccount(temp.getUserAccount());

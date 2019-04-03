@@ -30,7 +30,7 @@ public abstract class Actor extends DomainEntity {
 	private String	username;
 	private String	surname;
 	private Integer	vat;
-	private Long	cardNumber;
+	private String	cardNumber;
 	private String	photo;
 	private String	email;
 	private String	phoneNumber;
@@ -125,13 +125,13 @@ public abstract class Actor extends DomainEntity {
 		this.vat = vat;
 	}
 
-	@NotNull
+	@NotBlank
 	@CreditCardNumber
-	public Long getCardNumber() {
+	public String getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(Long cardNumber) {
+	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 

@@ -23,6 +23,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="hacker1" />
+		<property name="password" value="2ba2a8ac968a7a2b0a7baa7f2fef18d2" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="HACKER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 
 
@@ -30,8 +42,9 @@
 	<bean id="admin1" class="domain.Administrator">
 		<property name="name" value="admin" />
 		<property name="username" value="admin" />
-		<property name="middleName" value="middlename1" />
 		<property name="surname" value="surname1" />
+		<property name="vat" value="1" />
+		<property name="cardNumber" value="378721273855309" />
 		<property name="email" value="admin1@gmail.com" />
 		<property name="phoneNumber" value="+34656256697" />
 		<property name="address" value="admin1 18" />
@@ -41,15 +54,24 @@
 				<ref bean="socialIdentity1" />
 			</list>
 		</property>
-<!-- 		<property name="messageBoxes"> -->
-<!-- 			<list> -->
-<!-- 				<ref bean="admin1-spam" /> -->
-<!-- 				<ref bean="admin1-in" /> -->
-<!-- 				<ref bean="admin1-out" /> -->
-<!-- 				<ref bean="admin1-trash" /> -->
-<!-- 				<ref bean="admin1-notification" /> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
+	</bean>
+	
+	
+	<!-- Hackers *************************************************************************** -->
+	<bean id="hacker1" class="domain.Hacker">
+		<property name="name" value="hacker1" />
+		<property name="username" value="hacker1" />
+		<property name="surname" value="hacker1" />
+		<property name="vat" value="1" />
+		<property name="cardNumber" value="378721273855309" />
+		<property name="email" value="hacker1@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="hacker1 18" />
+		<property name="UserAccount" ref="userAccount2" />
+		<property name="applications">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 

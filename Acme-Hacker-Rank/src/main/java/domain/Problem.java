@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -22,7 +23,7 @@ public class Problem extends DomainEntity {
 	private String				statement;
 	private Boolean				finalMode;
 	private String				hint;
-	private Collection<Url>	attachments;
+	private Collection<String>	attachments;
 
 
 	@NotBlank
@@ -53,11 +54,12 @@ public class Problem extends DomainEntity {
 
 	@NotNull
 	@Valid
-	public Collection<Url> getattachments() {
+	@ElementCollection
+	public Collection<String> getattachments() {
 		return this.attachments;
 	}
 
-	public void setAttachments(final Collection<Url> attachments) {
+	public void setAttachments(Collection<String> attachments) {
 		this.attachments = attachments;
 	}
 
@@ -70,9 +72,10 @@ public class Problem extends DomainEntity {
 		this.finalMode = finalMode;
 	}
 
+
 	// Relationships ----------------------------------------------------------
 	private Collection<Position>	positions;
-	private Company	company;
+	private Company					company;
 
 
 	@ManyToOne(optional = false)

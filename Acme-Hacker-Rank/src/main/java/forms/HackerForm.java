@@ -9,7 +9,7 @@ public class HackerForm {
 	private String		name;
 	private String		surname;
 	private Integer		vat;
-	private Long		cardNumber;
+	private String		cardNumber;
 	private String		phoneNumber;
 	private String		email;
 	private String		address;
@@ -83,11 +83,11 @@ public class HackerForm {
 		this.vat = vat;
 	}
 
-	public Long getCardNumber() {
+	public String getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(Long cardNumber) {
+	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 

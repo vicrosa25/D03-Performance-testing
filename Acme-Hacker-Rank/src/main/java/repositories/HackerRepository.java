@@ -13,9 +13,9 @@ public interface HackerRepository extends JpaRepository<Hacker, Integer> {
 	@Query("select h from Hacker h where h.id = ?1")
 	Hacker findById(int id);
 
-	@Query("select h from Hacker a where h.userAccount.username = ?1")
+	@Query("select h from Hacker h where h.userAccount.username = ?1")
 	Hacker findByUserName(String username);
 
-	@Query("select h from Hacker a where h.userAccount.id = ?1")
+	@Query("select h from Hacker h where h.userAccount.id = ?1")
 	Hacker findByUserAccountId(int id);
 }

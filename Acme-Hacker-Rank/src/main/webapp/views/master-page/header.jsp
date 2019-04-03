@@ -60,16 +60,22 @@
 		
 		<!-- An actor who is NOT authenticated -->
 		<security:authorize access="isAnonymous()">
-			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.positions" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="chapter/list.do"><spring:message code="master.page.position.list" /></a></li>				
 				</ul>
 			</li>
+			<li><a class="fNiv"><spring:message	code="master.page.companies" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="company/list.do"><spring:message code="master.page.company.list" /></a></li>				
+				</ul>
+			</li>
 			<li><a class="fNiv"><spring:message	code="master.page.register" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="hacker/create.do"><spring:message code="master.page.member.register" /></a></li>				
+					<li><a href="hacker/create.do"><spring:message code="master.page.hacker.register" /></a></li>				
 				</ul>
 			</li>
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
@@ -81,10 +87,10 @@
 			<li><a class="fNiv"><spring:message	code="master.page.companies" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="brotherhood/list.do"><spring:message code="master.page.brotherhood.list" /></a></li>
+					<li><a href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
 				</ul>
 			</li>
-			<li><a class="fNiv"><spring:message	code="master.page.position.list" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.positions" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="position/list.do"><spring:message code="master.page.position.list" /></a></li>				
@@ -100,11 +106,11 @@
 					
 					<!-- PROFILE -->
 					<security:authorize access="hasRole('HACKER')">
-						<li><a href="hacker/edit.do"><spring:message code="master.page.brotherhood.edit" /></a></li>
+						<li><a href="hacker/edit.do"><spring:message code="master.page.hacker.edit" /></a></li>
 					</security:authorize>
 					
 					<!-- Social Profile -->
-					<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialProfile" /></a></li>
+<%-- 					<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialProfile" /></a></li> --%>
 					
 					<!-- LOGOUT -->
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>

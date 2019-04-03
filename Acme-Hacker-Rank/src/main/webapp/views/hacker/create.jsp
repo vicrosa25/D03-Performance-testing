@@ -25,6 +25,14 @@
 	<%-- Surname --%>
 	<acme:textbox code="hacker.surname" path="surname" />
 	<br>
+	
+	<%-- Vat --%>
+	<acme:textbox code="hacker.vat" path="vat" />
+	<br>
+	
+	<%-- Credit Card --%>
+	<acme:textbox code="hacker.cardNumber" path="cardNumber" />
+	<br>
 
 	<%-- Photo --%>
 	<acme:textbox code="hacker.photo" path="photo" />
@@ -78,8 +86,5 @@
 	<input type="submit" name="save"
 		value="<spring:message code="hacker.save"/>" 
 		onClick="javascript: return phoneNumberValidator()" />
-	
-
-
 	<acme:cancel code="hacker.cancel" url="/" />
 </form:form>

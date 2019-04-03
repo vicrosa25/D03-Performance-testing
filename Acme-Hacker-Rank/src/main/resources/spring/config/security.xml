@@ -67,11 +67,11 @@
 		<security:intercept-url pattern="/administrator/config/brand/remove.do" access="hasRole('ADMIN')"/>
 		
 		
-		<!--  MEMBER -->
-		<security:intercept-url pattern="/member/create.do" access="isAnonymous()" />
-		<security:intercept-url pattern="/member/edit.do" access="hasRole('MEMBER')" />
-		<security:intercept-url pattern="/member/list.do" access="permitAll" />
-		<security:intercept-url pattern="/member/generatePDF.do" access="hasRole('MEMBER')" />
+		<!--  HACKER -->
+		<security:intercept-url pattern="/hacker/create.do" access="isAnonymous()" />
+		<security:intercept-url pattern="/hacker/edit.do" access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/hacker/list.do" access="permitAll" />
+		<security:intercept-url pattern="/hacker/generatePDF.do" access="hasRole('MEMBER')" />
 		
 		
 		<!-- CONFIGURATIONS -->

@@ -40,9 +40,6 @@ public class HackerController extends AbstractController {
 			result = new ModelAndView("hacker/create");
 			result.addObject("hackerForm", hackerForm);
 		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
-			System.out.println(oops.getClass());
-			System.out.println(oops.getCause());
 			result = this.forbiddenOpperation();
 		}
 
@@ -51,11 +48,11 @@ public class HackerController extends AbstractController {
 
 	// Save the new hacker ----------------------------------------------------------------------
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(final HackerForm hackerForm, final BindingResult binding) {
+	public ModelAndView save(HackerForm hackerForm, BindingResult binding) {
 		ModelAndView result;
 		String password;
 
-		final Hacker hacker = this.hackerService.reconstruct(hackerForm, binding);
+		Hacker hacker = this.hackerService.reconstruct(hackerForm, binding);
 
 		if (!hackerForm.isAccepted()) {
 			binding.rejectValue("accepted", "register.terms.error", "Service terms must be accepted");
@@ -90,7 +87,6 @@ public class HackerController extends AbstractController {
 
 		result = new ModelAndView("hacker/create");
 		result.addObject("hackerForm", hackerForm);
-
 		result.addObject("message", messageCode);
 
 		return result;
