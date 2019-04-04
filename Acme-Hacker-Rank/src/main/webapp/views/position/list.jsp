@@ -9,42 +9,49 @@
 <!-- Listing Grid -->
 <display:table name="positions" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
 
-	<!-- Edit -->
-	<security:authorize access="hasRole('ADMIN')">
-		<spring:message code="position.edit" var="editHeader" />
-		<display:column title="${ editHeader }">
-			<a href="position/admin/edit.do?positionId=${row.id}"><spring:message code="position.edit" /></a>
-		</display:column>
-	</security:authorize>
-	
-	<jstl:if test="${language=='es'}">
-		<!-- Spanish Name -->
-		<spring:message code="position.spanish" var="spanishHeader" />
-		<display:column property="spanishName" title="${spanishHeader}" />
-	</jstl:if>
-	
-	<jstl:if test="${language=='en'}">
-		<!-- English Name -->
-		<spring:message code="position.english" var="englishHeader" />
-		<display:column property="englishName" title="${englishHeader}" />
-	</jstl:if>
-	
-	<jstl:if test="${empty language}">
-		<!-- English Name -->
-		<spring:message code="position.english" var="englishHeader" />
-		<display:column property="englishName" title="${englishHeader}" />
 
-		<!-- Spanish Name -->
-		<spring:message code="position.spanish" var="spanishHeader" />
-		<display:column property="spanishName" title="${spanishHeader}" />
-	</jstl:if>
+	<!-- Title -->
+	<spring:message code="position.title" var="titleHeader" />
+	<display:column property="titleHeader" title="${titleHeader}" />
 	
+	<!-- Ticker -->
+	<spring:message code="position.ticker" var="tickerHeader" />
+	<display:column property="ticker" title="${tickerHeader}" />
+	
+	<!-- Description -->
+	<spring:message code="position.description" var="descriptionHeader" />
+	<display:column property="description" title="${descriptionHeader}" />
+	
+	<!-- Deadline -->
+	<spring:message code="position.deadline" var="deadlineHeader" />
+	<display:column property="deadline" title="${deadlineHeader}" format="{0,date,dd/MM/yyyy}" />
+	
+	<!-- Profile -->
+	<spring:message code="position.profile" var="profileHeader" />
+	<display:column property="profile" title="${profileHeader}" />
+	
+	<!-- Skills -->
+	<spring:message code="position.skills" var="skillsHeader" />
+	<display:column property="skills" title="${skillsHeader}" />
+	
+	<!-- Technologies -->
+	<spring:message code="position.technologies" var="technologiesHeader" />
+	<display:column property="technologies" title="${technologiesHeader}" />
+	
+	<!-- Salary -->
+	<spring:message code="position.salary" var="salaryHeader" />
+	<display:column property="salary" title="${salaryHeader}" />
+
+		
+	<!-- Company -->
+	<spring:message code="position.company" var="companyHeader" />
+	<display:column title="${ companyHeader }">
+		<a href="company/display.do?companyId=${row.company.id}"><spring:message code="position.company" /></a>
+	</display:column>
 </display:table>
 
 
-
-
 <!-- Create Link -->
-<security:authorize access="hasRole('ADMIN')">
-	<a href=position/admin/create.do><spring:message code="position.create" /></a>
+<security:authorize access="hasRole('COMPANY')">
+	<a href=position/company/create.do><spring:message code="position.create" /></a>
 </security:authorize>

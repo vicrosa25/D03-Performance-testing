@@ -156,4 +156,11 @@ public class Position extends DomainEntity {
 	public void setProblems(Collection<Problem> problems) {
 		this.problems = problems;
 	}
+	
+	// Other methods
+	@Override
+	public String toString() {
+		return "Position [deadline=" + deadline + ", ticker=" + ticker + ", title=" + title + ", description=" + description + ", finalMode=" + finalMode + ", profile=" + profile + ", skills=" + skills + ", technologies=" + technologies + ", salary="
+			+ salary + "]";
+	}
 }
