@@ -16,19 +16,9 @@
        
 <tiles-definitions>
 
-	<definition name="position/admin/list" extends="master.page">	
+	<definition name="position/list" extends="master.page">	
 		<put-attribute name="title" value="Positions List" />
 		<put-attribute name="body" value="/views/position/list.jsp" />
-	</definition>
-	
-	<definition name="position/admin/create" extends="master.page">	
-		<put-attribute name="title" value="Create position" />
-		<put-attribute name="body" value="/views/position/edit.jsp" />
-	</definition>
-	
-	<definition name="position/admin/edit" extends="master.page">	
-		<put-attribute name="title" value="Edit position" />
-		<put-attribute name="body" value="/views/position/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

@@ -12,7 +12,7 @@
 
 	<!-- Title -->
 	<spring:message code="position.title" var="titleHeader" />
-	<display:column property="titleHeader" title="${titleHeader}" />
+	<display:column property="title" title="${titleHeader}" />
 	
 	<!-- Ticker -->
 	<spring:message code="position.ticker" var="tickerHeader" />

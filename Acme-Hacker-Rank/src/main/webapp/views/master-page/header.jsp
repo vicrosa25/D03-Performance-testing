@@ -63,7 +63,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.positions" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="chapter/list.do"><spring:message code="master.page.position.list" /></a></li>				
+					<li><a href="position/list.do"><spring:message code="master.page.position.list" /></a></li>				
 				</ul>
 			</li>
 			<li><a class="fNiv"><spring:message	code="master.page.companies" /></a>
