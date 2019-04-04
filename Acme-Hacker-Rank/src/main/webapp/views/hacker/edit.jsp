@@ -6,38 +6,42 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="member/edit.do" modelAttribute="member">
+<form:form action="hacker/edit.do" modelAttribute="hacker">
 
-	<%-- Hidden properties from member--%>
+	<%-- Hidden properties from hacker--%>
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	
 	<%-- Name --%>
-	<acme:textbox code="member.name" path="name" />
-	<br>
-
-	<%-- Middlename --%>
-	<acme:textbox code="member.middleName" path="middleName" />
+	<acme:textbox code="hacker.name" path="name" />
 	<br>
 
 	<%-- Surname --%>
-	<acme:textbox code="member.surname" path="surname" />
+	<acme:textbox code="hacker.surname" path="surname" />
+	<br>
+	
+	<%-- Vat --%>
+	<acme:textbox code="hacker.vat" path="vat" />
+	<br>
+	
+	<%-- CardNumber --%>
+	<acme:textbox code="hacker.cardNumber" path="cardNumber" />
 	<br>
 
 	<%-- Photo --%>
-	<acme:textbox code="member.photo" path="photo" />
+	<acme:textbox code="hacker.photo" path="photo" />
 	<br>
 
 	<%-- Phone --%>
-	<acme:textbox code="member.phone" path="phoneNumber" />
+	<acme:textbox code="hacker.phone" path="phoneNumber" />
 	<br>
 
 	<%-- email --%>
-	<acme:textbox code="member.email" path="email" />
+	<acme:textbox code="hacker.email" path="email" />
 	<br>
 
 	<%-- Address --%>
-	<acme:textbox code="member.address" path="address" />
+	<acme:textbox code="hacker.address" path="address" />
 	<br>
 
 	<script type="text/javascript">
@@ -59,15 +63,15 @@
 			else if (patternPN.test(phoneNumber))
 				return true;
 			else
-				return confirm('<spring:message code="brotherhood.confirm"/>');
+				return confirm('<spring:message code="hacker.confirm"/>');
 		}
 	</script>
-	<%-- Buttons --%>
-	<input type="submit" name="save"
-		value="<spring:message code="member.save"/>"
-		onClick="javascript: return phoneNumberValidator()" />
 	
-	<acme:cancel code="member.cancel" url="/" />
-	<acme:cancel code="brotherhood.delete" url="/member/delete.do" />
-	<acme:cancel code="brotherhood.export" url="/member/generatePDF.do" />
+	
+	<%-- Buttons --%>
+	<input type="submit" name="save" value="<spring:message code="hacker.save"/>"
+		onClick="javascript: return phoneNumberValidator()" />	
+	<acme:cancel code="hacker.cancel" url="/" />
+	<acme:cancel code="hacker.delete" url="/hacker/delete.do" />
+	<acme:cancel code="hacker.export" url="/hacker/generatePDF.do" />
 </form:form>

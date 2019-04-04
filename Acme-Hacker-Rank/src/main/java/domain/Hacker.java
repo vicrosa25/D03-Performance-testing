@@ -18,7 +18,7 @@ public class Hacker extends Actor {
 	private Collection<Application> applications;
 
 
-	@OneToMany
+	@OneToMany(mappedBy = "hacker")
 	public Collection<Application> getApplications() {
 		return applications;
 	}

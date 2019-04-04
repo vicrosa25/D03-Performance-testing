@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import domain.Application;
 import domain.Hacker;
+import domain.SocialIdentity;
 import forms.HackerForm;
 import repositories.HackerRepository;
 import security.Authority;
@@ -24,9 +27,14 @@ public class HackerService {
 
 	// Manage Repository
 	@Autowired
-	private HackerRepository	hackerRepository;
+	private HackerRepository		hackerRepository;
 
 	// Supporting services
+	@Autowired
+	private ApplicationService 		applicationService;
+	
+	@Autowired
+	private SocialIdentityService 	socialIdentityService;
 
 	// Validator
 	@Autowired
@@ -77,9 +85,31 @@ public class HackerService {
 	}
 
 	public void delete(final Hacker hacker) {
+		Assert.isTrue(this.findByPrincipal() == hacker);
 		Assert.notNull(hacker);
 
+		Iterator<Application> applications	= new ArrayList<Application>(hacker.getApplications()).iterator();
+		Iterator<SocialIdentity> socialIs 	= new ArrayList<SocialIdentity>(hacker.getSocialIdentities()).iterator();
+
+		while (applications.hasNext()) {
+			Application next = applications.next();
+			this.applicationService.delete(next.getId());
+			hacker.getApplications().remove(next);
+			applications.remove();
+		}
+	
+		while (socialIs.hasNext()) {
+			SocialIdentity si = socialIs.next();
+			this.socialIdentityService.delete(si);
+			hacker.getSocialIdentities().remove(si);
+			socialIs.remove();
+		}
+		
+//		hacker.setMessageBoxes(new ArrayList<MessageBox>());
+//		this.messageBoxService.deleteAll(hacker);
+		
 		this.hackerRepository.delete(hacker);
+
 	}
 
 	/**************************************************************

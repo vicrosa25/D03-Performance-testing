@@ -62,7 +62,7 @@
 		<property name="name" value="hacker1" />
 		<property name="username" value="hacker1" />
 		<property name="surname" value="hacker1" />
-		<property name="vat" value="1" />
+		<property name="vat" value="13" />
 		<property name="cardNumber" value="378721273855309" />
 		<property name="email" value="hacker1@gmail.com" />
 		<property name="phoneNumber" value="+34656256697" />

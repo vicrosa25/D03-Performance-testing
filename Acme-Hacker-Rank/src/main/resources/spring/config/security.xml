@@ -69,9 +69,10 @@
 		
 		<!--  HACKER -->
 		<security:intercept-url pattern="/hacker/create.do" access="isAnonymous()" />
-		<security:intercept-url pattern="/hacker/edit.do" access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/hacker/edit.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/hacker/list.do" access="permitAll" />
-		<security:intercept-url pattern="/hacker/generatePDF.do" access="hasRole('MEMBER')" />
+		<security:intercept-url pattern="/hacker/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/hacker/generatePDF.do" access="hasRole('HACKER')" />
 		
 		
 		<!-- CONFIGURATIONS -->

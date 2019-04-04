@@ -62,9 +62,20 @@ public class Application extends DomainEntity {
 
 
 	// Relationships ----------------------------------------------------------
+	private Hacker		hacker;
 	private Answer		answer;
 	private Position	position;
+	
+	
+	@ManyToOne(optional = true)
+	public Hacker getHacker() {
+		return hacker;
+	}
 
+	
+	public void setHacker(Hacker hacker) {
+		this.hacker = hacker;
+	}
 
 	@NotNull
 	@Valid
