@@ -35,6 +35,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="company1" />
+		<property name="password" value="df655f976f7c9d3263815bd981225cd9" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COMPANY" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 
 
@@ -72,6 +84,43 @@
 			<list>
 			</list>
 		</property>
+	</bean>
+	
+	<!-- Companies *************************************************************************** -->
+	<bean id="company1" class="domain.Company">
+		<property name="name" value="company1" />
+		<property name="commercialName" value="company1 Co., Inc." />
+		<property name="username" value="company1" />
+		<property name="surname" value="company1" />
+		<property name="vat" value="13" />
+		<property name="cardNumber" value="378721273855309" />
+		<property name="email" value="company1@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="company1 18" />
+		<property name="UserAccount" ref="userAccount3" />
+		<property name="positions">
+			<list>
+			</list>
+		</property>
+		<property name="problems">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!-- Positions  ********************************************************************************* -->
+	<bean id="position1" class="domain.Position">
+		<property name="deadline" value="2019/06/12" />
+		<property name="ticker" value="comp-1234" />
+		<property name="title" value="Programador en  javascript" />
+		<property name="description" value="Se busca programador en javascript" />
+		<property name="profile" value="Programador" />
+		<property name="skills" value="skill1, skill2, skill3" />
+		<property name="technologies" value="tech1, tech2, tech3" />
+		<property name="salary" value="20000.0" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company1" />
 	</bean>
 
 

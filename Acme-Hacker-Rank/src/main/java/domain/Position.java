@@ -33,7 +33,7 @@ public class Position extends DomainEntity {
 	private String	profile;
 	private String	skills;
 	private String	technologies;
-	private double	salary;
+	private Double	salary;
 
 
 	@NotNull
@@ -50,7 +50,7 @@ public class Position extends DomainEntity {
 
 	@NotBlank
 	@Column(unique = true)
-	@Pattern(regexp = "^([0-9]{2})(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])(-)([A-Z0-9]{5})$")
+	@Pattern(regexp = "^([a-zA-Z]{4})(-)([0-9]{4})$")
 	public String getTicker() {
 		return this.ticker;
 	}
@@ -113,12 +113,12 @@ public class Position extends DomainEntity {
 		this.technologies = technologies;
 	}
 
-	@NotBlank
-	public double getSalary() {
+	@NotNull
+	public Double getSalary() {
 		return this.salary;
 	}
 
-	public void setSalary(final double salary) {
+	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
 
