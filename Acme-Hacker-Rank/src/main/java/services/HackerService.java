@@ -77,14 +77,14 @@ public class HackerService {
 		return result;
 	}
 
-	public Hacker save(final Hacker hacker) {
+	public Hacker save(Hacker hacker) {
 		Assert.notNull(hacker);
 		Hacker result = this.hackerRepository.save(hacker);
 
 		return result;
 	}
 
-	public void delete(final Hacker hacker) {
+	public void delete(Hacker hacker) {
 		Assert.isTrue(this.findByPrincipal() == hacker);
 		Assert.notNull(hacker);
 
