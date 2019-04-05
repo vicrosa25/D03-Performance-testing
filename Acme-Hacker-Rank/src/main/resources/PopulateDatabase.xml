@@ -90,7 +90,6 @@
 	<bean id="company1" class="domain.Company">
 		<property name="name" value="company1" />
 		<property name="commercialName" value="company1 Co., Inc." />
-		<property name="username" value="company1" />
 		<property name="surname" value="company1" />
 		<property name="vat" value="13" />
 		<property name="cardNumber" value="378721273855309" />
@@ -161,57 +160,6 @@
 <!-- 	</bean> -->
 
 
-	<!-- MessageBoxes *************************************************************************** -->
-
-	<!-- Admin MessageBoxes -->
-<!-- 	<bean id="admin1-in" class="domain.MessageBox"> -->
-<!-- 		<property name="name" value="in" /> -->
-<!-- 		<property name="isSystemBox" value="true" /> -->
-<!-- 		<property name="messages"> -->
-<!-- 			<list> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean id="admin1-out" class="domain.MessageBox"> -->
-<!-- 		<property name="name" value="out" /> -->
-<!-- 		<property name="isSystemBox" value="true" /> -->
-<!-- 		<property name="messages"> -->
-<!-- 			<list> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean id="admin1-spam" class="domain.MessageBox"> -->
-<!-- 		<property name="name" value="spam" /> -->
-<!-- 		<property name="isSystemBox" value="true" /> -->
-<!-- 		<property name="messages"> -->
-<!-- 			<list> -->
-
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean id="admin1-notification" class="domain.MessageBox"> -->
-<!-- 		<property name="name" value="notification" /> -->
-<!-- 		<property name="isSystemBox" value="true" /> -->
-<!-- 		<property name="messages"> -->
-<!-- 			<list> -->
-
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean id="admin1-trash" class="domain.MessageBox"> -->
-<!-- 		<property name="name" value="trash" /> -->
-<!-- 		<property name="isSystemBox" value="true" /> -->
-<!-- 		<property name="messages"> -->
-<!-- 			<list> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-
-
 	
 
 
@@ -248,26 +196,6 @@
 <!-- 	<bean id="finder2" class="domain.Finder"> -->
 <!-- 		<property name="lastUpdate" value="01/01/2000" /> -->
 <!-- 	</bean> -->
-
-
-
-
-	<!-- Credit Cards *************************************************************************** -->
-	<bean id="creditCard1" class="domain.CreditCard">
-		<property name="holderName" value="sponsor1" />
-		<property name="brandName" value="VISA" />
-		<property name="number" value="4414856614566419" />
-		<property name="expiration" value="12/02/15" />
-		<property name="cvvCode" value="123" />
-	</bean>
-
-	<bean id="creditCard2" class="domain.CreditCard">
-		<property name="holderName" value="sponsor2" />
-		<property name="brandName" value="VISA" />
-		<property name="number" value="4877161530824285" />
-		<property name="expiration" value="12/04/23" />
-		<property name="cvvCode" value="123" />
-	</bean>
 
 
 
