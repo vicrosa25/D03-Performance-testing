@@ -6,64 +6,46 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="brotherhood/edit.do" modelAttribute="brotherhood">
+<form:form action="company/edit.do" modelAttribute="company">
 
 	<%-- Hidden properties from handy worker--%>
 	<form:hidden path="id" />
-	<form:hidden path="establishment" />
-	
-	<%-- Name --%>
-	<acme:textbox code="brotherhood.name" path="name" />
-	<br>
 
-	<%-- Middlename --%>
-	<acme:textbox code="brotherhood.middleName" path="middleName" />
+	<%-- Name --%>
+	<acme:textbox code="company.name" path="name" />
 	<br>
 
 	<%-- Surname --%>
-	<acme:textbox code="brotherhood.surname" path="surname" />
+	<acme:textbox code="company.surname" path="surname" />
 	<br>
 
 	<%-- Photo --%>
-	<acme:textbox code="brotherhood.photo" path="photo" />
+	<acme:textbox code="company.photo" path="photo" />
 	<br>
 
 	<%-- Phone --%>
-	<acme:textbox code="brotherhood.phone" path="phoneNumber" />
+	<acme:textbox code="company.phone" path="phoneNumber" />
 	<br>
 
 	<%-- email --%>
-	<acme:textbox code="brotherhood.email" path="email" />
+	<acme:textbox code="company.email" path="email" />
 	<br>
 
 	<%-- Address --%>
-	<acme:textbox code="brotherhood.address" path="address" />
+	<acme:textbox code="company.address" path="address" />
 	<br>
 
-	<%-- Title --%>
-	<acme:textbox code="brotherhood.title" path="title" />
+	<%-- Vat --%>
+	<acme:textbox code="company.vat" path="vat" />
 	<br>
-	
-	
-	<jstl:if test="${not empty brotherhood.pictures}">
-	<display:table name="brotherhood.pictures"  id="row" >
-		<spring:message code="brotherhood.picture" var="pictureNameHeader" />
-		<display:column title="${pictureNameHeader}" sortable="false" >
-			<img src="${row.link}" width="50%" height="200"/>
-		</display:column>
-			
- 		<spring:message code="brotherhood.pictures.delete" var="deleteHeader" />
-		<display:column title="${deleteHeader}">
-			<a href="brotherhood/deletePicture.do?link=${row.link}"><spring:message code="brotherhood.picture.delete"/></a>
-		</display:column>
-		
-	<display:caption><spring:message code="brotherhood.pictures"/></display:caption>
-	</display:table>
-	</jstl:if>
+
+	<%-- Card number --%>
+	<acme:textbox code="company.cardNumber" path="cardNumber" />
 	<br>
-	<a href="brotherhood/addPicture.do">
-			<spring:message code="brotherhood.picture.create"/>
-	</a>
+
+	<%-- Commercial name --%>
+	<acme:textbox code="company.commercialName" path="commercialName" />
+	<br>
 	<br>
 
 	<script type="text/javascript">
@@ -85,15 +67,15 @@
 			else if (patternPN.test(phoneNumber))
 				return true;
 			else
-				return confirm('<spring:message code="brotherhood.confirm"/>');
+				return confirm('<spring:message code="company.confirm"/>');
 		}
 	</script>
 	<%-- Buttons --%>
 	<input type="submit" name="save"
-		value="<spring:message code="brotherhood.save"/>"
+		value="<spring:message code="company.save"/>"
 		onClick="javascript: return phoneNumberValidator()" />
 	
-	<acme:cancel code="brotherhood.cancel" url="/" />
-	<acme:cancel code="brotherhood.delete" url="/brotherhood/delete.do" />
-	<acme:cancel code="brotherhood.export" url="/brotherhood/generatePDF.do" />
+	<acme:cancel code="company.cancel" url="/" />
+	<acme:cancel code="company.delete" url="/company/delete.do" />
+	<acme:cancel code="company.export" url="/company/generatePDF.do" />
 </form:form>

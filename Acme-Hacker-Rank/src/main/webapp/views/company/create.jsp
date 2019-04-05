@@ -21,10 +21,6 @@
 	<acme:textbox code="company.name" path="name" />
 	<br>
 
-	<%-- Middlename --%>
-	<acme:textbox code="company.middleName" path="middlename" />
-	<br>
-
 	<%-- Surname --%>
 	<acme:textbox code="company.surname" path="surname" />
 	<br>
@@ -45,12 +41,16 @@
 	<acme:textbox code="company.address" path="address" />
 	<br>
 
-	<%-- Title --%>
-	<acme:textbox code="company.title" path="title" />
+	<%-- Vat --%>
+	<acme:textbox code="company.vat" path="vat" />
 	<br>
-	
-	<!-- Select Area -->
-	<acme:select items="${ area }" itemLabel="name" code="company.area" path="area"/>
+
+	<%-- Card number --%>
+	<acme:textbox code="company.cardNumber" path="cardNumber" />
+	<br>
+
+	<%-- Commercial name --%>
+	<acme:textbox code="company.commercialName" path="commercialName" />
 	<br>
 	
 	<%-- Accept Legal term --%>
