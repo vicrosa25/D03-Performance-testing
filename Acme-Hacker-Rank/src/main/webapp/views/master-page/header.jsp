@@ -75,7 +75,8 @@
 			<li><a class="fNiv"><spring:message	code="master.page.register" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="hacker/create.do"><spring:message code="master.page.hacker.register" /></a></li>				
+					<li><a href="hacker/create.do"><spring:message code="master.page.hacker.register" /></a></li>
+					<li><a href="company/create.do"><spring:message code="master.page.company.register" /></a></li>			
 				</ul>
 			</li>
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
