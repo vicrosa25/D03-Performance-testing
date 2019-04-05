@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
@@ -117,6 +118,7 @@ public abstract class Actor extends DomainEntity {
 	}
 
 	@NotNull
+	@Min(0)
 	public Integer getVat() {
 		return vat;
 	}
