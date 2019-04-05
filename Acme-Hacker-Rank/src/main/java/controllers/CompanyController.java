@@ -41,13 +41,13 @@ public class CompanyController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		Collection<Company> companys;
+		Collection<Company> companies;
 
 		try {
-			companys = this.companyService.findAll();
+			companies = this.companyService.findAll();
 			result = new ModelAndView("company/list");
 			result.addObject("requestUri", "company/list.do");
-			result.addObject("companys", companys);
+			result.addObject("companies", companies);
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
 			System.out.println(oops.getClass());
