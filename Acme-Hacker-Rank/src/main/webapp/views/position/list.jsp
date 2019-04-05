@@ -46,7 +46,7 @@
 	<!-- Company -->
 	<spring:message code="position.company" var="companyHeader" />
 	<display:column title="${ companyHeader }">
-		<a href="company/display.do?companyId=${row.company.id}"><spring:message code="position.company" /></a>
+		<a href="company/display.do?companyId=${row.company.id}">${row.company.commercialName}</a>
 	</display:column>
 </display:table>
 

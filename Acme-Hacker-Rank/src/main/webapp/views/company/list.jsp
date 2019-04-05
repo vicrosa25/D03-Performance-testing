@@ -53,7 +53,7 @@
 
 	<!-- positions -->
 	<display:column>
-		<a href="company/positions.do?companyId=${row.id}">
+		<a href="position/company.do?companyId=${row.id}">
 			<spring:message code="company.positions" />
 		</a>
 	</display:column>

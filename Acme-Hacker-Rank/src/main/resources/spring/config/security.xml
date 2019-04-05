@@ -85,6 +85,7 @@
 		
 		<!-- POSITION -->
 		<security:intercept-url pattern="/position/list.do" access="permitAll" />
+		<security:intercept-url pattern="/position/company.do" access="permitAll" />
 		
 		
 		<!-- CONFIGURATIONS -->
