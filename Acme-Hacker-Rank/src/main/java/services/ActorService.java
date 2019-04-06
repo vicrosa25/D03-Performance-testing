@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.ActorRepository;
+import security.LoginService;
+import security.UserAccount;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
@@ -17,9 +21,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import domain.Actor;
-import repositories.ActorRepository;
-import security.LoginService;
-import security.UserAccount;
+import domain.Company;
 
 @Service
 @Transactional
@@ -138,15 +140,15 @@ public class ActorService {
 			table.addCell(new PdfPCell(new Phrase("Address")));
 			table.addCell(new PdfPCell(new Phrase(actor.getAddress())));
 
-//			if (actor instanceof Company) {
-//				Brotherhood bro = (Brotherhood) actor;
-//				table.addCell(new PdfPCell(new Phrase("Brotherhood title")));
-//				table.addCell(new PdfPCell(new Phrase(bro.getTitle())));
+			if (actor instanceof Company) {
+				Company company = (Company) actor;
+				table.addCell(new PdfPCell(new Phrase("Commercial name")));
+				table.addCell(new PdfPCell(new Phrase(company.getCommercialName())));
 //				table.addCell(new PdfPCell(new Phrase("Area")));
 //				table.addCell(new PdfPCell(new Phrase(bro.getArea().getName())));
 //				table.addCell(new PdfPCell(new Phrase("Establishment Date")));
 //				table.addCell(new PdfPCell(new Phrase(bro.getEstablishment().toString())));
-//			}
+			}
 
 			// Adding Table to document        
 			doc.add(table);

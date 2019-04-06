@@ -114,6 +114,9 @@
 					<security:authorize access="hasRole('HACKER')">
 						<li><a href="hacker/edit.do"><spring:message code="master.page.hacker.edit" /></a></li>
 					</security:authorize>
+					<security:authorize access="hasRole('COMPANY')">
+						<li><a href="company/edit.do"><spring:message code="master.page.hacker.edit" /></a></li>
+					</security:authorize>
 					
 					<!-- Social Profile -->
 <%-- 					<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialProfile" /></a></li> --%>

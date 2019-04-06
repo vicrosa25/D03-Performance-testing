@@ -171,6 +171,7 @@ public class CompanyService {
 		result.setPositions(temp.getPositions());
 		result.setProblems(temp.getProblems());
 		result.setSocialIdentities(temp.getSocialIdentities());
+		result.setUserAccount(temp.getUserAccount());
 		
 		this.validator.validate(result, binding);
 
