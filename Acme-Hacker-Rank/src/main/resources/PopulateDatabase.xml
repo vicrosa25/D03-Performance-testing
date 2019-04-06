@@ -47,6 +47,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="hacker2" />
+		<property name="password" value="91af68b69a50a98dbc0800942540342c" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="HACKER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 
 
@@ -82,6 +94,24 @@
 		<property name="UserAccount" ref="userAccount2" />
 		<property name="applications">
 			<list>
+				<ref bean="application1" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="hacker2" class="domain.Hacker">
+		<property name="name" value="hacker2" />
+		<property name="username" value="hacker2" />
+		<property name="surname" value="hacker2" />
+		<property name="vat" value="13" />
+		<property name="cardNumber" value="378721273855309" />
+		<property name="email" value="hacker2@gmail.com" />
+		<property name="phoneNumber" value="+34656256697" />
+		<property name="address" value="hacker2 18" />
+		<property name="UserAccount" ref="userAccount4" />
+		<property name="applications">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -99,10 +129,13 @@
 		<property name="UserAccount" ref="userAccount3" />
 		<property name="positions">
 			<list>
+				<ref bean="position1" />
+				<ref bean="position2" />
 			</list>
 		</property>
 		<property name="problems">
 			<list>
+				<ref bean="problem1" />
 			</list>
 		</property>
 	</bean>
@@ -120,6 +153,77 @@
 		<property name="salary" value="20000.0" />
 		<property name="finalMode" value="true" />
 		<property name="company" ref="company1" />
+	</bean>
+	
+	<bean id="position2" class="domain.Position">
+		<property name="deadline" value="2019/07/12" />
+		<property name="ticker" value="comp-5678" />
+		<property name="title" value="position2" />
+		<property name="description" value="Description position2" />
+		<property name="profile" value="Profile position2" />
+		<property name="skills" value="skill1, skill2, skill3" />
+		<property name="technologies" value="tech1, tech2, tech3" />
+		<property name="salary" value="18000.0" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company1" />
+	</bean>
+	
+	
+	<!-- Applications  ********************************************************************************* -->
+	<bean id="application1" class="domain.Application">
+		<property name="creationMoment" value="2019/03/27" />
+		<property name="status" value="PENDING" />
+		<property name="hacker" ref="hacker1" />
+		<property name="position" ref="position1" />
+		<property name="problem" ref="problem1" />
+	</bean>
+	
+	<bean id="application2" class="domain.Application">
+		<property name="creationMoment" value="2019/02/18" />
+		<property name="status" value="PENDING" />
+		<property name="hacker" ref="hacker2" />
+		<property name="position" ref="position2" />
+		<property name="problem" ref="problem2" />
+	</bean>
+	
+	<!-- Problems  ********************************************************************************* -->
+	<bean id="problem1" class="domain.Problem">
+		<property name="title" value="problem1" />
+		<property name="statement" value="Statement problem 1" />
+		<property name="finalMode" value="true" />
+		<property name="hint" value="Hinst for problem 1" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+				<ref bean="attachment1" />
+				<ref bean="attachment2" />
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="problem2" class="domain.Problem">
+		<property name="title" value="problem2" />
+		<property name="statement" value="Statement problem 2" />
+		<property name="finalMode" value="true" />
+		<property name="hint" value="Hinst for problem 2" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+				<ref bean="attachment1" />
+				<ref bean="attachment2" />
+				<ref bean="attachment3" />
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position2" />
+			</list>
+		</property>
 	</bean>
 
 
@@ -230,6 +334,20 @@
 	<bean id="picture6" class="domain.Url">
 		<property name="link"
 			value="https://espanafascinante.com/wp-content/uploads/galeria_andalucia_sevilla_centro_setas-plaza_bi.jpeg" />
+	</bean>
+	
+	
+	<!-- attachments *************************************************************************** -->
+	<bean id="attachment1" class="domain.Url">
+		<property name="link" value="http://www.attachments.com/1"/>
+	</bean>
+	
+	<bean id="attachment2" class="domain.Url">
+		<property name="link" value="http://www.attachments.com/2"/>
+	</bean>
+	
+	<bean id="attachment3" class="domain.Url">
+		<property name="link" value="http://www.attachments.com/3"/>
 	</bean>
 
 
