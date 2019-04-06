@@ -119,6 +119,72 @@ public class CompanyController extends AbstractController {
 		return result;
 	}
 
+	// Edit ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		Company company;
+		Company pruned = new Company();
+
+		try {
+			company = this.companyService.findByPrincipal();
+
+			// Fill attributes to edit with the original ones
+			pruned.setAddress(company.getAddress());
+			pruned.setCardNumber(company.getCardNumber());
+			pruned.setCommercialName(company.getCommercialName());
+			pruned.setEmail(company.getEmail());
+			pruned.setId(company.getId());
+			pruned.setName(company.getName());
+			pruned.setPhoneNumber(company.getPhoneNumber());
+			pruned.setPhoto(company.getPhoto());
+			pruned.setSurname(company.getSurname());
+			pruned.setVat(company.getVat());
+
+			result = new ModelAndView("company/edit");
+			result.addObject("company", pruned);
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+			result = this.forbiddenOpperation();
+		}
+
+		return result;
+	}
+
+	// save edit ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveEdit(final Company prune, final BindingResult binding) {
+		ModelAndView result;
+		final Company company;
+
+		company = this.companyService.reconstruct(prune, binding);
+
+		if (binding.hasErrors()) {
+			final List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors)
+				System.out.println(e.toString());
+
+			result = new ModelAndView("company/edit");
+			result.addObject("company", prune);
+		}
+
+		else
+			try {
+				this.companyService.save(company);
+				result = new ModelAndView("redirect:/");
+			} catch (final Throwable oops) {
+				System.out.println(company);
+				System.out.println(oops.getMessage());
+				System.out.println(oops.getClass());
+				System.out.println(oops.getCause());
+				result = this.editModelAndView(company, "company.registration.error");
+			}
+		return result;
+	}
+
 	// Ancillary methods -----------------------------------------------------------------------
 	protected ModelAndView createEditModelAndView(final CompanyForm companyForm) {
 		ModelAndView result;
@@ -133,6 +199,24 @@ public class CompanyController extends AbstractController {
 
 		result = new ModelAndView("company/create");
 		result.addObject("companyForm", companyForm);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView editModelAndView(final Company company) {
+		ModelAndView result;
+
+		result = this.editModelAndView(company, null);
+
+		return result;
+	}
+
+	protected ModelAndView editModelAndView(final Company company, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("brotherhood/edit");
+		result.addObject("company", company);
 		result.addObject("message", message);
 
 		return result;

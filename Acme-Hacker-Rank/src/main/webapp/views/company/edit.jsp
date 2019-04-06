@@ -8,7 +8,7 @@
 
 <form:form action="company/edit.do" modelAttribute="company">
 
-	<%-- Hidden properties from handy worker--%>
+	<%-- Hidden properties from pruned company--%>
 	<form:hidden path="id" />
 
 	<%-- Name --%>
