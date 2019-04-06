@@ -102,7 +102,7 @@ public class Application extends DomainEntity {
 	
 	
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Problem getProblem() {
 		return problem;
 	}

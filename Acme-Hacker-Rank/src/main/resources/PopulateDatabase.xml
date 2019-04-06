@@ -95,6 +95,7 @@
 		<property name="applications">
 			<list>
 				<ref bean="application1" />
+				<ref bean="application2" />
 			</list>
 		</property>
 	</bean>
@@ -183,6 +184,14 @@
 		<property name="creationMoment" value="2019/02/18" />
 		<property name="status" value="PENDING" />
 		<property name="hacker" ref="hacker2" />
+		<property name="position" ref="position2" />
+		<property name="problem" ref="problem2" />
+	</bean>
+	
+	<bean id="application3" class="domain.Application">
+		<property name="creationMoment" value="2019/01/29" />
+		<property name="status" value="PENDING" />
+		<property name="hacker" ref="hacker1" />
 		<property name="position" ref="position2" />
 		<property name="problem" ref="problem2" />
 	</bean>

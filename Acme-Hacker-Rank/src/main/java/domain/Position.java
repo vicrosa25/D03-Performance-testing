@@ -124,8 +124,8 @@ public class Position extends DomainEntity {
 
 
 	// Relationships ----------------------------------------------------------
-	private Company	company;
-	private Collection<Problem>	problems;
+	private Company					company;
+	private Collection<Problem>		problems;
 	private Collection<Application>	applications;
 
 

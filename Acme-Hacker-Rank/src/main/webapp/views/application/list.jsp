@@ -42,7 +42,7 @@
 	
 	<!-- Status -->
 	<spring:message code="application.status" var="statusHeader" />
-	<display:column property="status" title="${statusHeader}" />
+	<display:column property="status" title="${statusHeader}" sortable="true"/>
 	
 	
 	
