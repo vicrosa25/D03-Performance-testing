@@ -8,38 +8,93 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<display:table name="member" id="row" requestURI="member/brotherhood/display.do" class="displaytag">
-
-	<!-- Name -->
-	<spring:message code="member.name" var="nameHeader" />
-	<display:column property="name" title="${nameHeader}" />
-
-	<!-- Middle Name -->
-	<spring:message code="member.middleName" var="middlenameHeader" />
-	<display:column property="middleName" title="${middlenameHeader}" />
-
-	<!-- SurName -->
-	<spring:message code="member.surname" var="surnameHeader" />
-	<display:column property="surname" title="${surnameHeader}" />
+<display:table name="application" id="row" requestURI="#{ requestUri }" class="displaytag">
+	
+	<!-- Creation moment -->
+	<spring:message code="application.creationMoment" var="creationMomentHeader" />
+	<display:column property="creationMoment" title="${creationMomentHeader}" format="{0,date,dd/MM/yyyy}" />
+	
+	<!-- Status -->
+	<spring:message code="application.status" var="statusHeader" />
+	<display:column property="status" title="${statusHeader}" />
 
 </display:table>
-<display:table name="member" id="row" requestURI="member/display.do" class="displaytag">
-	<!-- Email -->
-	<spring:message code="member.email" var="emailHeader" />
-	<display:column property="email" title="${emailHeader}" />
 
-	<!-- phoneNumber -->
-	<spring:message code="member.phoneNumber" var="phoneNumberHeader" />
-	<display:column property="phoneNumber" title="${phoneNumberHeader}" />
 
-	<!-- address -->
-	<spring:message code="member.address" var="addressHeader" />
-	<display:column property="address" title="${addressHeader}" />
-<display:caption><spring:message code="member.contact"/></display:caption>
+<display:table name="position" id="row" requestURI="${ requestUri }" class="displaytag">
+
+	<!-- Caption -->
+	<display:caption><b><spring:message code="application.position"/></b></display:caption>	
+	
+	<!-- Posistion title -->
+	<spring:message code="position.title" var="titleHeader" />
+	<display:column property="title" title="${titleHeader}" />
+
+	<!-- Position ticker -->
+	<spring:message code="position.ticker" var="tickerHeader" />
+	<display:column property="ticker" title="${tickerHeader}" />
+
+	<!-- Position description -->
+	<spring:message code="position.description" var="descriptionHeader" />
+	<display:column property="description" title="${descriptionHeader}" />
+	
+	<!-- Position profile -->
+	<spring:message code="position.profile" var="profileHeader" />
+	<display:column property="profile" title="${descriptionHeader}" />
+	
+	<!-- Position skills -->
+	<spring:message code="position.skills" var="skillsHeader" />
+	<display:column property="skills" title="${skillsHeader}" />
+	
+	<!-- Position technologies -->
+	<spring:message code="position.technologies" var="technologiesHeader" />
+	<display:column property="technologies" title="${technologiesHeader}" />
+	
+	<!-- Position salary -->
+	<spring:message code="position.salary" var="salaryHeader" />
+	<display:column property="salary" title="${salaryHeader}" />
+	
 </display:table>
 
-<jstl:if test="${not empty member.photo}">
-	<img src="${member.photo.link}" width="50%" height="200"/>
-</jstl:if>
 
-<acme:cancel code="member.goback" url="/member/brotherhood/list.do" />
+<display:table name="problem" id="row" requestURI="${ requestUri }" class="displaytag">
+	
+	<!-- Caption -->
+	<display:caption><b><spring:message code="application.problem"/></b></display:caption>
+	
+	<!-- Problem title -->
+	<spring:message code="problem.title" var="titleHeader" />
+	<display:column property="title" title="${titleHeader}" />
+
+	<!-- Problem statement -->
+	<spring:message code="problem.statement" var="statementHeader" />
+	<display:column property="statement" title="${statementHeader}" />
+
+	<!-- Problem hint -->
+	<spring:message code="problem.hint" var="hintHeader" />
+	<display:column property="hint" title="${hintHeader}" />
+	
+</display:table>
+
+
+<display:table name="attachments" id="row" requestURI="${ requestUri }" class="displaytag">
+	
+	<!-- Caption -->
+	<display:caption><b><spring:message code="application.problem.attachments"/></b></display:caption>
+	
+	<!-- Problem link -->
+	<spring:message code="problem.attachment" var="attachmentsHeader" />
+	<display:column property="link" title="${attachmentsHeader}" />
+	
+</display:table>
+
+
+<acme:back code="application.goBack"/>
+
+
+
+
+
+
+
+

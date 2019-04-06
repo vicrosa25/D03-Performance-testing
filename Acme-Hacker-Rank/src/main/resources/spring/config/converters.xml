@@ -36,6 +36,9 @@
 		<bean class="converters.SocialIdentityToStringConverter" />
 		<bean class="converters.StringToSocialIdentityConverter" />
 		
+		<bean class="converters.ProblemToStringConverter" />
+		<bean class="converters.StringToProblemConverter" />
+		
 
 	</util:list>
 

@@ -49,7 +49,7 @@
 	<!-- Display -->
 	<spring:message code="application.display" var="displayHeader" />
 	<display:column title="${displayHeader}">
-		<a href="application/hacker/display.do?appId=${row.id}"> <spring:message code="application.display" /></a>
+		<a href="application/hacker/display.do?appId=${row.id}"><spring:message code="application.display" /></a>
 	</display:column>
 
 </display:table>

@@ -22,6 +22,7 @@
 		<value>/views/position/messages</value>
 		<value>/views/company/messages</value>
 		<value>/views/application/messages</value>
+		<value>/views/problem/messages</value>
 	</util:list>
 
 </beans>
