@@ -21,6 +21,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
@@ -220,6 +221,28 @@ public class CompanyController extends AbstractController {
 			System.out.println(oops.getCause());
 			oops.printStackTrace();
 		}
+	}
+
+	// Display ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam int companyId) {
+		ModelAndView result;
+		Company company;
+
+		try {
+			company = this.companyService.findOne(companyId);
+
+			result = new ModelAndView("company/display");
+			result.addObject("company", company);
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+			result = this.forbiddenOpperation();
+		}
+
+		return result;
 	}
 
 	// Ancillary methods -----------------------------------------------------------------------
