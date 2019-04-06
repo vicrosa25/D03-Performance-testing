@@ -46,7 +46,7 @@ public class ApplicationService {
 		return result;
 	}
 
-	public Application findOne(final int id) {
+	public Application findOne(int id) {
 		final Application result = this.applicationRepository.findOne(id);
 
 		Assert.notNull(result);
@@ -55,17 +55,30 @@ public class ApplicationService {
 	}
 
 	public Collection<Application> findAll() {
-		final Collection<Application> result = this.applicationRepository.findAll();
-		//Assert.notNull(result);
+		Collection<Application> result = this.applicationRepository.findAll();
+		Assert.notNull(result);
 
 		return result;
+	}
+	
+	
+	public Collection<Application> findByHacker() {
+		Collection<Application> result;
+		
+		// Check the principal is a Hacker
+		Actor principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Hacker.class, principal);
+		
+		result = this.applicationRepository.findByHacker(principal.getId());
+		
+		return result;	
 	}
 
 	public Application save(Application application) {
 		Assert.notNull(application);
 		Actor principal;
 
-		// Principal must be a Member or a Brotherhood
+		// Principal must be a Hacker
 		principal = this.actorService.findByPrincipal();
 
 		if (application.getId() != 0) {

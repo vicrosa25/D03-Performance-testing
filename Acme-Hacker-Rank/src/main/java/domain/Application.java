@@ -65,6 +65,7 @@ public class Application extends DomainEntity {
 	private Hacker		hacker;
 	private Answer		answer;
 	private Position	position;
+	private Problem		problem;
 	
 	
 	@ManyToOne(optional = true)
@@ -77,9 +78,9 @@ public class Application extends DomainEntity {
 		this.hacker = hacker;
 	}
 
-	@NotNull
+	
 	@Valid
-	@OneToOne(optional = false)
+	@OneToOne(optional = true)
 	public Answer getAnswer() {
 		return answer;
 	}
@@ -88,7 +89,7 @@ public class Application extends DomainEntity {
 		this.answer = answer;
 	}
 
-	@NotNull
+	
 	@Valid
 	@ManyToOne(optional = false)
 	public Position getPosition() {
@@ -97,6 +98,18 @@ public class Application extends DomainEntity {
 
 	public void setPosition(Position position) {
 		this.position = position;
+	}
+	
+	
+	@Valid
+	@OneToOne(optional = false)
+	public Problem getProblem() {
+		return problem;
+	}
+
+	
+	public void setProblem(Problem problem) {
+		this.problem = problem;
 	}
 
 	@Override

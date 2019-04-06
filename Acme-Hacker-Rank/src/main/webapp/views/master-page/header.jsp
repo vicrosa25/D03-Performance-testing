@@ -53,7 +53,12 @@
 		
 		<!-- An actor who is authenticated as a HACKER -->
 		<security:authorize access="hasRole('HACKER')">
-			
+		<li><a class="fNiv"><spring:message code="master.page.hacker.applications" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="application/hacker/list.do"><spring:message code="master.page.hacker.applications.list" /></a></li>
+				</ul>
+			</li>
 		</security:authorize>
 		
 		

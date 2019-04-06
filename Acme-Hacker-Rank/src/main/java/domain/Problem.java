@@ -23,7 +23,7 @@ public class Problem extends DomainEntity {
 	private String				statement;
 	private Boolean				finalMode;
 	private String				hint;
-	private Collection<String>	attachments;
+	private Collection<Url>		attachments;
 
 
 	@NotBlank
@@ -55,11 +55,11 @@ public class Problem extends DomainEntity {
 	@NotNull
 	@Valid
 	@ElementCollection
-	public Collection<String> getattachments() {
+	public Collection<Url> getattachments() {
 		return this.attachments;
 	}
 
-	public void setAttachments(Collection<String> attachments) {
+	public void setAttachments(Collection<Url> attachments) {
 		this.attachments = attachments;
 	}
 

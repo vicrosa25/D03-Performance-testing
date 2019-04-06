@@ -112,6 +112,7 @@
 		<property name="UserAccount" ref="userAccount4" />
 		<property name="applications">
 			<list>
+				<ref bean="application2" />
 			</list>
 		</property>
 	</bean>
