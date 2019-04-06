@@ -1,8 +1,16 @@
 
 package controllers;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,6 +193,35 @@ public class CompanyController extends AbstractController {
 		return result;
 	}
 
+	// Generate pdf ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/generatePDF")
+	public void generatePDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Company company;
+
+		try {
+			final ServletContext servletContext = request.getSession().getServletContext();
+			final File tempDirectory = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+			final String temperotyFilePath = tempDirectory.getAbsolutePath();
+			company = this.companyService.findByPrincipal();
+
+			String fileName = company.getName() + ".pdf";
+			response.setContentType("application/pdf");
+			response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+
+			this.actorService.generatePersonalInformationPDF(company, temperotyFilePath + "\\" + fileName);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			baos = convertPDFToByteArrayOutputStream(temperotyFilePath + "\\" + fileName);
+			OutputStream os = response.getOutputStream();
+			baos.writeTo(os);
+			os.flush();
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+		}
+	}
+
 	// Ancillary methods -----------------------------------------------------------------------
 	protected ModelAndView createEditModelAndView(final CompanyForm companyForm) {
 		ModelAndView result;
@@ -215,7 +252,7 @@ public class CompanyController extends AbstractController {
 	protected ModelAndView editModelAndView(final Company company, final String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("brotherhood/edit");
+		result = new ModelAndView("company/edit");
 		result.addObject("company", company);
 		result.addObject("message", message);
 
