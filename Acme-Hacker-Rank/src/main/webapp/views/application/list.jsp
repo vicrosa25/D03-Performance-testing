@@ -6,13 +6,13 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <!-- Listing Grid -->
-<display:table name="apps" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
+<display:table name="apps" id="row" requestURI="${ requestUri }" pagesize="5" class="displaytag">
 
 	<!-- Edit -->
 	<security:authorize access="hasRole('HACKER')">
 	<spring:message code="application.edit" var="editHeader" />
 	<display:column title="${editHeader}">
-		<a href="application/hacker/edit.do?appId=${row.id}"> <spring:message code="application.edit" /></a>
+		<a href="application/hacker/edit.do?appId=${row.id}"><spring:message code="application.edit" /></a>
 	</display:column>
 	</security:authorize>
 
