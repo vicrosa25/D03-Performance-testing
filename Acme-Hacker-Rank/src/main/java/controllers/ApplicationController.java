@@ -143,6 +143,48 @@ public class ApplicationController extends AbstractController {
 			}
 		return result;
 	}
+	
+	
+	/*****************************************
+	 * Update Application GET
+	 ****************************************/
+	@RequestMapping(value = "/hacker/update", method = RequestMethod.GET)
+	public ModelAndView update(@RequestParam int appId) {
+		ModelAndView result;
+		Application application;
+
+		application = this.applicationService.findOne(appId);
+		
+		result = this.editModelAndView(application);
+
+		return result;
+	}
+
+	/********************************************
+	 * Update Application POST
+	 *******************************************/
+	@RequestMapping(value = "/hacker/update", method = RequestMethod.POST, params = "update")
+	public ModelAndView update(@Valid Application application, BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors()) {
+			List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors) {
+				System.out.println(e.toString());
+			}
+			result = this.editModelAndView(application);
+		}
+		else
+			try {
+				this.applicationService.update(application);
+				result = new ModelAndView("redirect:list.do");
+			} catch (final Throwable oops) {
+				oops.printStackTrace();
+				result = this.editModelAndView(application, "application.commit.error");
+			}
+		return result;
+	}
+
 
 	
 	
@@ -185,7 +227,7 @@ public class ApplicationController extends AbstractController {
 	protected ModelAndView editModelAndView(Application application) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(application, null);
+		result = this.editModelAndView(application, null);
 
 		return result;
 	}
@@ -193,8 +235,9 @@ public class ApplicationController extends AbstractController {
 	protected ModelAndView editModelAndView(Application application, String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("company/edit");
+		result = new ModelAndView("application/hacker/update");
 		result.addObject("application", application);
+		result.addObject("problem", application.getProblem());
 		result.addObject("message", message);
 
 		return result;

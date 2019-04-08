@@ -8,16 +8,7 @@
 <!-- Listing Grid -->
 <display:table name="apps" id="row" requestURI="${ requestUri }" pagesize="5" class="displaytag">
 
-	<!-- Edit -->
-	<security:authorize access="hasRole('HACKER')">
-	<spring:message code="application.edit" var="editHeader" />
-	<display:column title="${editHeader}">
-		<a href="application/hacker/edit.do?appId=${row.id}"><spring:message code="application.edit" /></a>
-	</display:column>
-	</security:authorize>
 
-	
-	
 	<!-- FROM POSITION -->
 	
 	<!-- Posistion title -->
@@ -44,13 +35,13 @@
 	<spring:message code="application.status" var="statusHeader" />
 	<display:column property="status" title="${statusHeader}" sortable="true"/>
 	
-	
-	
+		
 	<!-- Display -->
 	<spring:message code="application.display" var="displayHeader" />
 	<display:column title="${displayHeader}">
 		<a href="application/hacker/display.do?appId=${row.id}"><spring:message code="application.display" /></a>
 	</display:column>
+	
 
 </display:table>
 

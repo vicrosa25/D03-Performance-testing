@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import domain.Actor;
+import domain.Answer;
 import domain.Application;
 import domain.Hacker;
 import domain.Problem;
@@ -28,6 +29,10 @@ public class ApplicationService {
 	// Supporting services
 	@Autowired
 	private ActorService			actorService;
+	
+	
+	@Autowired
+	private AnswerService			answerService;
 
 
 	/*************************************
@@ -99,14 +104,34 @@ public class ApplicationService {
 		ArrayList<Problem> problems = new ArrayList<Problem>(application.getPosition().getProblems());
 		
 		// Randomly assign a apropiate problem to the application
-		Random rand = new Random();
-		Problem problem = problems.get(rand.nextInt(problems.size()));
-		Assert.notNull(problem);
-		application.setProblem(problem);
+		if (application.getProblem() == null) {
+			Random rand = new Random();
+			Problem problem = problems.get(rand.nextInt(problems.size()));
+			Assert.notNull(problem);
+			application.setProblem(problem);
+		}
+		
 		
 		// Finnaly save Application with problem
 		return this.applicationRepository.save(application);
 	}
+	
+	public Application update(Application application) {
+		Assert.notNull(application);
+		Assert.notNull(application.getAnswer());
+		
+		Answer answer;
+		
+		application.setStatus("SUBMITTED");
+		
+		
+		answer = this.answerService.save(application.getAnswer());
+		application.setAnswer(answer);
+		
+		return this.applicationRepository.save(application);
+	}
+	
+	
 
 	public void delete(int applicationId) {
 		Assert.isTrue(applicationId != 0);
@@ -125,7 +150,5 @@ public class ApplicationService {
 		Assert.isTrue(hacker.getApplications().contains(application));
 
 		this.applicationRepository.delete(application);
-
 	}
-
 }

@@ -92,8 +92,8 @@
 		<!-- APPLICATION -->
 		<security:intercept-url pattern="/application/hacker/list.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/application/hacker/create.do" access="hasRole('HACKER')" />
-		<security:intercept-url pattern="/application/hacker/edit.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/application/hacker/display.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/application/hacker/update.do" access="hasRole('HACKER')" />
 		
 		
 		<!-- CONFIGURATIONS -->

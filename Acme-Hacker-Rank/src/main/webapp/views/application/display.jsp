@@ -88,7 +88,28 @@
 	
 </display:table>
 
+<jstl:if test="${ application.getAnswer() != null }">
+<display:table name="application.answer" id="row" requestURI="${ requestUri }" class="displaytag">
+	
+	<!-- Caption -->
+	<display:caption><b><spring:message code="application.answer"/></b></display:caption>
+	
+	<!-- Answer text -->
+	<spring:message code="application.answer.text" var="textHeader" />
+	<display:column property="text" title="${textHeader}" />
+	
+	<!-- Answer link -->
+	<spring:message code="application.answer.link" var="linkHeader" />
+	<display:column property="link" title="${linkHeader}" />
+	
+</display:table>
+</jstl:if>
+<br>
+<br>
 
+<jstl:if test="${ application.answer == null }">
+	<acme:cancel url="application/hacker/update.do?appId=${application.id}" code="application.update"/>
+</jstl:if>
 <acme:back code="application.goBack"/>
 
 
