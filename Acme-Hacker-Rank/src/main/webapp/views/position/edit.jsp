@@ -45,8 +45,8 @@
 	<form:label path="finalMode"><spring:message code="position.finalMode" /></form:label>
 	<form:select id="modeDropdown" path="finalMode">
 		<form:option value="">--</form:option>
-		<form:option value="0"><spring:message code="procession.false" /></form:option>
-		<form:option value="1"><spring:message code="procession.true" /></form:option>
+		<form:option value="0"><spring:message code="position.false" /></form:option>
+		<form:option value="1"><spring:message code="position.true" /></form:option>
 	</form:select>
 	<form:errors class="error" path="finalMode" />
 	<br>
