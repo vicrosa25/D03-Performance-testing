@@ -105,7 +105,7 @@ public class PositionService {
 		result.setId(position.getId());
 		result.setDeadline(position.getDeadline());
 		result.setDescription(position.getDescription());
-		result.setFinalMode(false);
+		result.setFinalMode(position.getFinalMode());
 		result.setProfile(position.getProfile());
 		result.setSalary(position.getSalary());
 		result.setSkills(position.getSkills());

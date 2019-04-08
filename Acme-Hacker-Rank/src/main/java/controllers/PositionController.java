@@ -24,7 +24,7 @@ import domain.Position;
 
 @Controller
 @RequestMapping("/position")
-public class PosistionController extends AbstractController {
+public class PositionController extends AbstractController {
 
 	@Autowired
 	private PositionService positionService;
@@ -98,7 +98,7 @@ public class PosistionController extends AbstractController {
 
 			result = new ModelAndView("position/list");
 			result.addObject("positions", positions);
-			result.addObject("requestURI", "position/list.do");
+			result.addObject("requestURI", "position/company/list.do");
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
@@ -192,19 +192,24 @@ public class PosistionController extends AbstractController {
 	}
 
 	// save ------------------------------------------------------------------------------------
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "company/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveEdit(final Position prune, final BindingResult binding) {
 		ModelAndView result;
 		final Position position;
 
 		position = this.positionService.reconstruct(prune, binding);
+		if (prune.getFinalMode() != null) {
+			if (prune.getFinalMode().equals(true) && position.getProblems().size() < 2) {
+				binding.rejectValue("finalMode", "position.error.finalMode", "A position must have, at least, two problems to be in final mode");
+			}
+		}
 
 		if (binding.hasErrors()) {
 			final List<ObjectError> errors = binding.getAllErrors();
 			for (final ObjectError e : errors)
 				System.out.println(e.toString());
 
-			result = this.createEditModelAndView(position);
+			result = this.createEditModelAndView(prune);
 		}
 
 		else
@@ -212,11 +217,11 @@ public class PosistionController extends AbstractController {
 				this.positionService.save(position);
 				result = new ModelAndView("redirect:/position/company/list.do");
 			} catch (final Throwable oops) {
-				System.out.println(position);
+				System.out.println(prune);
 				System.out.println(oops.getMessage());
 				System.out.println(oops.getClass());
 				System.out.println(oops.getCause());
-				result = this.createEditModelAndView(position, "company.registration.error");
+				result = this.createEditModelAndView(prune, "company.registration.error");
 			}
 		return result;
 	}

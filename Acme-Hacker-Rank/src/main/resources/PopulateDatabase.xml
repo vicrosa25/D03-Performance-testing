@@ -47,6 +47,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="company2" />
+		<property name="password" value="d196a28097115067fefd73d25b0c0be8" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COMPANY" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 
 
@@ -99,10 +111,38 @@
 		<property name="UserAccount" ref="userAccount3" />
 		<property name="positions">
 			<list>
+				<ref bean="position1" />
+				<ref bean="position2" />
 			</list>
 		</property>
 		<property name="problems">
 			<list>
+				<ref bean="problem1" />
+				<ref bean="problem2" />
+				<ref bean="problem3" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="company2" class="domain.Company">
+		<property name="name" value="company2" />
+		<property name="commercialName" value="company2 Co., Inc." />
+		<property name="surname" value="company2" />
+		<property name="vat" value="9" />
+		<property name="cardNumber" value="378721273855309" />
+		<property name="email" value="company2@gmail.com" />
+		<property name="phoneNumber" value="+34625677697" />
+		<property name="address" value="Av Bird 18" />
+		<property name="UserAccount" ref="userAccount4" />
+		<property name="positions">
+			<list>
+				<ref bean="position3" />
+			</list>
+		</property>
+		<property name="problems">
+			<list>
+				<ref bean="problem4" />
+				<ref bean="problem5" />
 			</list>
 		</property>
 	</bean>
@@ -120,6 +160,12 @@
 		<property name="salary" value="20000.0" />
 		<property name="finalMode" value="true" />
 		<property name="company" ref="company1" />
+		<property name="problems">
+			<list>
+				<ref bean="problem1" />
+				<ref bean="problem2" />
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="position2" class="domain.Position">
@@ -133,6 +179,25 @@
 		<property name="salary" value="34000.0" />
 		<property name="finalMode" value="false" />
 		<property name="company" ref="company1" />
+	</bean>
+	
+	<bean id="position3" class="domain.Position">
+		<property name="deadline" value="2019/06/20" />
+		<property name="ticker" value="abcd-4739" />
+		<property name="title" value="Analista de sistemas web" />
+		<property name="description" value="Se busca analista de sistemas web" />
+		<property name="profile" value="Programador" />
+		<property name="skills" value="skill1, skill2, skill3" />
+		<property name="technologies" value="tech1, tech2, tech3" />
+		<property name="salary" value="17000.0" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company2" />
+		<property name="problems">
+			<list>
+				<ref bean="problem4" />
+				<ref bean="problem5" />
+			</list>
+		</property>
 	</bean>
 	
 	
@@ -180,6 +245,38 @@
  		</property>
 		<property name="positions">
 			<list>
+			</list>
+ 		</property>
+	</bean>
+	
+	<bean id="problem4" class="domain.Problem">
+		<property name="title" value="Bugs en codigo php en Aplicacion web" />
+		<property name="statement" value="Creación de codigo en php" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company2" />
+		<property name="attachments">
+			<list>
+			</list>
+ 		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position3" />
+			</list>
+ 		</property>
+	</bean>
+	
+	<bean id="problem5" class="domain.Problem">
+		<property name="title" value="validacion de codigo C# en Aplicacion web" />
+		<property name="statement" value="Realizacion de pruebas en C#" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company2" />
+		<property name="attachments">
+			<list>
+			</list>
+ 		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position3" />
 			</list>
  		</property>
 	</bean>
