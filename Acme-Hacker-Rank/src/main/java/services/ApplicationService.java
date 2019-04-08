@@ -1,7 +1,10 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import org.springframework.util.Assert;
 import domain.Actor;
 import domain.Application;
 import domain.Hacker;
+import domain.Problem;
 import repositories.ApplicationRepository;
 
 @Service
@@ -39,8 +43,15 @@ public class ApplicationService {
 		principal = this.actorService.findByPrincipal();
 		Assert.isInstanceOf(Hacker.class, principal);
 		Hacker hacker = (Hacker) principal;
+		
+		// Create date
+		final Date date = new Date();
+		date.setTime(date.getTime() - 5000);
 
+		
+		// Default settings
 		result.setHacker(hacker);
+		result.setCreationMoment(date);
 		result.setStatus("PENDING");
 
 		return result;
@@ -78,13 +89,22 @@ public class ApplicationService {
 		Assert.notNull(application);
 		Actor principal;
 
-		// Principal must be a Hacker
+		// Principal must be a Hacker 
 		principal = this.actorService.findByPrincipal();
-
-		if (application.getId() != 0) {
-			Assert.isInstanceOf(Hacker.class, principal);
-		}
-
+		Assert.isInstanceOf(Hacker.class, principal);
+		
+		// Checke for Position and Problems
+		Assert.notNull(application.getPosition());
+		Assert.notEmpty(application.getPosition().getProblems());
+		ArrayList<Problem> problems = new ArrayList<Problem>(application.getPosition().getProblems());
+		
+		// Randomly assign a apropiate problem to the application
+		Random rand = new Random();
+		Problem problem = problems.get(rand.nextInt(problems.size()));
+		Assert.notNull(problem);
+		application.setProblem(problem);
+		
+		// Finnaly save Application with problem
 		return this.applicationRepository.save(application);
 	}
 

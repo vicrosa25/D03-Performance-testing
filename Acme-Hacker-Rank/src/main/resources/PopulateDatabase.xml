@@ -95,7 +95,7 @@
 		<property name="applications">
 			<list>
 				<ref bean="application1" />
-				<ref bean="application2" />
+				<ref bean="application3" />
 			</list>
 		</property>
 	</bean>
@@ -113,7 +113,6 @@
 		<property name="UserAccount" ref="userAccount4" />
 		<property name="applications">
 			<list>
-				<ref bean="application2" />
 			</list>
 		</property>
 	</bean>
@@ -155,6 +154,11 @@
 		<property name="salary" value="20000.0" />
 		<property name="finalMode" value="true" />
 		<property name="company" ref="company1" />
+		<property name="problems">
+			<list>
+				<ref bean="problem1" />
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="position2" class="domain.Position">
@@ -168,6 +172,11 @@
 		<property name="salary" value="18000.0" />
 		<property name="finalMode" value="true" />
 		<property name="company" ref="company1" />
+		<property name="problems">
+			<list>
+				<ref bean="problem2" />	
+			</list>
+		</property>
 	</bean>
 	
 	
@@ -180,13 +189,13 @@
 		<property name="problem" ref="problem1" />
 	</bean>
 	
-	<bean id="application2" class="domain.Application">
-		<property name="creationMoment" value="2019/02/18" />
-		<property name="status" value="PENDING" />
-		<property name="hacker" ref="hacker2" />
-		<property name="position" ref="position2" />
-		<property name="problem" ref="problem2" />
-	</bean>
+<!-- 	<bean id="application2" class="domain.Application"> -->
+<!-- 		<property name="creationMoment" value="2019/02/18" /> -->
+<!-- 		<property name="status" value="PENDING" /> -->
+<!-- 		<property name="hacker" ref="hacker2" /> -->
+<!-- 		<property name="position" ref="position2" /> -->
+<!-- 		<property name="problem" ref="problem2" /> -->
+<!-- 	</bean> -->
 	
 	<bean id="application3" class="domain.Application">
 		<property name="creationMoment" value="2019/01/29" />

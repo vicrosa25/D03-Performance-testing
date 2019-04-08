@@ -2,11 +2,16 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,18 +21,27 @@ import org.springframework.web.servlet.ModelAndView;
 import domain.Actor;
 import domain.Application;
 import domain.Hacker;
+import domain.Position;
 import services.ActorService;
 import services.ApplicationService;
+import services.HackerService;
+import services.PositionService;
 
 @Controller
 @RequestMapping("/application")
 public class ApplicationController extends AbstractController {
 
 	@Autowired
-	private ApplicationService  applicationService;
-	
+	private ApplicationService	applicationService;
+
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private PositionService		positionService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -68,12 +82,11 @@ public class ApplicationController extends AbstractController {
 		try {
 			application = this.applicationService.findOne(appId);
 			principal = this.actorService.findByPrincipal();
-			
+
 			// Check the principal is an Hacker and owns app
 			Assert.isInstanceOf(Hacker.class, principal);
 			hacker = (Hacker) principal;
 			Assert.isTrue(hacker.getApplications().contains(application));
-			
 
 			result = new ModelAndView("application/hacker/display");
 			result.addObject("requestUri", "application/hacker/display.do");
@@ -92,6 +105,51 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
+	/*****************************************
+	 * Create Application for a Position GET
+	 ****************************************/
+	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		Application application;
+
+		application = this.applicationService.create();
+		result = this.createEditModelAndView(application);
+
+		return result;
+	}
+
+	/********************************************
+	 * Create Application for a Position POST
+	 *******************************************/
+	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid Application application, BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors()) {
+			List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors) {
+				System.out.println(e.toString());
+			}
+			result = this.createEditModelAndView(application);
+		}
+		else
+			try {
+				this.applicationService.save(application);
+				result = new ModelAndView("redirect:list.do");
+			} catch (final Throwable oops) {
+				oops.printStackTrace();
+				result = this.createEditModelAndView(application, "application.commit.error");
+			}
+		return result;
+	}
+
+	
+	
+	
+	
+	
+	
 	/*********************
 	 * Ancillary Methods
 	 *********************/
@@ -105,9 +163,20 @@ public class ApplicationController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(Application application, String message) {
 		ModelAndView result;
+		Collection<Position> positions;
 
-		result = new ModelAndView("company/create");
+		positions = this.positionService.findAll();
+
+		for (Application app : this.hackerService.findByPrincipal().getApplications()) {
+			positions.remove(app.getPosition());
+		}
+
+		if (positions.isEmpty())
+			message = "application.posisitons.empty";
+
+		result = new ModelAndView("application/hacker/create");
 		result.addObject("application", application);
+		result.addObject("positions", positions);
 		result.addObject("message", message);
 
 		return result;

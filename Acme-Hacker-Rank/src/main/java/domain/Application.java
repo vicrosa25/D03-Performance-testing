@@ -89,7 +89,7 @@ public class Application extends DomainEntity {
 		this.answer = answer;
 	}
 
-	
+	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
 	public Position getPosition() {

@@ -48,7 +48,10 @@
 	<display:column title="${ companyHeader }">
 		<a href="company/display.do?companyId=${row.company.id}">${row.company.commercialName}</a>
 	</display:column>
+	
 </display:table>
+
+	
 
 
 <!-- Create Link -->
