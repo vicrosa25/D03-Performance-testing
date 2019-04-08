@@ -95,7 +95,7 @@
 		<property name="applications">
 			<list>
 				<ref bean="application1" />
-				<ref bean="application3" />
+				<ref bean="application2" />
 			</list>
 		</property>
 	</bean>
@@ -189,16 +189,8 @@
 		<property name="problem" ref="problem1" />
 	</bean>
 	
-<!-- 	<bean id="application2" class="domain.Application"> -->
-<!-- 		<property name="creationMoment" value="2019/02/18" /> -->
-<!-- 		<property name="status" value="PENDING" /> -->
-<!-- 		<property name="hacker" ref="hacker2" /> -->
-<!-- 		<property name="position" ref="position2" /> -->
-<!-- 		<property name="problem" ref="problem2" /> -->
-<!-- 	</bean> -->
-	
-	<bean id="application3" class="domain.Application">
-		<property name="creationMoment" value="2019/01/29" />
+	<bean id="application2" class="domain.Application">
+		<property name="creationMoment" value="2019/02/18" />
 		<property name="status" value="PENDING" />
 		<property name="hacker" ref="hacker1" />
 		<property name="position" ref="position2" />
@@ -230,6 +222,89 @@
 		<property name="statement" value="Statement problem 2" />
 		<property name="finalMode" value="true" />
 		<property name="hint" value="Hinst for problem 2" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+				<ref bean="attachment1" />
+				<ref bean="attachment2" />
+				<ref bean="attachment3" />
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="problem3" class="domain.Problem">
+		<property name="title" value="problem3" />
+		<property name="statement" value="Statement problem 3" />
+		<property name="finalMode" value="true" />
+		<property name="hint" value="Hinst for problem 3" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+				<ref bean="attachment1" />
+				<ref bean="attachment2" />
+				<ref bean="attachment3" />
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="problem4" class="domain.Problem">
+		<property name="title" value="problem4" />
+		<property name="statement" value="Statement problem 4" />
+		<property name="finalMode" value="true" />
+		<property name="hint" value="Hinst for problem 4" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+				<ref bean="attachment1" />
+				<ref bean="attachment2" />
+				<ref bean="attachment3" />
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position2" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="problem5" class="domain.Problem">
+		<property name="title" value="problem5" />
+		<property name="statement" value="Statement problem 5" />
+		<property name="finalMode" value="true" />
+		<property name="hint" value="Hinst for problem 5" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+				<ref bean="attachment1" />
+				<ref bean="attachment2" />
+				<ref bean="attachment3" />
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position2" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="problem6" class="domain.Problem">
+		<property name="title" value="problem6" />
+		<property name="statement" value="Statement problem 6" />
+		<property name="finalMode" value="true" />
+		<property name="hint" value="Hinst for problem 6" />
 		<property name="company" ref="company1" />
 		<property name="attachments">
 			<list>
