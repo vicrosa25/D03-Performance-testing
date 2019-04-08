@@ -2,12 +2,16 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,6 +83,159 @@ public class PosistionController extends AbstractController {
 			result = this.forbiddenOpperation();
 
 		}
+
+		return result;
+	}
+
+	// principal List -------------------------------------------------------------
+	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
+	public ModelAndView principalList() {
+		ModelAndView result;
+		Collection<Position> positions;
+		try {
+
+			positions = this.companyService.findByPrincipal().getPositions();
+
+			result = new ModelAndView("position/list");
+			result.addObject("positions", positions);
+			result.addObject("requestURI", "position/list.do");
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
+		return result;
+	}
+
+	// Company display -------------------------------------------------------------
+	@RequestMapping(value = "/company/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int positionId) {
+		ModelAndView result;
+		Position position;
+		try {
+
+			position = this.positionService.findOne(positionId);
+
+			result = new ModelAndView("position/company/display");
+			result.addObject("position", position);
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
+		return result;
+	}
+
+	// create -------------------------------------------------------------
+	@RequestMapping(value = "/company/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		Position position;
+		try {
+
+			position = this.positionService.create();
+
+			result = this.createEditModelAndView(position);
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
+		return result;
+	}
+
+	// edit -------------------------------------------------------------
+	@RequestMapping(value = "/company/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int positionId) {
+		ModelAndView result;
+		Position position;
+		Position pruned = new Position();
+
+		try {
+			position = this.positionService.findOne(positionId);
+			Assert.isTrue(!position.getFinalMode());
+			Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
+
+			pruned.setId(position.getId());
+			pruned.setDeadline(position.getDeadline());
+			pruned.setDescription(position.getDescription());
+			pruned.setFinalMode(false);
+			pruned.setProfile(position.getProfile());
+			pruned.setSalary(position.getSalary());
+			pruned.setSkills(position.getSkills());
+			pruned.setTechnologies(position.getTechnologies());
+			pruned.setTitle(position.getTitle());
+
+			result = this.createEditModelAndView(position);
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
+		return result;
+	}
+
+	// save ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveEdit(final Position prune, final BindingResult binding) {
+		ModelAndView result;
+		final Position position;
+
+		position = this.positionService.reconstruct(prune, binding);
+
+		if (binding.hasErrors()) {
+			final List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors)
+				System.out.println(e.toString());
+
+			result = this.createEditModelAndView(position);
+		}
+
+		else
+			try {
+				this.positionService.save(position);
+				result = new ModelAndView("redirect:/position/company/list.do");
+			} catch (final Throwable oops) {
+				System.out.println(position);
+				System.out.println(oops.getMessage());
+				System.out.println(oops.getClass());
+				System.out.println(oops.getCause());
+				result = this.createEditModelAndView(position, "company.registration.error");
+			}
+		return result;
+	}
+
+	// Ancillary methods -----------------------------------------------------------------------
+	protected ModelAndView createEditModelAndView(final Position position) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(position, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Position position, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("position/company/edit");
+		result.addObject("position", position);
+		result.addObject("message", message);
 
 		return result;
 	}

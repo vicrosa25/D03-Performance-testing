@@ -5,14 +5,17 @@ import java.util.Collection;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
+import repositories.PositionRepository;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
-import repositories.PositionRepository;
 
 @Service
 @Transactional
@@ -25,6 +28,13 @@ public class PositionService {
 	// Supporting services
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private CompanyService		companyService;
+
+	@Autowired
+	@Qualifier("validator")
+	private Validator			validator;
 
 
 	/*************************************
@@ -41,8 +51,7 @@ public class PositionService {
 		Assert.isInstanceOf(Company.class, principal);
 		Company company = (Company) principal;
 
-		// Default setting for position Company and Ticker
-		result.setCompany(company);
+		// Generate a ticker for the position
 		result.setTicker(this.generateTicker(company.getCommercialName()));
 		
 		return result;
@@ -84,5 +93,36 @@ public class PositionService {
 		final String tickerAlphanumeric = RandomStringUtils.randomNumeric(4);
 		ticker = ticker.concat(tickerText).concat("-").concat(tickerAlphanumeric);
 		return ticker;
+	}
+
+	public Position reconstruct(final Position position, final BindingResult binding) {
+		final Position result = this.create();
+		final Position temp = this.findOne(position.getId());
+
+		Assert.isTrue(this.companyService.findByPrincipal() == temp.getCompany());
+
+		// Updated attributes
+		result.setId(position.getId());
+		result.setDeadline(position.getDeadline());
+		result.setDescription(position.getDescription());
+		result.setFinalMode(false);
+		result.setProfile(position.getProfile());
+		result.setSalary(position.getSalary());
+		result.setSkills(position.getSkills());
+		result.setTechnologies(position.getTechnologies());
+		result.setTitle(position.getTitle());
+
+		// Not updated attributes
+		result.setId(temp.getId());
+		result.setVersion(temp.getVersion());
+		result.setTicker(temp.getTicker());
+
+		// Relantionships
+		result.setProblems(temp.getProblems());
+		result.setCompany(temp.getCompany());
+
+		this.validator.validate(result, binding);
+
+		return result;
 	}
 }
