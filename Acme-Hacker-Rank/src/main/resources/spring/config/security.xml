@@ -87,6 +87,11 @@
 		<!-- POSITION -->
 		<security:intercept-url pattern="/position/list.do" access="permitAll" />
 		<security:intercept-url pattern="/position/company.do" access="permitAll" />
+		<security:intercept-url pattern="/position/company/edit.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/position/company/list.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/position/company/cancel.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/position/company/display.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/position/company/create.do" access="hasRole('COMPANY')" />
 		
 		
 		<!-- CONFIGURATIONS -->

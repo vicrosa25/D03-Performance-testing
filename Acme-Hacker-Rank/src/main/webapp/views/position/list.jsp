@@ -48,6 +48,21 @@
 	<display:column title="${ companyHeader }">
 		<a href="company/display.do?companyId=${row.company.id}">${row.company.commercialName}</a>
 	</display:column>
+	
+	<!-- Editar -->	
+	<spring:message code="position.edit" var="editHeader" />
+	<display:column title="${editHeader}">
+			<jstl:if test="${not row.finalMode}">
+				<a href="position/company/edit.do?positionId=${row.id}">
+				<spring:message code="procession.edit" /></a>
+			</jstl:if>
+	</display:column>
+		
+	<!-- Borrar -->
+	<spring:message code="position.cancel" var="cancelHeader" />
+	<display:column title="${cancelHeader}" class="${css}">
+		<a href="position/company/cancel.do?positionId=${row.id}"> <spring:message code="position.cancel" /></a>
+	</display:column>
 </display:table>
 
 
