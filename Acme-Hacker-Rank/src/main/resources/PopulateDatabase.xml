@@ -121,6 +121,68 @@
 		<property name="finalMode" value="true" />
 		<property name="company" ref="company1" />
 	</bean>
+	
+	<bean id="position2" class="domain.Position">
+		<property name="deadline" value="2019/07/12" />
+		<property name="ticker" value="posi-4239" />
+		<property name="title" value="Consultor de seguridad" />
+		<property name="description" value="Puesto de trabajo para consultor en seguridad" />
+		<property name="profile" value="Consultor" />
+		<property name="skills" value="skill1, skill2, skill3" />
+		<property name="technologies" value="tech1, tech2, tech3" />
+		<property name="salary" value="34000.0" />
+		<property name="finalMode" value="false" />
+		<property name="company" ref="company1" />
+	</bean>
+	
+	
+	<!-- Problems  ********************************************************************************* -->
+	<bean id="problem1" class="domain.Problem">
+		<property name="title" value="Bugs en codigo javascript en Aplicacion web" />
+		<property name="statement" value="Creación de codigo en javascript" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+			</list>
+ 		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+			</list>
+ 		</property>
+	</bean>
+	
+	<bean id="problem2" class="domain.Problem">
+		<property name="title" value="validacion de codigo javascript en Aplicacion web" />
+		<property name="statement" value="Realizacion de pruebas en javascript" />
+		<property name="finalMode" value="true" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+			</list>
+ 		</property>
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+			</list>
+ 		</property>
+	</bean>
+	
+	<bean id="problem3" class="domain.Problem">
+		<property name="title" value="Implementacion de nuevas funciones" />
+		<property name="statement" value="Se han de implementar funciones diversas al producto" />
+		<property name="finalMode" value="false" />
+		<property name="company" ref="company1" />
+		<property name="attachments">
+			<list>
+			</list>
+ 		</property>
+		<property name="positions">
+			<list>
+			</list>
+ 		</property>
+	</bean>
 
 
 	<!-- SocialIdentities *************************************************************************** -->
