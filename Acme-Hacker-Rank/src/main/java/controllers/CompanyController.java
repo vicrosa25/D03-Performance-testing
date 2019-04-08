@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import domain.Company;
 import forms.CompanyForm;
+import services.ActorService;
 import services.CompanyService;
 import utilities.Md5;
 
@@ -35,6 +36,9 @@ public class CompanyController extends AbstractController {
 
 	@Autowired
 	private CompanyService	companyService;
+	
+	@Autowired
+	private ActorService	actorService;
 	
 	
 

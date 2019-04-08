@@ -22,7 +22,7 @@
 	
 	<!-- Phonenumber -->
 	<spring:message code="company.phone" var="phoneNumberHeader" />
-	<display:column property="phoneNumber" title="${phoneNumberHeader}" sortable="false" format="{0,date,dd/MM/yyyy HH:mm}" />
+	<display:column property="phoneNumber" title="${phoneNumberHeader}" sortable="false" />
 
 	<!-- commercial name -->
 	<spring:message code="company.commercialName" var="commercialNameHeader" />
