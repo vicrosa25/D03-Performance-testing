@@ -8,14 +8,11 @@
  * http://www.tdg-seville.info/License.html
  --%>
 
-<%@page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security"
-	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <form:form action="administrator/create.do" modelAttribute="administrator">
@@ -24,7 +21,7 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="userAccount.Authorities" />
-	<form:hidden path="messageBoxes" />
+<%-- 	<form:hidden path="messageBoxes" /> --%>
 
 	<%-- UserAccount--%>
 
@@ -55,14 +52,6 @@
 	<br>
 	<br>
 
-	<%-- Middlename --%>
-	<form:label path="middleName">
-		<spring:message code="administrator.middleName" />
-	</form:label>
-	<form:input path="middleName" />
-	<form:errors class="error" path="middleName" />
-	<br>
-	<br>
 
 	<%-- Surname --%>
 	<form:label path="surname">
@@ -70,6 +59,24 @@
 	</form:label>
 	<form:input path="surname" />
 	<form:errors class="error" path="surname" />
+	<br>
+	<br>
+	
+	<%-- Vat --%>
+	<form:label path="vat">
+		<spring:message code="administrator.vat" />
+	</form:label>
+	<form:input path="vat" />
+	<form:errors class="error" path="vat" />
+	<br>
+	<br>
+	
+	<%-- Card Number --%>
+	<form:label path="cardNumber">
+		<spring:message code="administrator.cardNumber" />
+	</form:label>
+	<form:input path="cardNumber" />
+	<form:errors class="error" path="cardNumber" />
 	<br>
 	<br>
 
@@ -81,6 +88,15 @@
 	<form:errors class="error" path="photo" />
 	<br>
 	<br>
+	
+	<%-- email --%>
+	<form:label path="email">
+		<spring:message code="administrator.email" />
+	</form:label>
+	<form:input path="email" />
+	<form:errors class="error" path="email" />
+	<br>
+	<br>
 
 	<%-- Phone --%>
 	<form:label path="phoneNumber">
@@ -88,15 +104,6 @@
 	</form:label>
 	<form:input path="phoneNumber" />
 	<form:errors class="error" path="phoneNumber" />
-	<br>
-	<br>
-
-	<%-- email --%>
-	<form:label path="email">
-		<spring:message code="administrator.email" />
-	</form:label>
-	<form:input path="email" />
-	<form:errors class="error" path="email" />
 	<br>
 	<br>
 

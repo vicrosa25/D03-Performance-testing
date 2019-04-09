@@ -20,21 +20,21 @@
 
 	<spring:message code="administrator.name" var="nameHeader" />
 	<display:column property="name" title="${nameHeader}" />
-	
-	<spring:message code="administrator.middleName" var="middleNameHeader" />
-	<display:column property="middleName" title="${middleNameHeader}" />
 
 	<spring:message code="administrator.surname" var="surnameHeader" />
 	<display:column property="surname" title="${surnameHeader}" />
 	
-	<spring:message code="administrator.phone" var="phoneHeader" />
-	<display:column property="phoneNumber" title="${phoneHeader}" />
+	<spring:message code="administrator.vat" var="vatHeader" />
+	<display:column property="vat" title="${vatHeader}" />
+	
+	<spring:message code="administrator.cardNumber" var="cardNumberHeader" />
+	<display:column property="cardNumber" title="${cardNumberHeader}" />
 	
 	<spring:message code="administrator.email" var="emailHeader" />
 	<display:column property="email" title="${emailHeader}" />
-
-	<spring:message code="administrator.username" var="usernameHeader" />
-	<display:column property="userAccount.username" title="${usernameHeader}" />
+	
+	<spring:message code="administrator.phone" var="phoneHeader" />
+	<display:column property="phoneNumber" title="${phoneHeader}" />
 	
 	<spring:message code="administrator.address" var="addressHeader" />
 	<display:column property="address" title="${addressHeader}" />

@@ -45,7 +45,6 @@ public class AdministratorService {
 		final Administrator admin = new Administrator();
 		admin.setUserAccount(userAccount);
 		//admin.setMessageBoxes(boxes);
-		admin.setIsSpammer(false);
 
 		return admin;
 	}
