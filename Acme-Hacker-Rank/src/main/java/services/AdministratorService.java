@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Hacker;
@@ -25,6 +26,9 @@ public class AdministratorService {
 	// Manage Repository
 	@Autowired
 	private AdministratorRepository	adminRepository;
+	
+	@Autowired
+	private ActorService			actorService;
 
 	// Supporting services
 	@Autowired
@@ -99,26 +103,63 @@ public class AdministratorService {
 	 * 
 	 *********************************************/
 	public Object[] query1() {
+		Actor principal;
+		
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+		
+		
 		return this.adminRepository.query1();
 	}
 	
 	public Object[] query2() {
+		Actor principal;
+		
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+		
 		return this.adminRepository.query2();
 	}
 	
 	public Collection<Company> query3() {
+		Actor principal;
+		
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+		
 		return this.adminRepository.query3();
 	}
 	
 	public Collection<Hacker> query4() {
+		Actor principal;
+		
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+		
 		return this.adminRepository.query4();
 	}
 	
 	public Object[] query5() {
+		Actor principal;
+		
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+		
 		return this.adminRepository.query5();
 	}
 	
 	public Collection<Position> query6() {
+		Actor principal;
+		
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+		
 		Collection<Position> result = new ArrayList<Position>();
 		result.add(this.adminRepository.query6a());
 		result.add(this.adminRepository.query6b());

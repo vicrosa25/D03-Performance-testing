@@ -150,7 +150,7 @@
 </table>
 <br />
 
-<!-- Query 7  -->
+<!-- Query 6  -->
 <table>
 	<caption>
 		<jstl:out value="${query6Header}"></jstl:out>
@@ -211,42 +211,6 @@
 <!-- </table> -->
 <!-- <br /> -->
 
-
-<!-- Query 10 -->
-<!-- <table> -->
-<!-- 	<caption> -->
-<%-- 		<jstl:out value="${query10Header}"></jstl:out> --%>
-<!-- 	</caption> -->
-<!-- 	<tr> -->
-<%-- 		<th><jstl:out value="${minHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${maxHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${avgHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${stdHeader}"></jstl:out></th> --%>
-<!-- 	</tr> -->
-
-<!-- 	<tr> -->
-<%-- 		<td><jstl:out value="${query10[0]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query10[1]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query10[2]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query10[3]}"></jstl:out></td> --%>
-<!-- 	</tr> -->
-<!-- </table> -->
-<!-- <br /> -->
-
-
-<!-- Query 11 -->
-<!-- <table> -->
-<!-- 	<caption> -->
-<%-- 		<jstl:out value="${query11Header}"></jstl:out> --%>
-<!-- 	</caption> -->
-<!-- 	<tr> -->
-<%-- 		<th><jstl:out value="${ratioHeader}"></jstl:out></th> --%>
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<%-- 		<td><jstl:out value="${query11}"></jstl:out></td> --%>
-<!-- 	</tr> -->
-<!-- </table> -->
-<!-- <br /> -->
 
 
 

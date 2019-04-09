@@ -30,7 +30,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
 	 * 1. Query 1: The average, the minimum, the maximum, and the standard deviation of the number
-	 * of records per history
+	 * of  positions per company
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -38,7 +38,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query1Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -46,16 +46,16 @@ public class AdminDashBoardTest extends AbstractTest {
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
 	 * 1. Query 1: The average, the minimum, the maximum, and the standard deviation of the number
-	 * of records per history
+	 * of  positions per company
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query1Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query1();
 		super.unauthenticate();
 	}
 
@@ -63,7 +63,8 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 2: The brotherhood with the largest history
+	 * 1. Query 2: The average, the minimum, the maximum, and the standard deviation of the
+	 *			   number of applications per hacker
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -71,23 +72,24 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query2Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query2();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 2: The brotherhood with the largest history
-	 * 
+	 * 1. Query 2: The average, the minimum, the maximum, and the standard deviation of the
+	 *			   number of applications per hacker
+	 *
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query2Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query2();
 		super.unauthenticate();
 	}
 
@@ -95,7 +97,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 3: The brotherhoods whose history is larger than the average.
+	 * 1. Query 3: The companies that have offered more positions.
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -103,32 +105,31 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query3Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query3();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 3: The brotherhoods whose history is larger than the average.
+	 * 1. Query 3: The companies that have offered more positions.
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query3Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query3();
 		super.unauthenticate();
 	}
 
-	/********************************* Dashboard Level B **************************************************/
 	// Tests Query4-----------------------------------------------------------------------------------------
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 4: The ratio of areas that are not co-ordinated by any chapters.
+	 * 1. Query 4: The hackers who have made more applications.
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -136,23 +137,23 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query4Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query4();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 4: The ratio of areas that are not co-ordinated by any chapters.
+	 * 1. Query 4: The hackers who have made more applications.
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query4Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query4();
 		super.unauthenticate();
 	}
 
@@ -160,8 +161,8 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the
-	 * number of parades co-ordinated by the chapters.
+	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the 
+	 *             the salaries offered.
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -169,24 +170,24 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query5Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query5();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the
-	 * number of parades co-ordinated by the chapters.
+	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the 
+	 *             the salaries offered.
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query5Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query5();
 		super.unauthenticate();
 	}
 
@@ -194,7 +195,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 6: The chapters that co-ordinate at least 10% more parades than the average.
+	 * 1. Query 6: The best and the worst position in terms of salary
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -202,23 +203,23 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query6Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query6();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 6: The chapters that co-ordinate at least 10% more parades than the average.
+	 * 1. Query 6: The best and the worst position in terms of salary
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query6Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query6();
 		super.unauthenticate();
 	}
 
