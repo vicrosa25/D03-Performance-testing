@@ -53,5 +53,5 @@
 	<br>
 	
 	<input type="submit" name="save" value="<spring:message code="position.save"/>" />
-	<acme:cancel code="company.cancel" url="/" />
+	<acme:cancel code="company.cancel" url="/position/company/list.do" />
 </form:form>
