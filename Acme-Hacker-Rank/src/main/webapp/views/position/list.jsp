@@ -48,9 +48,18 @@
 	<display:column title="${ companyHeader }">
 		<a href="company/display.do?companyId=${row.company.id}">${row.company.commercialName}</a>
 	</display:column>
+
 	
 
 	<jstl:if test="${requestURI == 'position/company/list.do'}">
+		
+	<!-- Display -->
+	<spring:message code="position.display" var="displayHeader" />
+	<display:column title="${ displayHeader }">
+		<a href="position/company/display.do?positionId=${row.id}">
+		<spring:message code="position.display" /></a>
+	</display:column>
+	
 	<!-- Editar -->	
 	<spring:message code="position.edit" var="editHeader" />
 	<display:column title="${editHeader}">
