@@ -42,15 +42,15 @@ public class ApplicationService {
 		Application result;
 		Actor principal;
 
-		result = new Application();
-
-		// Principal must be a Member
+		// Principal must be a Hacker
 		principal = this.actorService.findByPrincipal();
 		Assert.isInstanceOf(Hacker.class, principal);
 		Hacker hacker = (Hacker) principal;
 		
+		result = new Application();
+		
 		// Create date
-		final Date date = new Date();
+		Date date = new Date();
 		date.setTime(date.getTime() - 5000);
 
 		

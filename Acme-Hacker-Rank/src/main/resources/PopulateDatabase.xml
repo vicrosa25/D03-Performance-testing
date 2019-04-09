@@ -213,6 +213,14 @@
 		<property name="salary" value="34000.0" />
 		<property name="finalMode" value="false" />
 		<property name="company" ref="company1" />
+		<property name="problems">
+			<list>
+				<ref bean="problem7" />
+				<ref bean="problem8" />
+				<ref bean="problem9" />
+
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="position3" class="domain.Position">
