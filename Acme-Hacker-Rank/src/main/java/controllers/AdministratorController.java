@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.Administrator;
+import domain.Company;
+import domain.Hacker;
+import domain.Position;
 import services.ActorService;
 import services.AdministratorService;
 import services.ConfigurationsService;
@@ -45,14 +48,13 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private ConfigurationsService	configurationsService;
-	
-	
+
+
 	@ExceptionHandler(TypeMismatchException.class)
 	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
 		JOptionPane.showMessageDialog(null, "Forbidden operation");
 		return new ModelAndView("redirect:/");
 	}
-
 
 	// List -------------------------------------------------------------
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -111,6 +113,49 @@ public class AdministratorController extends AbstractController {
 					result.addObject("message", "admin.registration.error");
 				}
 			}
+		return result;
+	}
+
+	/*******************************************************************
+	 * 
+	 * Admin Dashboard Queries 
+	 * 
+	 *******************************************************************/
+	@RequestMapping("/dashboard")
+	public ModelAndView dashboard() {
+		final ModelAndView result;
+
+		// Queries level C
+		Object[] query1 				= this.administratorService.query1();
+		Object[] query2 				= this.administratorService.query2();
+		Collection<Company> query3 		= this.administratorService.query3();
+		Collection<Hacker> query4 		= this.administratorService.query4();
+		Object[] query5 				= this.administratorService.query5();
+		Collection<Position> query6		= this.administratorService.query6();
+
+
+		result = new ModelAndView("administrator/dashboard");
+
+		result.addObject("query1", query1);
+		result.addObject("query2", query2);
+		result.addObject("query3", query3);
+		result.addObject("query4", query4);
+		result.addObject("query5", query5);
+		result.addObject("query6", query6);
+//		result.addObject("query8", query8);
+//		result.addObject("query9", query9);
+//		result.addObject("query10", query10);
+//		result.addObject("query11", query11);
+
+
+//		int spammers = this.administratorService.queryGetSpammers();
+//		int notSpammers = this.administratorService.queryGetNotSpammers();
+//		Double averagePolarity = this.administratorService.getAveragePolarity();
+
+//		result.addObject("spammers", spammers);
+//		result.addObject("notSpammers", notSpammers);
+//		result.addObject("averagePolarity", averagePolarity);
+
 		return result;
 	}
 

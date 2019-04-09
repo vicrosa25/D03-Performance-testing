@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import domain.Administrator;
+import domain.Company;
+import domain.Hacker;
+import domain.Position;
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
@@ -89,7 +92,48 @@ public class AdministratorService {
 		Assert.isTrue(admin.getId() != 0);
 		this.adminRepository.delete(admin);
 	}
+	
+	/*********************************************
+	 * 
+	 * Admin Dashboard Queries
+	 * 
+	 *********************************************/
+	public Object[] query1() {
+		return this.adminRepository.query1();
+	}
+	
+	public Object[] query2() {
+		return this.adminRepository.query2();
+	}
+	
+	public Collection<Company> query3() {
+		return this.adminRepository.query3();
+	}
+	
+	public Collection<Hacker> query4() {
+		return this.adminRepository.query4();
+	}
+	
+	public Object[] query5() {
+		return this.adminRepository.query5();
+	}
+	
+	public Collection<Position> query6() {
+		Collection<Position> result = new ArrayList<Position>();
+		result.add(this.adminRepository.query6a());
+		result.add(this.adminRepository.query6b());
+		
+		return result;
+	}
 
+
+	
+	
+	
+	
+	
+	
+	
 	/*************************************
 	 * Other business methods
 	 ********************************/

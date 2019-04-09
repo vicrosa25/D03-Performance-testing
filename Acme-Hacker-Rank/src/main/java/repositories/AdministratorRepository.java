@@ -1,16 +1,43 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Administrator;
+import domain.Company;
+import domain.Hacker;
+import domain.Position;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
 
 	@Query("select admin from Administrator admin where admin.userAccount.id = ?1")
 	Administrator findByUserAccountId(int id);
+
+	// Queries level C
+	@Query("select avg(c.positions.size), min(c.positions.size), max(c.positions.size), stddev(c.positions.size) from Company c")
+	Object[] query1();
+	
+	@Query("select avg(h.applications.size), min(h.applications.size), max(h.applications.size), stddev(h.applications.size) from Hacker h")
+	Object[] query2();
+	
+	@Query("select c1 from Company c1 where c1.positions.size = (Select max(c2.positions.size) from Company c2)")
+	Collection<Company> query3();
+	
+	@Query("select h1 from Hacker h1 where h1.applications.size = (Select max(h2.applications.size) from Hacker h2)")
+	Collection<Hacker> query4();
+	
+	@Query("select avg(p.salary), min(p.salary), max(p.salary), stddev(p.salary) from Position p")
+	Object[] query5();
+	
+	@Query("select p1 from Position p1 where p1.salary = (Select max(p2.salary) from Position p2)")
+	Position query6a();
+	
+	@Query("select p1 from Position p1 where p1.salary = (Select min(p2.salary) from Position p2)")
+	Position query6b();
 
 }
