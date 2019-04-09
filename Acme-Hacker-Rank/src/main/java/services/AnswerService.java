@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import domain.Actor;
 import domain.Answer;
+import domain.Hacker;
 import repositories.AnswerRepository;
 
 @Service
@@ -16,15 +18,23 @@ import repositories.AnswerRepository;
 public class AnswerService {
 
 	@Autowired
-	private AnswerRepository answerRepository;
+	private AnswerRepository	answerRepository;
+
+	@Autowired
+	private ActorService		actorService;
 
 
 	// CRUD methods
 	public Answer create() {
+		Actor principal;
 		Answer result;
+
+		// Principal must be a Hacker
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Hacker.class, principal);
+
 		result = new Answer();
-		
-		
+
 		return result;
 	}
 
@@ -44,7 +54,13 @@ public class AnswerService {
 	}
 
 	public Answer save(Answer Answer) {
+		Actor principal;
 		Assert.notNull(Answer);
+
+		// Principal must be a Hacker
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Hacker.class, principal);
+		
 		Answer result = this.answerRepository.save(Answer);
 
 		return result;
