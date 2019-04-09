@@ -239,7 +239,7 @@ public class PositionController extends AbstractController {
 
 			this.positionService.delete(position);
 
-			result = this.createEditModelAndView(position);
+			result = new ModelAndView("redirect:/position/company/list.do");
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
@@ -265,7 +265,7 @@ public class PositionController extends AbstractController {
 
 			this.positionService.cancel(position);
 
-			result = this.createEditModelAndView(position);
+			result = new ModelAndView("redirect:/position/company/list.do");
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
