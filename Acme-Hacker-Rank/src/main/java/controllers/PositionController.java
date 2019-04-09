@@ -226,6 +226,58 @@ public class PositionController extends AbstractController {
 		return result;
 	}
 
+	// delete ------------------------------------------------------------------------------------
+	@RequestMapping(value = "company/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int positionId) {
+		ModelAndView result;
+		Position position;
+
+		try {
+			position = this.positionService.findOne(positionId);
+			Assert.isTrue(!position.getFinalMode());
+			Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
+
+			this.positionService.delete(position);
+
+			result = this.createEditModelAndView(position);
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
+		return result;
+	}
+
+	// cancel ------------------------------------------------------------------------------------
+	@RequestMapping(value = "company/cancel", method = RequestMethod.GET)
+	public ModelAndView cancel(@RequestParam final int positionId) {
+		ModelAndView result;
+		Position position;
+
+		try {
+			position = this.positionService.findOne(positionId);
+			Assert.isTrue(position.getFinalMode());
+			Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
+
+			this.positionService.cancel(position);
+
+			result = this.createEditModelAndView(position);
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
+		return result;
+	}
+
 	// Ancillary methods -----------------------------------------------------------------------
 	protected ModelAndView createEditModelAndView(final Position position) {
 		ModelAndView result;

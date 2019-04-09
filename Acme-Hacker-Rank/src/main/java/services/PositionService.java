@@ -59,6 +59,8 @@ public class PositionService {
 
 		result.setApplications(new ArrayList<Application>());
 		result.setProblems(new ArrayList<Problem>());
+		result.setFinalMode(false);
+		result.setCancelled(false);
 		
 		return result;
 	}
@@ -86,8 +88,24 @@ public class PositionService {
 
 	public void delete(Position position) {
 		Assert.notNull(position);
+		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());
+		Assert.isTrue(!position.getFinalMode());
+
+		for (Problem p : position.getProblems()) {
+			p.getPositions().remove(position);
+		}
 
 		this.positionRepository.delete(position);
+	}
+
+	public void cancel(Position position) {
+		Assert.notNull(position);
+		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());
+		Assert.isTrue(position.getFinalMode());
+
+		position.setCancelled(true);
+
+		this.positionRepository.save(position);
 	}
 	
 	/*************************************

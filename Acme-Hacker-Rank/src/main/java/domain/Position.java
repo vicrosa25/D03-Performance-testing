@@ -30,6 +30,7 @@ public class Position extends DomainEntity {
 	private String	title;
 	private String	description;
 	private Boolean	finalMode;
+	private Boolean	cancelled;
 	private String	profile;
 	private String	skills;
 	private String	technologies;
@@ -84,6 +85,14 @@ public class Position extends DomainEntity {
 
 	public void setFinalMode(Boolean finalMode) {
 		this.finalMode = finalMode;
+	}
+
+	public Boolean getCancelled() {
+		return this.cancelled;
+	}
+
+	public void setCancelled(Boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	@NotBlank
