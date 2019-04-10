@@ -29,9 +29,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import domain.Administrator;
 import domain.Company;
+import domain.Configurations;
 import domain.Hacker;
 import domain.Position;
-import services.ActorService;
 import services.AdministratorService;
 import services.ConfigurationsService;
 import utilities.Md5;
@@ -42,9 +42,6 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private AdministratorService	administratorService;
-
-	@Autowired
-	private ActorService			actorService;
 
 	@Autowired
 	private ConfigurationsService	configurationsService;
@@ -158,5 +155,88 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
+	
+	
+	/**
+	 * 
+	 * Manage CACHE ****************************************************************************
+	 */
+
+	// Configurations cache -------------------------------------------------------------
+	@RequestMapping(value = "/config/cache/edit", method = RequestMethod.GET)
+	public ModelAndView cache() {
+		ModelAndView result;
+		Configurations configurations;
+
+		configurations = this.configurationsService.getConfiguration();
+		result = new ModelAndView("administrator/config/cache/edit");
+		result.addObject("configurations", configurations);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/config/cache/edit", method = RequestMethod.POST, params = "update")
+	public ModelAndView cache(@Valid Configurations configurations, BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors()) {
+			final List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors)
+				System.out.println(e.toString());
+			result = new ModelAndView("administrator/config/cache/edit");
+			result.addObject("configurations", configurations);
+		} else
+			try {
+				this.configurationsService.update(configurations);
+				result = new ModelAndView("redirect:/");
+			} catch (final Throwable oops) {
+				result = new ModelAndView("administrator/config/cache/edit");
+				result.addObject("configurations", configurations);
+				result.addObject("message", "administrator.commit.error");
+			}
+
+		return result;
+	}
+
+	/**
+	 * 
+	 * Settings ****************************************************************************
+	 */
+
+	@RequestMapping(value = "/config/aliveConfig/edit", method = RequestMethod.GET)
+	public ModelAndView config() {
+		ModelAndView result;
+		Configurations configurations;
+
+		configurations = this.configurationsService.getConfiguration();
+		result = new ModelAndView("administrator/config/aliveConfig/edit");
+		result.addObject("configurations", configurations);
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/config/aliveConfig/edit", method = RequestMethod.POST, params = "update")
+	public ModelAndView config(@Valid Configurations configurations, BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors()) {
+			final List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors)
+				System.out.println(e.toString());
+			result = new ModelAndView("administrator/config/aliveConfig/edit");
+			result.addObject("configurations", configurations);
+		} else
+			try {
+				this.configurationsService.update(configurations);
+				result = new ModelAndView("redirect:/");
+			} catch (final Throwable oops) {
+				result = new ModelAndView("administrator/config/aliveConfig/edit");
+				result.addObject("configurations", configurations);
+				result.addObject("message", "administrator.commit.error");
+			}
+
+		return result;
+	}
+
 
 }

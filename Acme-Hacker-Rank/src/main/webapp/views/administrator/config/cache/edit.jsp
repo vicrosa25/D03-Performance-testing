@@ -23,13 +23,9 @@
 	<form:hidden path="title" />
 	<form:hidden path="logo" />
 	<form:hidden path="spamWords" />
-	<form:hidden path="positiveWords" />
-	<form:hidden path="negativeWords" />
-	<form:hidden path="vat" />
 	<form:hidden path="countryCode" />
-	<form:hidden path="brandName" />
-	<form:hidden path="englishMessage" />
 	<form:hidden path="spanishMessage" />
+	<form:hidden path="englishMessage" />
 
 
 	<%-- cacheTime --%>
