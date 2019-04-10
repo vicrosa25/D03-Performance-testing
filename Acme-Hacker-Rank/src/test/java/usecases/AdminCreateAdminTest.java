@@ -55,19 +55,19 @@ public class AdminCreateAdminTest extends AbstractTest {
 			}, {
 				DataIntegrityViolationException.class, "admin", "", "userName", "name", "surname", 2, "378721273855309", "test@gmail.com", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "", "name", "surname", 2, "378721273855309", "test@gmail.com", "+341234"
+				DataIntegrityViolationException.class, "admin", "password", "", "name", "surname", 2, "378721273855309", "test@gmail.com", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "userName", "", "surname", 2, "378721273855309", "test@gmail.com", "+341234"
+				DataIntegrityViolationException.class, "admin", "password", "userName", "", "surname", 2, "378721273855309", "test@gmail.com", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "userName", "name", "", 2, "378721273855309", "test@gmail.com", "+341234"
+				DataIntegrityViolationException.class, "admin", "password", "userName", "name", "", 2, "378721273855309", "test@gmail.com", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "userName", "name", "surname", null, "378721273855309", "test@gmail.com", "+341234"
+				DataIntegrityViolationException.class, "admin", "password", "userName", "name", "surname", null, "378721273855309", "test@gmail.com", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "userName", "name", "surname", 2, "", "test@gmail.com", "+341234"
+				DataIntegrityViolationException.class, "admin", "password", "userName", "name", "surname", 2, "", "test@gmail.com", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "userName", "name", "surname", 2, "378721273855309", "", "+341234"
+				DataIntegrityViolationException.class, "admin", "password", "userName", "name", "surname", 2, "378721273855309", "", "+341234"
 			}, {
-				DataIntegrityViolationException.class, "admin1", "password", "userName", "name", "surname", 2, "378721273855309", "test@gmail.com", ""
+				DataIntegrityViolationException.class, "admin", "password", "userName", "name", "surname", 2, "378721273855309", "test@gmail.com", ""
 			}
 		};
 

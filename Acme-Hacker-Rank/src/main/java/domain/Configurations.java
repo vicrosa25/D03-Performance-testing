@@ -106,12 +106,4 @@ public class Configurations extends DomainEntity {
 	public void setEnglishMessage(String englishMessage) {
 		this.englishMessage = englishMessage;
 	}
-
-	public void setFinderMaxResult(int finderMaxResult) {
-		this.finderMaxResult = finderMaxResult;
-	}
-
-	// Relationships ----------------------------------------------------------
-
-	// Other methods
 }
