@@ -20,8 +20,8 @@ import org.hibernate.validator.constraints.URL;
 public class Configurations extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
-	private int					cacheTime;
-	private int					finderMaxResult;
+	private Integer				cacheTime;
+	private Integer				finderMaxResult;
 	private String				spanishMessage;
 	private String				englishMessage;
 	private Collection<String>	spamWords;
@@ -29,22 +29,23 @@ public class Configurations extends DomainEntity {
 	private String				title;
 	private String				logo;
 
-
+	@NotNull
 	@Range(min = 1, max = 24)
-	public int getCacheTime() {
+	public Integer getCacheTime() {
 		return this.cacheTime;
 	}
 
-	public void setCacheTime(final int cacheTime) {
+	public void setCacheTime(Integer cacheTime) {
 		this.cacheTime = cacheTime;
 	}
 
+	@NotNull
 	@Range(min = 10, max = 100)
 	public Integer getFinderMaxResult() {
 		return this.finderMaxResult;
 	}
 
-	public void setFinderMaxResult(final Integer finderMaxResult) {
+	public void setFinderMaxResult(Integer finderMaxResult) {
 		this.finderMaxResult = finderMaxResult;
 	}
 

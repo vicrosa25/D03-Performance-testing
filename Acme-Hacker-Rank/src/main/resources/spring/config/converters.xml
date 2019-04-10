@@ -39,6 +39,9 @@
 		<bean class="converters.ProblemToStringConverter" />
 		<bean class="converters.StringToProblemConverter" />
 		
+		<bean class="converters.ConfigurationsToStringConverter" />
+		<bean class="converters.StringToConfigurationsConverter" />
+		
 
 	</util:list>
 
