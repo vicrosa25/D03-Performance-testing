@@ -141,6 +141,7 @@ public abstract class Actor extends DomainEntity {
 	// Relationships ----------------------------------------------------------
 	private UserAccount					userAccount;
 	private Collection<SocialIdentity>	socialIdentities;
+	private Collection<Message>			messages;
 
 
 	@Valid
@@ -162,6 +163,17 @@ public abstract class Actor extends DomainEntity {
 
 	public void setUserAccount(final UserAccount userAccount) {
 		this.userAccount = userAccount;
+	}
+	
+	@NotNull
+	@OneToMany
+	public Collection<Message> getMessages() {
+		return messages;
+	}
+
+	
+	public void setMessages(Collection<Message> messages) {
+		this.messages = messages;
 	}
 
 	@Override
