@@ -33,10 +33,10 @@ import services.MessageService;
 public class MessageController extends AbstractController {
 
 	@Autowired
-	private MessageService messageService;
+	private MessageService	messageService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService	actorService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -100,9 +100,30 @@ public class MessageController extends AbstractController {
 		Message mesage;
 
 		mesage = this.messageService.create();
+		
 		mesage.setIsNotification(false);
 		result = this.createModelAndView(mesage);
 
+		return result;
+	}
+
+	// Send -------------------------------------------------------------
+	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@ModelAttribute("mesage") @Valid Message mesage, BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors()) {
+			List<ObjectError> errors = binding.getAllErrors();
+			for (ObjectError e : errors)
+				System.out.println(e.toString());
+			result = this.createModelAndView(mesage);
+		} else
+			try {
+				this.messageService.save(mesage);
+				result = this.list();
+			} catch (final Throwable oops) {
+				result = this.createModelAndView(mesage, "message.commit.error");
+			}
 		return result;
 	}
 
@@ -149,27 +170,6 @@ public class MessageController extends AbstractController {
 				result = new ModelAndView("message/broadcast");
 				result.addObject("mesage", mesage);
 				result.addObject("message", "message.commit.error");
-			}
-		return result;
-	}
-
-	// Send -------------------------------------------------------------
-	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@ModelAttribute("mesage") @Valid Message mesage, BindingResult binding) {
-		ModelAndView result;
-
-		if (binding.hasErrors()) {	
-			List<ObjectError> errors = binding.getAllErrors();
-			for (ObjectError e : errors)
-				System.out.println(e.toString());
-			result = this.createModelAndView(mesage);
-		}
-		else
-			try {
-				this.messageService.save(mesage);
-				result = this.list();
-			} catch (final Throwable oops) {
-				result = this.createModelAndView(mesage, "message.commit.error");
 			}
 		return result;
 	}

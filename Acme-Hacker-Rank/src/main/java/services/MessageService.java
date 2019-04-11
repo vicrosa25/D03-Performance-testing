@@ -67,13 +67,12 @@ public class MessageService {
 		Assert.notNull(message);
 		Assert.notNull(LoginService.getPrincipal());
 		Message result;
-		Actor sender = null;
+		Actor sender = this.actorService.findByPrincipal();
 
 		if (message.getId() == 0) {
 			Assert.notNull(message);
 
 			if (!message.getSubject().contains("Change of status. Cambio del estado")) {
-				sender = this.actorService.findByPrincipal();
 				message.setSender(sender);
 			}
 
@@ -95,7 +94,9 @@ public class MessageService {
 			}
 
 			result = this.messageRepository.save(message);
-
+			
+			// Add message to the list of the sender an the recipients
+			sender.getMessages().add(result);
 			for (final Actor recipient : recipients) {
 				recipient.getMessages().add(result);
 			}

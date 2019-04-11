@@ -25,8 +25,8 @@
 		<form:hidden path="version" />
 		<form:hidden path="sender" />
 		<form:hidden path="moment" />
-		<form:hidden path="messageBoxes" />
 		<form:hidden path="isNotification" />
+		<form:hidden path="isSpam" />
 
 
 		<%-- Subject --%>
@@ -38,6 +38,7 @@
 		<br>
 		<br>
 
+		<%-- Priority --%>
 		<form:label path="priority">
 			<spring:message code="message.priority" />
 		</form:label>
@@ -83,7 +84,7 @@
 
 		<input type="button" name="cancel"
 			value="<spring:message code="message.cancel" />"
-			onClick="javascript: window.location.replace('messageBox/list.do')" />
+			onClick="javascript: window.location.replace('message/list.do')" />
 
 		<br>
 		<br>
