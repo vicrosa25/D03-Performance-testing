@@ -121,6 +121,9 @@
 						<li><a href="company/edit.do"><spring:message code="master.page.hacker.edit" /></a></li>
 					</security:authorize>
 					
+					<!-- Message -->
+					<li><a href="message/list.do"><spring:message code="master.page.message.list" /></a></li>
+					
 					<!-- Social Profile -->
 <%-- 					<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialProfile" /></a></li> --%>
 					

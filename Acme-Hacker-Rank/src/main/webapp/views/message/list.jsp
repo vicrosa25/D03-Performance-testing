@@ -18,15 +18,25 @@
 
 <display:table name="messages" id="row" requestURI="message/list.do" pagesize="5" class="displaytag">
 
-
+	<!-- Subject -->
 	<spring:message code="message.subject" var="subjectHeader" />
 	<display:column property="subject" title="${subjectHeader}" />
 
+	<!-- Sender -->
 	<spring:message code="message.sender" var="senderHeader" />
 	<display:column property="sender.name" title="${senderHeader}" />
 	
+	<!-- Priority -->
 	<spring:message code="message.priority" var="priorityHeader" />
 	<display:column property="priority" title="${priorityHeader}" />
+	
+	<!-- Tags -->
+	<spring:message code="message.tags" var="tagsHeader" />
+	<display:column title="${tagsHeader}" sortable="false">
+		<jstl:forEach var="tag" items="${row.tags}" varStatus="loop">
+			${tag}${!loop.last ? ',' : ''}&nbsp
+		</jstl:forEach>
+	</display:column>
 	
 	<!-- Display -->
 	<display:column>
@@ -39,8 +49,3 @@
 <security:authorize access="isAuthenticated()">
 	<a href=message/create.do><spring:message code="message.create" /></a>
 </security:authorize>
-	<br>
-	<br>
-
-<input type="submit" name="goBack" value="<spring:message code="messageBox.goBack" />"
-		onClick="javascript: window.location.replace('messageBox/list.do')" />

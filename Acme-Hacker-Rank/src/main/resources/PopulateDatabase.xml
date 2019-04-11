@@ -91,6 +91,11 @@
 				<ref bean="socialIdentity1" />
 			</list>
 		</property>
+		<property name="messages">
+			<list>
+				<ref bean="message5" />
+			</list>
+		</property>
 	</bean>
 	
 	
@@ -111,6 +116,13 @@
 				<ref bean="application2" />
 			</list>
 		</property>
+				<property name="messages">
+			<list>
+				<ref bean="message1" />
+				<ref bean="message2" />
+				<ref bean="message5" />
+			</list>
+		</property>
 	</bean>
 	
 	
@@ -126,6 +138,12 @@
 		<property name="UserAccount" ref="userAccount4" />
 		<property name="applications">
 			<list>
+			</list>
+		</property>
+		<property name="messages">
+			<list>
+				<ref bean="message1" />
+				<ref bean="message2" />
 			</list>
 		</property>
 	</bean>
@@ -154,6 +172,12 @@
 				<ref bean="problem3" />
 			</list>
 		</property>
+		<property name="messages">
+			<list>
+				<ref bean="message3" />
+				<ref bean="message4" />
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="company2" class="domain.Company">
@@ -175,6 +199,12 @@
 			<list>
 				<ref bean="problem4" />
 				<ref bean="problem5" />
+			</list>
+		</property>
+		<property name="messages">
+			<list>
+				<ref bean="message3" />
+				<ref bean="message4" />
 			</list>
 		</property>
 	</bean>
@@ -469,25 +499,70 @@
 
 
 	<!-- Messages *************************************************************************** -->
-<!-- 	<bean id="message1" class="domain.Message"> -->
-<!-- 		<property name="sender" ref="brotherhood1" /> -->
-<!-- 		<property name="recipients"> -->
-<!-- 			<list> -->
-<!-- 				<ref bean="brotherhood2" /> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 		<property name="moment" value="2019/02/12 00:00" /> -->
-<!-- 		<property name="subject" value="subject example" /> -->
-<!-- 		<property name="body" value="body example" /> -->
-<!-- 		<property name="priority" value="LOW" /> -->
-<!-- 		<property name="messageBoxes"> -->
-<!-- 			<list> -->
-<!-- 				<ref bean="brotherhood1-out" /> -->
-<!-- 				<ref bean="brotherhood2-in" /> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+	<bean id="message1" class="domain.Message">
+		<property name="sender" ref="hacker1" />
+		<property name="recipients">
+			<list>
+				<ref bean="hacker2" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="body example" />
+		<property name="priority" value="LOW" />
+	</bean>
 
+	<bean id="message2" class="domain.Message">
+		<property name="sender" ref="hacker2" />
+		<property name="recipients">
+			<list>
+				<ref bean="hacker1" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="You have to use cialis" />
+		<property name="priority" value="LOW" />
+	</bean>
+
+	<bean id="message3" class="domain.Message">
+		<property name="sender" ref="company1" />
+		<property name="recipients">
+			<list>
+				<ref bean="company2" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="You have to use viagra" />
+		<property name="priority" value="LOW" />
+	</bean>
+
+	<bean id="message4" class="domain.Message">
+		<property name="sender" ref="company2" />
+		<property name="recipients">
+			<list>
+				<ref bean="company1" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="This is fantastic, amazing" />
+		<property name="priority" value="LOW" />
+	</bean>
+
+	<bean id="message5" class="domain.Message">
+		<property name="sender" ref="admin1" />
+		<property name="recipients">
+			<list>
+				<ref bean="hacker1" />
+			</list>
+		</property>
+		<property name="moment" value="2019/02/12 00:00" />
+		<property name="subject" value="subject example" />
+		<property name="body" value="This is bad, horrible" />
+		<property name="priority" value="LOW" />
+	</bean>
 	
 
 	
