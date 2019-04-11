@@ -176,7 +176,7 @@ public class MessageController extends AbstractController {
 
 	// Display ---------------------------------------
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int messageID, @RequestParam int messageBoxID) {
+	public ModelAndView display(@RequestParam int messageID) {
 		ModelAndView result;
 		Message message;
 

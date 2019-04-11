@@ -39,7 +39,7 @@
 
 <display:table name="mesage" id="row" requestURI="message/display.do" class="displaytag">
 	<spring:message code="message.moment" var="momentHeader" />
-	<display:column property="moment" title="${momentHeader}" sortable="false" />
+	<display:column property="moment" title="${momentHeader}" format="{0,date,dd/MM/yyyy HH:mm}" />
 </display:table>
 
 <display:table name="mesage" id="row" requestURI="message/display.do" class="displaytag">

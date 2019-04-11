@@ -40,8 +40,7 @@
 	
 	<!-- Display -->
 	<display:column>
-		<a href="message/display.do?messageID=${row.id}&messageBoxID=${messageBox}">
- 		<spring:message code="message.display"/></a>
+		<a href="message/display.do?messageID=${row.id}"><spring:message code="message.display"/></a>
  	</display:column>
 
 </display:table>
