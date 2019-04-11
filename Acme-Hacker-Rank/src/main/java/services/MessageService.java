@@ -16,7 +16,6 @@ import domain.Configurations;
 import domain.Message;
 import repositories.MessageRepository;
 import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -109,19 +108,18 @@ public class MessageService {
 
 	public void delete(Message message) {
 		Assert.notNull(message);
-		UserAccount userAccount = LoginService.getPrincipal();
-		Assert.notNull(userAccount);
-		Actor actor = this.actorService.findOneByUsername(userAccount.getUsername());
+
+		Actor principal = this.actorService.findByPrincipal();
 		
 		// Checke the principal is the sender or a recipient
-		Assert.isTrue(message.getRecipients().contains(actor) || message.getSender().equals(actor));
+		Assert.isTrue(message.getRecipients().contains(principal) || message.getSender().equals(principal));
 
 		
 		// Check if the principal is the sender or a recipient
 		Boolean actorRole;
 		if (message.getSender() == null) {
 			actorRole = true;
-		} else if (message.getSender().equals(actor)) {
+		} else if (message.getSender().equals(principal)) {
 			actorRole = true;
 		} else {
 			actorRole = false;
@@ -132,11 +130,15 @@ public class MessageService {
 			
 			// The principal is a recipient
 			if (!actorRole) {
-				message.getRecipients().remove(actor);
+				message.getRecipients().remove(principal);
+				principal.getMessages().remove(message);
+				this.actorService.save(principal);
 			
 			// the principal is the sender
 			} else {
 				message.setSender(null);
+				principal.getMessages().remove(message);
+				this.actorService.save(principal);
 			}
 			
 			// Only when the message has not sender and recipient is deleted from the system

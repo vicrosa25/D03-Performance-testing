@@ -198,13 +198,14 @@ public class MessageController extends AbstractController {
 
 	// Delete ------------------------------------------------------
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int messageID, @RequestParam final int messageBoxID) {
+	public ModelAndView delete(@RequestParam int messageID) {
 		ModelAndView result;
 		Message message;
+		Actor principal;
 
 		try {
 			try {
-				Actor principal = this.actorService.findByPrincipal();
+				principal = this.actorService.findByPrincipal();
 				message = this.messageService.findOne(messageID);
 				Assert.isTrue(principal.getMessages().contains(message));
 			} catch (final Exception e) {
@@ -215,14 +216,14 @@ public class MessageController extends AbstractController {
 			result = this.list();
 		} catch (final Throwable oops) {
 			message = this.messageService.findOne(messageID);
-			result = this.createModelAndView(message, "messageBox.commit.error");
+			result = this.createModelAndView(message, "message.commit.error");
 		}
 
 		return result;
 	}
 
 	// Ancillary methods ------------------------------------------------------
-	protected ModelAndView createModelAndView(final Message mesage) {
+	protected ModelAndView createModelAndView(Message mesage) {
 		ModelAndView result;
 
 		result = this.createModelAndView(mesage, null);
@@ -230,7 +231,7 @@ public class MessageController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createModelAndView(final Message mesage, final String message) {
+	protected ModelAndView createModelAndView(Message mesage, String message) {
 		ModelAndView result;
 
 		final Collection<Actor> actorList = this.actorService.findAll();

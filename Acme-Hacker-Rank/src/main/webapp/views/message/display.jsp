@@ -57,7 +57,7 @@
 </display:table>
 
 
-<a href="message/delete.do?messageID=${row.id}&messageBoxID=${messageBoxID}"> <spring:message code="message.delete" /></a>
+<a href="message/delete.do?messageID=${row.id}"> <spring:message code="message.delete" /></a>
 <br>
 <br>
 

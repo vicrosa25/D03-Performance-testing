@@ -26,6 +26,14 @@
 	<spring:message code="message.sender" var="senderHeader" />
 	<display:column property="sender.name" title="${senderHeader}" />
 	
+	<!-- Tags -->
+	<spring:message code="message.recipients" var="recipientsHeader" />
+	<display:column title="${recipientsHeader}">
+		<jstl:forEach var="recipient" items="${row.recipients}" varStatus="loop">
+			${recipient.email}${!loop.last ? ',' : ''}&nbsp
+		</jstl:forEach>
+	</display:column>
+	
 	<!-- Priority -->
 	<spring:message code="message.priority" var="priorityHeader" />
 	<display:column property="priority" title="${priorityHeader}" />
