@@ -14,6 +14,7 @@ import org.springframework.validation.Validator;
 
 import domain.Application;
 import domain.Hacker;
+import domain.Message;
 import domain.SocialIdentity;
 import forms.HackerForm;
 import repositories.HackerRepository;
@@ -55,8 +56,12 @@ public class HackerService {
 		authority.setAuthority(Authority.HACKER);
 		authorities.add(authority);
 		userAccount.setAuthorities(authorities);
+		
+		// Set Messages
+		Collection<Message> messages = new ArrayList<Message>();
 
 		hacker.setUserAccount(userAccount);
+		hacker.setMessages(messages);
 		hacker.setIsSpammer(false);
 
 		return hacker;

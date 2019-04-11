@@ -510,6 +510,12 @@
 		<property name="subject" value="subject example" />
 		<property name="body" value="body example" />
 		<property name="priority" value="LOW" />
+		<property name="tags">
+			<list>
+				<value>WORK</value>
+				<value>IMPORTAN</value>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="message2" class="domain.Message">

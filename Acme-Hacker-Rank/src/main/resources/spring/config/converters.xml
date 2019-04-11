@@ -42,6 +42,9 @@
 		<bean class="converters.ConfigurationsToStringConverter" />
 		<bean class="converters.StringToConfigurationsConverter" />
 		
+		<bean class="converters.MessageToStringConverter" />
+		<bean class="converters.StringToMessageConverter" />
+		
 
 	</util:list>
 

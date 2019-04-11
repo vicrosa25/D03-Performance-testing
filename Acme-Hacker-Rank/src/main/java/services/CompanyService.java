@@ -12,14 +12,15 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import domain.Company;
+import domain.Message;
+import domain.Position;
+import domain.Problem;
+import forms.CompanyForm;
 import repositories.CompanyRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.Company;
-import domain.Position;
-import domain.Problem;
-import forms.CompanyForm;
 
 @Service
 @Transactional
@@ -44,8 +45,12 @@ public class CompanyService {
 		authority.setAuthority(Authority.COMPANY);
 		authorities.add(authority);
 		userAccount.setAuthorities(authorities);
+		
+		// Set Messages
+		Collection<Message> messages = new ArrayList<Message>();
 
 		result.setUserAccount(userAccount);
+		result.setMessages(messages);
 		result.setPositions(new ArrayList<Position>());
 		result.setProblems(new ArrayList<Problem>());
 
