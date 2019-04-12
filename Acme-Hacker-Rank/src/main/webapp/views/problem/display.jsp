@@ -8,56 +8,32 @@
 
 <display:table name="problem" id="row" requestURI="problem/display.do" class="displaytag">
 
-	<!-- ticker -->
-	<spring:message code="problem.ticker" var="tickerHeader" />
-	<display:column property="ticker" title="${tickerHeader}" sortable="false" />
-	
 	<!-- Title -->
 	<spring:message code="problem.title" var="titleHeader" />
 	<display:column property="title" title="${titleHeader}" sortable="false" />
 	
-	<!-- description -->
-	<spring:message code="problem.description" var="descriptionHeader" />
-	<display:column property="description" title="${descriptionHeader}" sortable="false" />
+	<!-- statement -->
+	<spring:message code="problem.statement" var="statementHeader" />
+	<display:column property="statement" title="${statementHeader}" sortable="false" />
 	
-	<!-- deadline -->
-	<spring:message code="problem.deadline" var="deadlineHeader" />
-	<display:column property="deadline" title="${deadlineHeader}" sortable="false" format="{0,date,dd/MM/yyyy}" />
+	<!-- hint -->
+	<spring:message code="problem.hint" var="hintHeader" />
+	<display:column property="hint" title="${hintHeader}" sortable="false" format="{0,date,dd/MM/yyyy}" />
 	
-	<!-- profile -->
-	<spring:message code="problem.profile" var="profileHeader" />
-	<display:column property="profile" title="${profileHeader}" sortable="false"/>
-
-	<!-- skills -->
-	<spring:message code="problem.skills" var="skillsHeader" />
-	<display:column property="skills" title="${skillsHeader}" sortable="false"/>
-	
-	<!-- technologies -->
-	<spring:message code="problem.technologies" var="technologiesHeader" />
-	<display:column property="technologies" title="${technologiesHeader}" sortable="false"/>
-
-	<!-- salary -->
-	<spring:message code="problem.salary" var="salaryHeader" />
-	<display:column property="salary" title="${salaryHeader}" sortable="false"/>
-
 	<!-- Company -->
 	<spring:message code="problem.company" var="companyHeader" />
 	<display:column title="${ companyHeader }">
 		<a href="company/display.do?companyId=${row.company.id}">${row.company.commercialName}</a>
 	</display:column>
 	
-</display:table>
-
-
-<jstl:if test="${not empty problem.attachments}">
-<display:table name="problem.attachments" id="row" requestURI="problem/display.do" class="displaytag">
+	<!-- Attachments -->
+	<spring:message code="problem.attachments" var="attachmentsHeader" />
+	<display:column title="${attachmentsHeader}" sortable="false" >
+		<jstl:forEach var="text" items="${row.attachments}" varStatus="loop">
+				${text.link}${!loop.last ? ',' : ''}&nbsp
+		</jstl:forEach>
+	</display:column>
 	
-	<spring:message code="problem.attachment" var="attachmentNameHeader" />
-	<display:column title="${attachmentNameHeader}" property="link" sortable="false" />
-	
-	<display:caption><spring:message code="problem.problems"/></display:caption>
 </display:table>
-<br>
-</jstl:if>
 <br>
 <acme:back code="hacker.goback"/>

@@ -47,6 +47,13 @@
 		
 		<!-- An actor who is authenticated as a COMPANY -->
 		<security:authorize access="hasRole('COMPANY')">
+			<li><a class="fNiv"><spring:message	code="master.page.problems" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="problem/company/list.do"><spring:message code="master.page.problems.list" /></a></li>
+					<li><a href="problem/company/create.do"><spring:message code="master.page.problems.create" /></a></li>			
+				</ul>
+			</li>
 		
 		</security:authorize>
 		

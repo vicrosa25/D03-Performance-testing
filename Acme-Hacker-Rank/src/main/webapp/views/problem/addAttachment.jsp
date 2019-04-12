@@ -6,17 +6,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="problem/addPicture.do" modelAttribute="url">	
+<form:form action="problem/company/addAttachment.do" modelAttribute="url">	
 		<%-- Hidden properties--%>
 		<form:hidden path="targetId" />
 
 		<%-- Link --%>
-		<acme:textbox code="problem.attachment.link" path="link" />
+		<acme:textbox code="problem.link" path="link" />
 		<br>
 
 		<%-- Buttons --%>
 
 		<input type="submit" name="save" value="<spring:message code="problem.save"/>" />
-		<acme:cancel code="problem.cancel" url="problem/edit.do" />
+		<acme:cancel code="problem.cancel" url="problem/company/edit.do?problemId=${url.targetId}" />
 	<br><br>
 </form:form>

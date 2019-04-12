@@ -42,12 +42,22 @@
 		</jstl:if>
 	</display:column>
 	
+	<!-- Display -->	
+	<spring:message code="problem.display" var="displayHeader" />
+	<display:column title="${displayHeader}">
+			<a href="problem/company/display.do?problemId=${row.id}">
+			<spring:message code="problem.display" /></a>
+	</display:column>
+	
 	<!-- Editar -->	
 	<spring:message code="problem.edit" var="editHeader" />
 	<display:column title="${editHeader}">
 			<jstl:if test="${not row.finalMode}">
 				<a href="problem/company/edit.do?problemId=${row.id}">
 				<spring:message code="problem.edit" /></a>
+			</jstl:if>
+			<jstl:if test="${row.finalMode}">
+				-
 			</jstl:if>
 	</display:column>
 	
@@ -57,19 +67,6 @@
 	<display:column title="${deleteHeader}">
 			<a href="problem/company/delete.do?problemId=${row.id}">
 			<spring:message code="problem.delete" /></a>
-	</display:column>
-		
-	<!-- Cancelar -->
-	<spring:message code="problem.cancel" var="cancelHeader" />
-	<display:column title="${cancelHeader}">
-		<jstl:if test="${row.finalMode}">
-		<jstl:if test="${not row.cancelled}">
-			<a href="problem/company/cancel.do?problemId=${row.id}"> <spring:message code="problem.cancel" /></a>
-		</jstl:if>
-		<jstl:if test="${row.cancelled}">
-			<spring:message code="problem.cancelled"/>
-		</jstl:if>
-		</jstl:if>
 	</display:column>
 	</jstl:if>
 </display:table>

@@ -10,6 +10,13 @@
 	
 	<%-- Hidden properties--%>
 	<form:hidden path="id" />
+	<form:hidden path="version" />
+	<form:hidden path="company" />
+	<form:hidden path="attachments" />
+	
+	<%-- title--%>
+	<acme:textbox code="problem.title" path="title" />
+	<br>
 	
 	<%-- statement--%>
 	<acme:textbox code="problem.statement" path="statement" />
@@ -23,8 +30,8 @@
 	<form:label path="finalMode"><spring:message code="problem.finalMode" /></form:label>
 	<form:select id="modeDropdown" path="finalMode">
 		<form:option value="">--</form:option>
-		<form:option value="0"><spring:message code="problem.false" /></form:option>
-		<form:option value="1"><spring:message code="problem.true" /></form:option>
+		<form:option value="0"><spring:message code="position.false" /></form:option>
+		<form:option value="1"><spring:message code="position.true" /></form:option>
 	</form:select>
 	<form:errors class="error" path="finalMode" />
 	<br>
@@ -39,11 +46,15 @@
 	<spring:message code="problem.attachment" var="attachmentNameHeader" />
 	<display:column title="${attachmentNameHeader}" property="link" sortable="false" />
 		
-	<spring:message code="problem.attachment.delete" var="deleteHeader" />
+	<spring:message code="problem.deleteAttachment" var="deleteHeader" />
 	<display:column title="${deleteHeader}">
-		<a href="problem/deleteAttachment.do?link=${row.link}"><spring:message code="problem.attachment.delete"/></a>
+		<a href="problem/company/deleteAttachment.do?link=${row.link}"><spring:message code="problem.deleteAttachment"/></a>
 	</display:column>
 	
 <display:caption><spring:message code="problem.attachments"/></display:caption>
 </display:table>
 </jstl:if>
+<br>
+<a href="problem/company/addAttachment.do?problemId=${problem.id}">
+		<spring:message code="problem.addAttachment"/>
+</a>
