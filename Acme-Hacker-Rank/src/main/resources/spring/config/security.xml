@@ -111,8 +111,13 @@
 		<security:intercept-url pattern="/administrator/removeSpamWord.do" access="hasRole('ADMIN')" />
 		
 		
-		
-		
+		<!-- PROBLEMS -->
+		<security:intercept-url pattern="/problem/company/edit.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/list.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/delete.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/display.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/create.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/addAttachment.do" access="hasRole('COMPANY')" />
 		
 
 

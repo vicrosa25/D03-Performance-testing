@@ -39,6 +39,11 @@
 		<bean class="converters.ProblemToStringConverter" />
 		<bean class="converters.StringToProblemConverter" />
 		
+		<bean class="converters.UrlToStringConverter" />
+		<bean class="converters.StringToUrlConverter" />
+		
+		<bean class="converters.CompanyToStringConverter" />
+		<bean class="converters.StringToCompanyConverter" />
 
 	</util:list>
 
