@@ -178,7 +178,7 @@ public class PositionController extends AbstractController {
 			pruned.setTechnologies(position.getTechnologies());
 			pruned.setTitle(position.getTitle());
 
-			result = this.createEditModelAndView(position);
+			result = this.createEditModelAndView(pruned);
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
