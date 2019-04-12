@@ -48,9 +48,18 @@
 	<display:column title="${ companyHeader }">
 		<a href="company/display.do?companyId=${row.company.id}">${row.company.commercialName}</a>
 	</display:column>
+
 	
 
 	<jstl:if test="${requestURI == 'position/company/list.do'}">
+		
+	<!-- Display -->
+	<spring:message code="position.display" var="displayHeader" />
+	<display:column title="${ displayHeader }">
+		<a href="position/company/display.do?positionId=${row.id}">
+		<spring:message code="position.display" /></a>
+	</display:column>
+	
 	<!-- Editar -->	
 	<spring:message code="position.edit" var="editHeader" />
 	<display:column title="${editHeader}">
@@ -59,17 +68,31 @@
 				<spring:message code="position.edit" /></a>
 			</jstl:if>
 	</display:column>
+	
+	
+	<!-- Borrar -->	
+	<spring:message code="position.delete" var="deleteHeader" />
+	<display:column title="${deleteHeader}">
+			<jstl:if test="${not row.finalMode}">
+				<a href="position/company/delete.do?positionId=${row.id}">
+				<spring:message code="position.delete" /></a>
+			</jstl:if>
+	</display:column>
 		
-	<!-- Borrar -->
+	<!-- Cancelar -->
 	<spring:message code="position.cancel" var="cancelHeader" />
-	<display:column title="${cancelHeader}" class="${css}">
-		<a href="position/company/cancel.do?positionId=${row.id}"> <spring:message code="position.cancel" /></a>
+	<display:column title="${cancelHeader}">
+		<jstl:if test="${row.finalMode}">
+		<jstl:if test="${not row.cancelled}">
+			<a href="position/company/cancel.do?positionId=${row.id}"> <spring:message code="position.cancel" /></a>
+		</jstl:if>
+		<jstl:if test="${row.cancelled}">
+			<spring:message code="position.cancelled"/>
+		</jstl:if>
+		</jstl:if>
 	</display:column>
 	</jstl:if>
 </display:table>
-
-	
-
 
 <!-- Create Link -->
 <security:authorize access="hasRole('COMPANY')">

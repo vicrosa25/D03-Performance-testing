@@ -38,13 +38,18 @@
 		
 		<bean class="converters.ProblemToStringConverter" />
 		<bean class="converters.StringToProblemConverter" />
-		
+
 		<bean class="converters.ConfigurationsToStringConverter" />
 		<bean class="converters.StringToConfigurationsConverter" />
 		
 		<bean class="converters.MessageToStringConverter" />
 		<bean class="converters.StringToMessageConverter" />
+
+		<bean class="converters.UrlToStringConverter" />
+		<bean class="converters.StringToUrlConverter" />
 		
+		<bean class="converters.CompanyToStringConverter" />
+		<bean class="converters.StringToCompanyConverter" />
 
 	</util:list>
 

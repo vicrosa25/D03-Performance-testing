@@ -55,7 +55,7 @@ public class Problem extends DomainEntity {
 	@NotNull
 	@Valid
 	@ElementCollection
-	public Collection<Url> getattachments() {
+	public Collection<Url> getAttachments() {
 		return this.attachments;
 	}
 
