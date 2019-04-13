@@ -13,6 +13,7 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Hacker;
+import domain.Message;
 import domain.Position;
 import repositories.AdministratorRepository;
 import security.Authority;
@@ -40,18 +41,19 @@ public class AdministratorService {
 	 *************************************/
 	public Administrator create() {
 		// Initialice
-		final UserAccount userAccount = new UserAccount();
-		final Collection<Authority> authorities = new ArrayList<Authority>();
-		final Authority authority = new Authority();
+		UserAccount userAccount = new UserAccount();
+		Collection<Authority> authorities = new ArrayList<Authority>();
+		Authority authority = new Authority();
 		authority.setAuthority(Authority.ADMIN);
 		authorities.add(authority);
 		userAccount.setAuthorities(authorities);
 
-		//final Collection<MessageBox> boxes = this.messageBoxService.createSystemMessageBox();
+		// Set Messages
+		Collection<Message> messages = new ArrayList<Message>();
 
-		final Administrator admin = new Administrator();
+		Administrator admin = new Administrator();
 		admin.setUserAccount(userAccount);
-		//admin.setMessageBoxes(boxes);
+		admin.setMessages(messages);
 
 		return admin;
 	}

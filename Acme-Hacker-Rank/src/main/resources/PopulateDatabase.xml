@@ -76,15 +76,15 @@
 
 
 	<!-- Administrators *************************************************************************** -->
-	<bean id="admin1" class="domain.Administrator">
+	<bean id="admin" class="domain.Administrator">
 		<property name="name" value="admin" />
 		<property name="username" value="admin" />
 		<property name="surname" value="surname1" />
 		<property name="vat" value="1" />
 		<property name="cardNumber" value="378721273855309" />
-		<property name="email" value="admin1@gmail.com" />
+		<property name="email" value="admin@gmail.com" />
 		<property name="phoneNumber" value="+34656256697" />
-		<property name="address" value="admin1 18" />
+		<property name="address" value="admin 18" />
 		<property name="UserAccount" ref="userAccount1" />
 		<property name="socialIdentities">
 			<list>
@@ -479,8 +479,8 @@
 	<bean id="socialIdentity1" class="domain.SocialIdentity">
 		<property name="nick" value="admin" />
 		<property name="socialNetwork" value="facebook" />
-		<property name="link" value="http://www.facebook/admin1" />
-		<property name="actor" ref="admin1" />
+		<property name="link" value="http://www.facebook/admin" />
+		<property name="actor" ref="admin" />
 	</bean>
 
 <!-- 	<bean id="socialIdentity2" class="domain.SocialIdentity"> -->
@@ -576,7 +576,7 @@
 	</bean>
 
 	<bean id="message5" class="domain.Message">
-		<property name="sender" ref="admin1" />
+		<property name="sender" ref="admin" />
 		<property name="recipients">
 			<list>
 				<ref bean="hacker1" />
