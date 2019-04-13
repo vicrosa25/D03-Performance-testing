@@ -71,7 +71,6 @@
 
 </display:table>
 
-${requestUri }
 <!-- Create Application -->
 <security:authorize access="hasRole('HACKER')">
 <a href=application/hacker/create.do><spring:message code="application.create" /></a>

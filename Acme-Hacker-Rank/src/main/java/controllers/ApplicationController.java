@@ -214,6 +214,54 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 	
+	// Accept ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/company/accept", method = RequestMethod.GET)
+	public ModelAndView accept(@RequestParam int applicationId) {
+		ModelAndView result;
+		Application application;
+
+		try {
+			application = this.applicationService.findOne(applicationId);
+			Assert.isTrue(this.applicationService.findByCompany(this.companyService.findByPrincipal()).contains(application));
+			Assert.isTrue(application.getStatus().equals("SUBMITTED"));
+
+			this.applicationService.accept(application);
+			result = new ModelAndView("redirect:/application/company/list.do");
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+			result = this.forbiddenOpperation();
+		}
+
+		return result;
+	}
+
+	// reject ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/company/reject", method = RequestMethod.GET)
+	public ModelAndView reject(@RequestParam int applicationId) {
+		ModelAndView result;
+		Application application;
+
+		try {
+			application = this.applicationService.findOne(applicationId);
+			Assert.isTrue(this.applicationService.findByCompany(this.companyService.findByPrincipal()).contains(application));
+			Assert.isTrue(application.getStatus().equals("SUBMITTED"));
+
+			this.applicationService.reject(application);
+			result = new ModelAndView("redirect:/application/company/list.do");
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+			result = this.forbiddenOpperation();
+		}
+
+		return result;
+	}
+
 	
 	
 	

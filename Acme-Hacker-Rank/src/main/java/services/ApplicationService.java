@@ -35,6 +35,9 @@ public class ApplicationService {
 	@Autowired
 	private AnswerService			answerService;
 
+	@Autowired
+	private CompanyService			companyService;
+
 
 	/*************************************
 	 * CRUD methods
@@ -166,5 +169,27 @@ public class ApplicationService {
 		Assert.notNull(result);
 
 		return result;
+	}
+
+	public void accept(Application application) {
+		Assert.notNull(application);
+		Assert.isTrue(this.findByCompany(this.companyService.findByPrincipal()).contains(application));
+		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
+
+		application.setStatus("ACCEPTED");
+
+		this.applicationRepository.save(application);
+
+	}
+
+	public void reject(Application application) {
+		Assert.notNull(application);
+		Assert.isTrue(this.findByCompany(this.companyService.findByPrincipal()).contains(application));
+		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
+
+		application.setStatus("REJECTED");
+
+		this.applicationRepository.save(application);
+
 	}
 }
