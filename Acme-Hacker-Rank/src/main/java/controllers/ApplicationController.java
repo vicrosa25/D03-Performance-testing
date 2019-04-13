@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ApplicationService;
+import services.CompanyService;
 import services.HackerService;
 import services.PositionService;
 import domain.Actor;
@@ -39,6 +40,9 @@ public class ApplicationController extends AbstractController {
 
 	@Autowired
 	private HackerService		hackerService;
+
+	@Autowired
+	private CompanyService		companyService;
 
 	@Autowired
 	private PositionService		positionService;
@@ -185,8 +189,30 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
+	/*********************
+	 * Company Methods
+	 *********************/
+	// List ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
+	public ModelAndView companyList() {
+		ModelAndView result;
+		Collection<Application> apps;
 
-	
+		try {
+			apps = this.applicationService.findByCompany(this.companyService.findByPrincipal());
+			result = new ModelAndView("application/company/list");
+			result.addObject("requestUri", "application/company/list.do");
+			result.addObject("apps", apps);
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+			result = this.forbiddenOpperation();
+		}
+
+		return result;
+	}
 	
 	
 	
