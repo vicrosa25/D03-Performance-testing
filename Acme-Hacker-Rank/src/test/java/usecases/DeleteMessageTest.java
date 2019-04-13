@@ -20,7 +20,7 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class deleteMessageTest extends AbstractTest {
+public class DeleteMessageTest extends AbstractTest {
 	
 	// System under test ---------------------------------------------------------------------------
 	@Autowired
