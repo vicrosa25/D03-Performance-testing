@@ -25,13 +25,16 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Configurations;
 import domain.Hacker;
 import domain.Position;
+import services.ActorService;
 import services.AdministratorService;
 import services.ConfigurationsService;
 import utilities.Md5;
@@ -45,6 +48,9 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private ConfigurationsService	configurationsService;
+	
+	@Autowired
+	private ActorService			actorService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -236,6 +242,81 @@ public class AdministratorController extends AbstractController {
 			}
 
 		return result;
+	}
+	
+	/**
+	 * 
+	 * SPAM
+	 * ****************************************************************************
+	 */
+
+	// Spammer list ---------------------------------------------------------------------
+	@RequestMapping(value = "/spammers", method = RequestMethod.GET)
+	public ModelAndView suspiciousList() {
+		ModelAndView result;
+		Collection<Actor> suspicious;
+
+		suspicious = this.administratorService.getSpammers();
+
+		result = new ModelAndView("administrator/spammers");
+		result.addObject("suspicious", suspicious);
+		result.addObject("requestURI", "administrator/spammers.do");
+
+		return result;
+	}
+
+	// Compute Spammers -------------------------------------------------------------------
+	@RequestMapping(value = "/computeSpammers", method = RequestMethod.GET)
+	public ModelAndView computeSpammers() {
+
+		this.administratorService.computeSpammers();
+
+		return this.suspiciousList();
+	}
+
+	// Ban
+	// -----------------------------------------------------------------------------------
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView ban(@RequestParam final int actorId) {
+		ModelAndView result;
+		Actor actor = null;
+
+		try {
+			actor = this.actorService.findOne(actorId);
+		} catch (final Exception e) {
+			result = this.forbiddenOpperation();
+			return result;
+		}
+
+		this.administratorService.banAnActor(actor);
+
+		result = this.suspiciousList();
+		return result;
+	}
+
+	// Unban
+	// -----------------------------------------------------------------------------------
+	@RequestMapping(value = "/unban", method = RequestMethod.GET)
+	public ModelAndView unban(@RequestParam final int actorId) {
+		ModelAndView result;
+		Actor actor = null;
+
+		try {
+			actor = this.actorService.findOne(actorId);
+		} catch (final Exception e) {
+			result = this.forbiddenOpperation();
+			return result;
+		}
+		this.administratorService.unBanAnActor(actor);
+
+		result = this.suspiciousList();
+
+		return result;
+	}
+	
+	
+	private ModelAndView forbiddenOpperation() {
+		return new ModelAndView("redirect:/");
 	}
 
 }
