@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CompanyService;
 import services.PositionService;
 import services.ProblemService;
-import domain.Position;
 import domain.Problem;
 import domain.Url;
 
@@ -58,33 +57,6 @@ public class ProblemController extends AbstractController {
 			result = new ModelAndView("problem/list");
 			result.addObject("problems", problems);
 			result.addObject("requestURI", "problem/company/list.do");
-
-		} catch (final Throwable oops) {
-			System.out.println(oops.getMessage());
-			System.out.println(oops.getClass());
-			System.out.println(oops.getCause());
-			result = this.forbiddenOpperation();
-
-		}
-
-		return result;
-	}
-
-	// principal List -------------------------------------------------------------
-	@RequestMapping(value = "/company/positionList", method = RequestMethod.GET)
-	public ModelAndView positionList(@RequestParam final int positionId) {
-		ModelAndView result;
-		Position position;
-		Collection<Problem> problems;
-		try {
-			position = this.positionService.findOne(positionId);
-			Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
-
-			problems = position.getProblems();
-
-			result = new ModelAndView("problem/company/list");
-			result.addObject("problems", problems);
-			result.addObject("requestURI", "problem/company/positionList.do");
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
@@ -190,6 +162,34 @@ public class ProblemController extends AbstractController {
 				System.out.println(oops.getCause());
 				result = this.createEditModelAndView(problem, "company.registration.error");
 			}
+		return result;
+	}
+
+	// delete ------------------------------------------------------------------------------------
+	@RequestMapping(value = "company/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int problemId) {
+		ModelAndView result;
+		Problem problem;
+
+		try {
+			problem = this.problemService.findOne(problemId);
+			Assert.isTrue(problem.getCompany() == this.companyService.findByPrincipal());
+
+			result = this.principalList();
+			if (this.problemService.checkApplicationsProblem(problem)) {
+				result.addObject("application", "problem.delete.application");
+			} else {
+				this.problemService.delete(problem);
+			}
+
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			result = this.forbiddenOpperation();
+
+		}
+
 		return result;
 	}
 
