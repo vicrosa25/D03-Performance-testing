@@ -83,4 +83,18 @@ public class ProblemService {
 
 		this.problemRepository.delete(problem);
 	}
+
+	/** OTHER METHODS **/
+
+	public Collection<Problem> getPrincipalFinalMode() {
+		Collection<Problem> result = this.getCompanyFinals(this.companyService.findByPrincipal());
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Problem> getCompanyFinals(Company company) {
+		Collection<Problem> result = this.problemRepository.getCompanyFinals(company.getId());
+		Assert.notNull(result);
+		return result;
+	}
 }

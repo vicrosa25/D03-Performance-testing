@@ -82,6 +82,15 @@ public class PositionService {
 	public Position save(Position position) {
 		Assert.notNull(position);
 		Position result = this.positionRepository.save(position);
+		for (Problem p : position.getCompany().getProblems()) {
+			if (!p.getPositions().contains(position) && position.getProblems().contains(p)) {
+				p.getPositions().add(position);
+			}
+			if (p.getPositions().contains(position) && !position.getProblems().contains(p)) {
+				p.getPositions().remove(position);
+
+			}
+		}
 
 		return result;
 	}
@@ -149,6 +158,7 @@ public class PositionService {
 		result.setTitle(position.getTitle());
 
 		result.setCompany(this.companyService.findByPrincipal());
+		result.setProblems(position.getProblems());
 
 		this.validator.validate(result, binding);
 

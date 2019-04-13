@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -123,6 +124,7 @@ public class Position extends DomainEntity {
 	}
 
 	@NotNull
+	@DecimalMin("0.0")
 	public Double getSalary() {
 		return this.salary;
 	}

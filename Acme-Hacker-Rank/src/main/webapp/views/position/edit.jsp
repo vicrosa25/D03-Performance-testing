@@ -39,6 +39,10 @@
 	<acme:textbox code="position.deadline" path="deadline" />
 	<br>
 	
+	<!-- Select Problems -->
+	<acme:select items="${ problems }" itemLabel="title" code="position.problems" path="problems"/>
+	<br>
+	
 	
 
 	<%-- finalMode --%>
