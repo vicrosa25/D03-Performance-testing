@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CompanyService;
 import services.PositionService;
+import services.ProblemService;
 import domain.Position;
 
 @Controller
@@ -31,6 +32,9 @@ public class PositionController extends AbstractController {
 
 	@Autowired
 	private CompanyService	companyService;
+
+	@Autowired
+	private ProblemService	problemService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -177,6 +181,7 @@ public class PositionController extends AbstractController {
 			pruned.setSkills(position.getSkills());
 			pruned.setTechnologies(position.getTechnologies());
 			pruned.setTitle(position.getTitle());
+			pruned.setProblems(position.getProblems());
 
 			result = this.createEditModelAndView(pruned);
 
@@ -292,6 +297,7 @@ public class PositionController extends AbstractController {
 
 		result = new ModelAndView("position/company/edit");
 		result.addObject("position", position);
+		result.addObject("problems", this.problemService.getPrincipalFinalMode());
 		result.addObject("message", message);
 
 		return result;
