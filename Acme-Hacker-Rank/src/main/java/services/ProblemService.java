@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
 import domain.Actor;
+import domain.Application;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
@@ -29,6 +30,9 @@ public class ProblemService {
 
 	@Autowired
 	private CompanyService		companyService;
+
+	@Autowired
+	private ApplicationService	applicationService;
 
 
 	/*************************************
@@ -77,7 +81,7 @@ public class ProblemService {
 		Assert.notNull(problem);
 		Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());
 
-		for (Position p : problem.getPositions()) {
+		for (Position p : problem.getCompany().getPositions()) {
 			p.getProblems().remove(problem);
 		}
 
@@ -96,5 +100,12 @@ public class ProblemService {
 		Collection<Problem> result = this.problemRepository.getCompanyFinals(company.getId());
 		Assert.notNull(result);
 		return result;
+	}
+
+	public boolean checkApplicationsProblem(Problem problem) {
+		Collection<Application> result = this.applicationService.findByProblem(problem);
+		Assert.notNull(result);
+
+		return !result.isEmpty();
 	}
 }

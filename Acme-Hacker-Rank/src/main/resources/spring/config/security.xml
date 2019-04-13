@@ -109,6 +109,7 @@
 		<security:intercept-url pattern="/problem/company/display.do" access="hasRole('COMPANY')" />
 		<security:intercept-url pattern="/problem/company/create.do" access="hasRole('COMPANY')" />
 		<security:intercept-url pattern="/problem/company/addAttachment.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/deleteAttachment.do" access="hasRole('COMPANY')" />
 		
 
 

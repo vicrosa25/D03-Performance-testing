@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.ApplicationRepository;
 import domain.Actor;
 import domain.Answer;
 import domain.Application;
 import domain.Hacker;
 import domain.Problem;
-import repositories.ApplicationRepository;
 
 @Service
 @Transactional
@@ -150,5 +150,13 @@ public class ApplicationService {
 		Assert.isTrue(hacker.getApplications().contains(application));
 
 		this.applicationRepository.delete(application);
+	}
+
+	/** OTHER METHODS **/
+	public Collection<Application> findByProblem(Problem problem) {
+		Collection<Application> result = this.applicationRepository.findByProblem(problem.getId());
+		Assert.notNull(result);
+
+		return result;
 	}
 }
