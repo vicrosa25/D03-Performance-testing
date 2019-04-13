@@ -54,6 +54,12 @@
 					<li><a href="problem/company/create.do"><spring:message code="master.page.problems.create" /></a></li>			
 				</ul>
 			</li>
+			<li><a class="fNiv"><spring:message code="master.page.hacker.applications" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="application/company/list.do"><spring:message code="master.page.hacker.applications.list" /></a></li>
+				</ul>
+		</li>
 		
 		</security:authorize>
 		
@@ -65,7 +71,7 @@
 					<li class="arrow"></li>
 					<li><a href="application/hacker/list.do"><spring:message code="master.page.hacker.applications.list" /></a></li>
 				</ul>
-			</li>
+		</li>
 		</security:authorize>
 		
 		

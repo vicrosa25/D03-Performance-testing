@@ -12,15 +12,15 @@
 	<!-- FROM POSITION -->
 	
 	<!-- Posistion title -->
-	<spring:message code="position.title" var="titleHeader" />
+	<spring:message code="application.title" var="titleHeader" />
 	<display:column property="position.title" title="${titleHeader}" />
 
 	<!-- Position ticker -->
-	<spring:message code="position.ticker" var="tickerHeader" />
+	<spring:message code="application.ticker" var="tickerHeader" />
 	<display:column property="position.ticker" title="${tickerHeader}" />
 
 	<!-- Position description -->
-	<spring:message code="position.description" var="descriptionHeader" />
+	<spring:message code="application.description" var="descriptionHeader" />
 	<display:column property="position.description" title="${descriptionHeader}" />
 	
 	
@@ -42,10 +42,36 @@
 		<a href="application/hacker/display.do?appId=${row.id}"><spring:message code="application.display" /></a>
 	</display:column>
 	
+	<jstl:if test="${requestUri == 'application/company/list.do'}">
+	
+	<!-- hacker -->
+	<spring:message code="application.hacker" var="hackerHeader" />
+	<display:column property="hacker.name" title="${hackerHeader}" sortable="false"/>
+	
+	
+	<!-- Aceptar -->	
+	<spring:message code="application.accept" var="acceptHeader" />
+	<display:column title="${acceptHeader}">
+			<jstl:if test="${row.status eq 'SUBMITTED'}">
+				<a href="application/company/accept.do?applicationId=${row.id}">
+				<spring:message code="application.accept" /></a>
+			</jstl:if>
+	</display:column>
+	
+	
+	<!-- Rechazar -->	
+	<spring:message code="application.reject" var="rejectHeader" />
+	<display:column title="${rejectHeader}">
+			<jstl:if test="${row.status eq 'SUBMITTED'}">
+				<a href="application/company/reject.do?applicationId=${row.id}">
+				<spring:message code="application.reject" /></a>
+			</jstl:if>
+	</display:column>
+	</jstl:if>
 
 </display:table>
 
-
+${requestUri }
 <!-- Create Application -->
 <security:authorize access="hasRole('HACKER')">
 <a href=application/hacker/create.do><spring:message code="application.create" /></a>
