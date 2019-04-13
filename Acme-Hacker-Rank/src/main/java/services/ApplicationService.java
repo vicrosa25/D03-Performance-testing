@@ -15,6 +15,7 @@ import repositories.ApplicationRepository;
 import domain.Actor;
 import domain.Answer;
 import domain.Application;
+import domain.Company;
 import domain.Hacker;
 import domain.Problem;
 
@@ -155,6 +156,13 @@ public class ApplicationService {
 	/** OTHER METHODS **/
 	public Collection<Application> findByProblem(Problem problem) {
 		Collection<Application> result = this.applicationRepository.findByProblem(problem.getId());
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<Application> findByCompany(Company company) {
+		Collection<Application> result = this.applicationRepository.findByCompany(company.getId());
 		Assert.notNull(result);
 
 		return result;

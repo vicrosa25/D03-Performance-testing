@@ -16,6 +16,9 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 	Collection<Application> findByHacker(int hackerId);
 
 	@Query("select a from Application a where a.problem.id = ?1")
-	Collection<Application> findByProblem(int id);
+	Collection<Application> findByProblem(int problemId);
+
+	@Query("select a from Application a where a.position.company.id = ?1 order by a.status")
+	Collection<Application> findByCompany(int companyId);
 
 }
