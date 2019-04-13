@@ -129,7 +129,7 @@ public class MessageController extends AbstractController {
 
 	// Create Broadcast
 	// ------------------------------------------------------------------------
-	@RequestMapping(value = "/broadcast", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/broadcast", method = RequestMethod.GET)
 	public ModelAndView broadcast() {
 		ModelAndView result;
 		Message mesage;
@@ -137,7 +137,7 @@ public class MessageController extends AbstractController {
 		mesage = this.messageService.create();
 		mesage.setIsNotification(true);
 
-		result = new ModelAndView("message/broadcast");
+		result = new ModelAndView("message/admin/broadcast");
 		result.addObject("mesage", mesage);
 
 		return result;
@@ -145,7 +145,7 @@ public class MessageController extends AbstractController {
 
 	// Send Broadcast 
 	// -------------------------------------------------------------
-	@RequestMapping(value = "/broadcast", method = RequestMethod.POST, params = "send")
+	@RequestMapping(value = "/admin/broadcast", method = RequestMethod.POST, params = "send")
 	public ModelAndView sendBroadcast(@ModelAttribute("mesage") @Valid Message mesage, BindingResult binding) {
 		ModelAndView result;
 
@@ -167,7 +167,7 @@ public class MessageController extends AbstractController {
 				System.out.println(oops.getClass());
 				System.out.println(oops.getCause());
 				oops.printStackTrace();
-				result = new ModelAndView("message/broadcast");
+				result = new ModelAndView("message/admin/broadcast");
 				result.addObject("mesage", mesage);
 				result.addObject("message", "message.commit.error");
 			}

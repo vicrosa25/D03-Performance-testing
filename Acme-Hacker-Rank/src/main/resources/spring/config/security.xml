@@ -90,7 +90,7 @@
 		<security:intercept-url pattern="/message/list.do" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/message/display.do" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/message/delete.do" access="isAuthenticated()"/>
-		<security:intercept-url pattern="/message/broadcast.do" access="hasRole('ADMIN')"/>
+		<security:intercept-url pattern="/message/admin/broadcast.do" access="hasRole('ADMIN')"/>
 		
 		
 		<!-- CONFIGURATIONS -->

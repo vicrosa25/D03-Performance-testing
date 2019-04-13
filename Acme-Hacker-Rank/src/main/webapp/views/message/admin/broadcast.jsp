@@ -6,7 +6,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="message/broadcast.do" modelAttribute="mesage">
+<form:form action="message/admin/broadcast.do" modelAttribute="mesage">
 
 	<security:authorize access="hasRole('ADMIN')">
 
@@ -15,8 +15,8 @@
 		<form:hidden path="version" />
 		<form:hidden path="sender" />
 		<form:hidden path="moment" />
-		<form:hidden path="messageBoxes" />
 		<form:hidden path="recipients" />
+		<form:hidden path="tags" />
 		<form:hidden path="isNotification" />
 
 

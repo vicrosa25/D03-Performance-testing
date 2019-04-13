@@ -26,12 +26,14 @@
 	<spring:message code="message.sender" var="senderHeader" />
 	<display:column property="sender.name" title="${senderHeader}" />
 	
-	<!-- Tags -->
+	<!-- Recipients -->
 	<spring:message code="message.recipients" var="recipientsHeader" />
 	<display:column title="${recipientsHeader}">
+		<jstl:if test="${not row.getTags().contains('SYSTEM') }">
 		<jstl:forEach var="recipient" items="${row.recipients}" varStatus="loop">
 			${recipient.email}${!loop.last ? ',' : ''}&nbsp
 		</jstl:forEach>
+		</jstl:if>
 	</display:column>
 	
 	<!-- Priority -->
