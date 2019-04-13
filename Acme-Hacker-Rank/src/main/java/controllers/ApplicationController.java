@@ -25,6 +25,7 @@ import services.HackerService;
 import services.PositionService;
 import domain.Actor;
 import domain.Application;
+import domain.Company;
 import domain.Hacker;
 import domain.Position;
 
@@ -76,28 +77,32 @@ public class ApplicationController extends AbstractController {
 	/*********************
 	 * Display an App
 	 *********************/
-	@RequestMapping(value = "/hacker/display", method = RequestMethod.GET)
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam int appId) {
 		ModelAndView result;
 		Application application;
 		Actor principal;
 		Hacker hacker;
+		Company company;
 
 		try {
 			application = this.applicationService.findOne(appId);
 			principal = this.actorService.findByPrincipal();
+			result = new ModelAndView("application/display");
 
 			// Check the principal is an Hacker and owns app
-			Assert.isInstanceOf(Hacker.class, principal);
-			hacker = (Hacker) principal;
-			Assert.isTrue(hacker.getApplications().contains(application));
+			if (principal instanceof Hacker) {
+				hacker = (Hacker) principal;
+				Assert.isTrue(hacker.getApplications().contains(application));
+				result.addObject("requestUri", "application/hacker/display.do");
+			}
+			if (principal instanceof Company) {
+				company = (Company) principal;
+				Assert.isTrue(this.applicationService.findByCompany(company).contains(application));
+				result.addObject("requestUri", "application/company/display.do");
+			}
 
-			result = new ModelAndView("application/hacker/display");
-			result.addObject("requestUri", "application/hacker/display.do");
 			result.addObject("application", application);
-			result.addObject("position", application.getPosition());
-			result.addObject("problem", application.getProblem());
-			result.addObject("attachments", application.getProblem().getAttachments());
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());

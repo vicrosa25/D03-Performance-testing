@@ -8,7 +8,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<display:table name="application" id="row" requestURI="#{ requestUri }" class="displaytag">
+<display:table name="application" id="row" requestURI="${requestUri}" class="displaytag">
 	
 	<!-- Creation moment -->
 	<spring:message code="application.creationMoment" var="creationMomentHeader" />
@@ -21,7 +21,7 @@
 </display:table>
 
 
-<display:table name="position" id="row" requestURI="${ requestUri }" class="displaytag">
+<display:table name="application.position" id="row" requestURI="${ requestUri }" class="displaytag">
 
 	<!-- Caption -->
 	<display:caption><b><spring:message code="application.position"/></b></display:caption>	
@@ -57,7 +57,7 @@
 </display:table>
 
 
-<display:table name="problem" id="row" requestURI="${ requestUri }" class="displaytag">
+<display:table name="application.problem" id="row" requestURI="${ requestUri }" class="displaytag">
 	
 	<!-- Caption -->
 	<display:caption><b><spring:message code="application.problem"/></b></display:caption>
@@ -77,7 +77,7 @@
 </display:table>
 
 
-<display:table name="attachments" id="row" requestURI="${ requestUri }" class="displaytag">
+<display:table name="application.problem.attachments" id="row" requestURI="${ requestUri }" class="displaytag">
 	
 	<!-- Caption -->
 	<display:caption><b><spring:message code="application.problem.attachments"/></b></display:caption>
@@ -106,10 +106,11 @@
 </jstl:if>
 <br>
 <br>
-
+<security:authorize access="hasRole('HACKER')">
 <jstl:if test="${ application.answer == null }">
 	<acme:cancel url="application/hacker/update.do?appId=${application.id}" code="application.update"/>
 </jstl:if>
+</security:authorize>
 <acme:back code="application.goBack"/>
 
 
