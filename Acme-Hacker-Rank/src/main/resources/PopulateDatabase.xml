@@ -135,6 +135,7 @@
 		<property name="email" value="hacker2@gmail.com" />
 		<property name="phoneNumber" value="+34656256697" />
 		<property name="address" value="hacker2 18" />
+		<property name="isSpammer" value="true" />
 		<property name="UserAccount" ref="userAccount4" />
 		<property name="applications">
 			<list>
