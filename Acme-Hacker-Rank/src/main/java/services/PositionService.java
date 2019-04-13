@@ -81,6 +81,11 @@ public class PositionService {
 
 	public Position save(Position position) {
 		Assert.notNull(position);
+
+		// If there is no problems, assign an empty collection to avoid nullPointerException
+		if (position.getProblems() == null) {
+			position.setProblems(new ArrayList<Problem>());
+		}
 		Position result = this.positionRepository.save(position);
 		for (Problem p : position.getCompany().getProblems()) {
 			if (!p.getPositions().contains(position) && position.getProblems().contains(p)) {

@@ -226,6 +226,7 @@ public class PositionController extends AbstractController {
 				System.out.println(oops.getMessage());
 				System.out.println(oops.getClass());
 				System.out.println(oops.getCause());
+				oops.printStackTrace();
 				result = this.createEditModelAndView(prune, "company.registration.error");
 			}
 		return result;
