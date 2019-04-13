@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Actor;
-import domain.Application;
-import domain.Hacker;
-import domain.Position;
 import services.ActorService;
 import services.ApplicationService;
 import services.HackerService;
 import services.PositionService;
+import domain.Actor;
+import domain.Application;
+import domain.Hacker;
+import domain.Position;
 
 @Controller
 @RequestMapping("/application")
@@ -93,7 +93,7 @@ public class ApplicationController extends AbstractController {
 			result.addObject("application", application);
 			result.addObject("position", application.getPosition());
 			result.addObject("problem", application.getProblem());
-			result.addObject("attachments", application.getProblem().getattachments());
+			result.addObject("attachments", application.getProblem().getAttachments());
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
