@@ -48,7 +48,7 @@
 		
 	<spring:message code="problem.deleteAttachment" var="deleteHeader" />
 	<display:column title="${deleteHeader}">
-		<a href="problem/company/deleteAttachment.do?link=${row.link}"><spring:message code="problem.deleteAttachment"/></a>
+		<a href="problem/company/deleteAttachment.do?link=${row.link}&problemId=${problem.id}"><spring:message code="problem.deleteAttachment"/></a>
 	</display:column>
 	
 <display:caption><spring:message code="problem.attachments"/></display:caption>

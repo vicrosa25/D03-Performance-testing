@@ -70,8 +70,11 @@
 	</display:column>
 	</jstl:if>
 </display:table>
-
 <!-- Create Link -->
 <security:authorize access="hasRole('COMPANY')">
 	<a href=problem/company/create.do><spring:message code="problem.create" /></a>
 </security:authorize>
+<jstl:if test="${not empty application}">
+<br>
+<p class="error"> <spring:message code="problem.delete.application"/></p>
+</jstl:if>
