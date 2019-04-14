@@ -43,7 +43,7 @@ public class Hacker extends Actor {
 		this.applications = applications;
 	}
 
-	@OneToMany
+	@OneToMany(mappedBy = "hacker")
 	public Collection<Curricula> getCurriculas() {
 		return curriculas;
 	}

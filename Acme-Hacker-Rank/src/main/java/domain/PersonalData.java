@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -18,7 +19,18 @@ public class PersonalData extends DomainEntity {
 	private String	phoneNumber;
 	private String	gitHub;
 	private String	linkedIn;
+	// Relationship -----------------------------------------------------------
+	private Curricula	curricula;
 
+
+	@OneToOne(optional = false)
+	public Curricula getCurricula() {
+		return this.curricula;
+	}
+
+	public void setCurricula(Curricula curricula) {
+		this.curricula = curricula;
+	}
 
 	@NotBlank
 	public String getFullName() {

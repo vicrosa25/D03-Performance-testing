@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class Curricula extends DomainEntity {
 	private Collection<PositionData>		positionData;
 	private Collection<EducationData>		educationData;
 	private Collection<MiscellaneousData>	miscellaneousData;
+	private Hacker							hacker;
 
 
 	//	public Integer getRecordNumber(){
@@ -32,6 +34,15 @@ public class Curricula extends DomainEntity {
 	//	public void setRecordNumber(Integer recordNumber){
 	//		this.recordNumber = recordNumber;
 	//	}
+
+	@ManyToOne(optional = false)
+	public Hacker getHacker() {
+		return hacker;
+	}
+
+	public void setHacker(Hacker hacker) {
+		this.hacker = hacker;
+	}
 
 	@Valid
 	@NotNull
@@ -45,7 +56,7 @@ public class Curricula extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany
+	@OneToMany(mappedBy = "curricula")
 	public Collection<PositionData> getPositionData() {
 		return this.positionData;
 	}
@@ -55,7 +66,7 @@ public class Curricula extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany
+	@OneToMany(mappedBy = "curricula")
 	public Collection<EducationData> getEducationData() {
 		return this.educationData;
 	}
@@ -65,7 +76,7 @@ public class Curricula extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany
+	@OneToMany(mappedBy = "curricula")
 	public Collection<MiscellaneousData> getMiscellaneousData() {
 		return this.miscellaneousData;
 	}
