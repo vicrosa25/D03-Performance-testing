@@ -19,6 +19,7 @@ public class Hacker extends Actor {
 
 	// Relationships ----------------------------------------------------------
 	private Collection<Application> applications;
+	private Collection<Curricula>	curriculas;
 	private Finder					finder;
 
 
@@ -40,6 +41,15 @@ public class Hacker extends Actor {
 
 	public void setApplications(Collection<Application> applications) {
 		this.applications = applications;
+	}
+
+	@OneToMany
+	public Collection<Curricula> getCurriculas() {
+		return curriculas;
+	}
+
+	public void setCurriculas(Collection<Curricula> curriculas) {
+		this.curriculas = curriculas;
 	}
 
 }
