@@ -50,6 +50,24 @@
 		
 		<bean class="converters.CompanyToStringConverter" />
 		<bean class="converters.StringToCompanyConverter" />
+		
+		<bean class="converters.CurriculaToStringConverter" />
+		<bean class="converters.StringToCurriculaConverter" />
+		
+		<bean class="converters.FinderToStringConverter" />
+		<bean class="converters.StringToFinderConverter" />
+		
+		<bean class="converters.PersonalDataToStringConverter" />
+		<bean class="converters.StringToPersonalDataConverter" />
+		
+		<bean class="converters.EducationDataToStringConverter" />
+		<bean class="converters.StringToEducationDataConverter" />
+		
+		<bean class="converters.PositionDataToStringConverter" />
+		<bean class="converters.StringToPositionDataConverter" />
+		
+		<bean class="converters.MiscellaneousDataToStringConverter" />
+		<bean class="converters.StringToMiscellaneousDataConverter" />
 
 	</util:list>
 
