@@ -15,10 +15,10 @@ import domain.Position;
 public interface FinderRepository extends JpaRepository<Finder, Integer> {
 
 	@Query("select p from Position p where p.salary <= ?1")
-	Collection<Position> filterByMaxSalary(Integer maxSalary);
+	Collection<Position> filterByMaxSalary(Double maxSalary);
 
 	@Query("select p from Position p where p.salary >= ?1")
-	Collection<Position> filterByMinSalary(Integer minSalary);
+	Collection<Position> filterByMinSalary(Double minSalary);
 
 	@Query("select p from Position p where p.title LIKE ?1 or p.description LIKE " +
 			"?1 or p.ticker like ?1 or p.skills like ?1 or p.technologies like ?1 or p.profile like ?1")

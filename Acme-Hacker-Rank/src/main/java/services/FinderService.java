@@ -114,11 +114,11 @@ public class FinderService {
 		final ArrayList<Position> result = new ArrayList<Position>(this.positionService.findAll());
 
 		if (finder.getMinSalary() != null) {
-			result.retainAll(this.finderRepository.filterByMinSalary(finder.getMinSalary()));
+			result.retainAll(this.finderRepository.filterByMinSalary(new Double(finder.getMinSalary())));
 		}
 
 		if (finder.getMaxSalary() != null) {
-			result.retainAll(this.finderRepository.filterByMaxSalary(finder.getMaxSalary()));
+			result.retainAll(this.finderRepository.filterByMaxSalary(new Double(finder.getMaxSalary())));
 		}
 
 		if (finder.getKeyword() != null) {
