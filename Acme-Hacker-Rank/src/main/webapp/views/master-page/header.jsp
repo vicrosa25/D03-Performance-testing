@@ -72,6 +72,13 @@
 					<li><a href="application/hacker/list.do"><spring:message code="master.page.hacker.applications.list" /></a></li>
 				</ul>
 		</li>
+		<li><a class="fNiv"><spring:message	code="master.page.finder" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="finder/hacker/edit.do"><spring:message code="master.page.finder.edit" /></a></li>
+					<li><a href="finder/hacker/result.do"><spring:message code="master.page.finder.result" /></a></li>
+				</ul>
+			</li>
 		</security:authorize>
 		
 		

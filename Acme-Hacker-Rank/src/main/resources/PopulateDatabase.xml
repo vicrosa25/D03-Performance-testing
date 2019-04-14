@@ -110,6 +110,7 @@
 		<property name="phoneNumber" value="+34656256697" />
 		<property name="address" value="hacker1 18" />
 		<property name="UserAccount" ref="userAccount2" />
+		<property name="finder" ref="finder1" />
 		<property name="applications">
 			<list>
 				<ref bean="application1" />
@@ -137,6 +138,7 @@
 		<property name="address" value="hacker2 18" />
 		<property name="isSpammer" value="true" />
 		<property name="UserAccount" ref="userAccount4" />
+		<property name="finder" ref="finder2" />
 		<property name="applications">
 			<list>
 			</list>
@@ -147,6 +149,15 @@
 				<ref bean="message2" />
 			</list>
 		</property>
+	</bean>
+
+	<!-- finder ************************************************************************************************** -->
+	<bean id="finder1" class="domain.Finder">
+		<property name="lastUpdate" value="01/01/2000" />
+	</bean>
+
+	<bean id="finder2" class="domain.Finder">
+		<property name="lastUpdate" value="01/01/2000" />
 	</bean>
 	
 	<!-- Companies *************************************************************************** -->

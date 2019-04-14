@@ -7,27 +7,27 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="finder/member/edit.do" modelAttribute="finder">
+<form:form action="finder/hacker/edit.do" modelAttribute="finder">
 	
 	<%-- Hidden properties from finder--%>
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="lastUpdate" />
+	<form:hidden path="lastUpsalary" />
 	
 	<%-- keyword--%>
 	<acme:textbox code="finder.keyword" path="keyword" />
 	<br>
 	
-	<%-- max date --%>
-	<acme:dateinput code="finder.maxDate" path="maxDate" placeholder="dd/mm/yyyy" format="{0,date,dd/MM/yyyy HH:mm}" />
+	<%-- max salary --%>
+	<acme:numberbox code="finder.maxSalary" path="maxSalary" />
 	<br>
 	
-	<%-- min date --%>
-	<acme:dateinput code="finder.minDate" path="minDate" placeholder="dd/mm/yyyy" format="{0,date,dd/MM/yyyy HH:mm}" />
+	<%-- min salary --%>
+	<acme:numberbox code="finder.minSalary" path="minSalary" />
 	<br>
 	
-	<%-- Area --%>
-	<acme:select code="finder.area" path="area" items="${areas}" itemLabel="name" />
+	<%-- Deadline --%>
+	<acme:dateinput code="finder.deadline" path="deadline" placeholder="dd/mm/yyyy" format="{0,date,dd/MM/yyyy}" />
 	<br>
 	
 	
@@ -35,7 +35,7 @@
 	<input type="submit" name="save" 
 		value="<spring:message code="finder.save"/>"/>
 	
-	<acme:cancel code="finder.clear" url="/finder/member/clear.do" />
+	<acme:cancel code="finder.clear" url="/finder/hacker/clear.do" />
 	<acme:cancel code="finder.cancel" url="/" />
 		
 </form:form>

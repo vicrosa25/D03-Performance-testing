@@ -24,6 +24,7 @@
 		<value>/views/application/messages</value>
 		<value>/views/problem/messages</value>
 		<value>/views/message/messages</value>
+		<value>/views/finder/messages</value>
 	</util:list>
 
 </beans>

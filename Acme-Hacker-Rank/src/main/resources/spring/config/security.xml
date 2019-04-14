@@ -114,6 +114,11 @@
 		<security:intercept-url pattern="/problem/company/addAttachment.do" access="hasRole('COMPANY')" />
 		<security:intercept-url pattern="/problem/company/deleteAttachment.do" access="hasRole('COMPANY')" />
 		
+		<!-- FINDER -->
+		<security:intercept-url pattern="/finder/hacker/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/finder/hacker/result.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/finder/hacker/clear.do" access="hasRole('HACKER')" />
+		
 
 
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
