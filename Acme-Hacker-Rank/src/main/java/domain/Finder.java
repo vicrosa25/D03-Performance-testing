@@ -24,6 +24,7 @@ public class Finder extends DomainEntity {
 	private Date	deadline;
 	private Integer	minSalary;
 	private Integer	maxSalary;
+	private Date	lastUpdate;
 
 
 	public String getKeyword() {
@@ -60,6 +61,15 @@ public class Finder extends DomainEntity {
 
 	public void setMaxSalary(Integer maxSalary) {
 		this.maxSalary = maxSalary;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	public Date getLastUpdate() {
+		return this.lastUpdate;
+	}
+	public void setLastUpdate(final Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 
