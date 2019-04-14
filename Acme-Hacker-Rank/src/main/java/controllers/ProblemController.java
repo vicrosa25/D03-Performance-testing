@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CompanyService;
-import services.PositionService;
 import services.ProblemService;
 import domain.Problem;
 import domain.Url;
@@ -34,9 +33,6 @@ public class ProblemController extends AbstractController {
 
 	@Autowired
 	private CompanyService	companyService;
-
-	@Autowired
-	private PositionService	positionService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)

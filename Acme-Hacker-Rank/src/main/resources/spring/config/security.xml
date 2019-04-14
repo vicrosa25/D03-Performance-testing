@@ -119,6 +119,17 @@
 		<security:intercept-url pattern="/finder/hacker/result.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/finder/hacker/clear.do" access="hasRole('HACKER')" />
 		
+		<!-- CURRICULA -->
+		<security:intercept-url pattern="/curricula/hacker/display.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/personalData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/positionData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/positionData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/educationData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/educationData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/miscellaneousData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/miscellaneousData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/hacker/miscellaneousData/addAttachment.do" access="hasRole('HACKER')" />
+		
 
 
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -53,6 +54,7 @@ public class PersonalData extends DomainEntity {
 	}
 
 	@NotBlank
+	@Pattern(regexp = "[0-9]{9}")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
