@@ -12,8 +12,6 @@ import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.bouncycastle.asn1.x509.sigi.PersonalData;
-
 @Entity
 @Access(AccessType.PROPERTY)
 public class Curricula extends DomainEntity {
