@@ -104,9 +104,11 @@ public class RegisterAHackerTest extends AbstractTest {
 			hacker.setIsBanned(false);
 
 			// Hacker attributes
+			
 
 			// Hacker Relatioships
 			hacker.setApplications(null);
+
 
 
 			// Save new Hacker
