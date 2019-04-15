@@ -37,13 +37,18 @@ public class MiscellaneousDataService {
 	}
 
 	public MiscellaneousData save(final MiscellaneousData miscellaneousData) {
+		boolean nuevo = false;
+		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(miscellaneousData);
+		Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));
 
-		if (miscellaneousData.getId() != 0) {
-			final Hacker principal = this.hackerService.findByPrincipal();
-			Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));
+		if (miscellaneousData.getId() == 0) {
+			nuevo = true;
 		}
 		final MiscellaneousData result = this.miscellaneousDataRepository.save(miscellaneousData);
+
+		if (nuevo)
+			result.getCurricula().getMiscellaneousData().add(result);
 
 		return result;
 	}
@@ -52,6 +57,8 @@ public class MiscellaneousDataService {
 		Assert.notNull(miscellaneousData);
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));
+
+		miscellaneousData.getCurricula().getMiscellaneousData().remove(miscellaneousData);
 
 		this.miscellaneousDataRepository.delete(miscellaneousData);
 	}

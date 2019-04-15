@@ -17,6 +17,6 @@
 		<%-- Buttons --%>
 
 		<input type="submit" name="save" value="<spring:message code="problem.save"/>" />
-		<acme:cancel code="problem.cancel" url="problem/company/edit.do?problemId=${url.targetId}" />
+		<acme:cancel code="problem.cancel" url="curricula/miscellaneousData/edit.do?miscellaneousDataId=${url.targetId}" />
 	<br><br>
 </form:form>

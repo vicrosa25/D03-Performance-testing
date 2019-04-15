@@ -37,13 +37,18 @@ public class PositionDataService {
 	}
 
 	public PositionData save(final PositionData positionData) {
+		boolean nuevo = false;
+		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(positionData);
+		Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));
 
-		if (positionData.getId() != 0) {
-			final Hacker principal = this.hackerService.findByPrincipal();
-			Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));
+		if (positionData.getId() == 0) {
+			nuevo = true;
 		}
 		final PositionData result = this.positionDataRepository.save(positionData);
+
+		if (nuevo)
+			result.getCurricula().getPositionData().add(result);
 
 		return result;
 	}
@@ -52,6 +57,8 @@ public class PositionDataService {
 		Assert.notNull(positionData);
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));
+
+		positionData.getCurricula().getPositionData().remove(positionData);
 
 		this.positionDataRepository.delete(positionData);
 	}

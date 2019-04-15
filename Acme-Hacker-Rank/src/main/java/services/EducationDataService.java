@@ -37,13 +37,18 @@ public class EducationDataService {
 	}
 
 	public EducationData save(final EducationData educationData) {
+		boolean nuevo = false;
+		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(educationData);
+		Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));
 
-		if (educationData.getId() != 0) {
-			final Hacker principal = this.hackerService.findByPrincipal();
-			Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));
+		if (educationData.getId() == 0) {
+			nuevo = true;
 		}
 		final EducationData result = this.educationDataRepository.save(educationData);
+
+		if (nuevo)
+			result.getCurricula().getEducationData().add(result);
 
 		return result;
 	}
@@ -52,6 +57,8 @@ public class EducationDataService {
 		Assert.notNull(educationData);
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));
+
+		educationData.getCurricula().getEducationData().remove(educationData);
 
 		this.educationDataRepository.delete(educationData);
 	}

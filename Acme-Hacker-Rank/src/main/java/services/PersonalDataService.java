@@ -37,13 +37,19 @@ public class PersonalDataService {
 	}
 
 	public PersonalData save(final PersonalData personalData) {
+		boolean nuevo = false;
+		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(personalData);
+		Assert.isTrue(principal.getCurriculas().contains(personalData.getCurricula()));
 
-		if (personalData.getId() != 0) {
-			final Hacker principal = this.hackerService.findByPrincipal();
-			Assert.isTrue(principal.getCurriculas().contains(personalData.getCurricula()));
+		if (personalData.getId() == 0) {
+			Assert.isNull(personalData.getCurricula().getPersonalData());
+			nuevo = true;
 		}
 		final PersonalData result = this.personalDataRepository.save(personalData);
+
+		if (nuevo)
+			result.getCurricula().setPersonalData(result);
 
 		return result;
 	}
