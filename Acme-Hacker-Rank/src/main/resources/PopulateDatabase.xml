@@ -324,6 +324,18 @@
 	</bean>
 	
 
+	<!-- Curriculas  ********************************************************************************* -->
+	<bean id="applied1" class="domain.Curricula">
+		<property name="hacker" ref="hacker1"/>
+		<property name="applied" value="true"/>
+	</bean>
+	
+	<bean id="applied2" class="domain.Curricula">
+		<property name="hacker" ref="hacker1"/>
+		<property name="applied" value="true"/>
+	</bean>
+	
+
 	<!-- Applications  ********************************************************************************* -->
 	<bean id="application1" class="domain.Application">
 		<property name="creationMoment" value="2019/03/27" />
@@ -332,6 +344,7 @@
 		<property name="position" ref="position1" />
 		<property name="problem" ref="problem1" />
 		<property name="answer" ref="answer1"/>
+		<property name="curricula" ref="applied1"/>
 	</bean>
 	
 	<bean id="application2" class="domain.Application">
@@ -340,6 +353,7 @@
 		<property name="hacker" ref="hacker1" />
 		<property name="position" ref="position2" />
 		<property name="problem" ref="problem2" />
+		<property name="curricula" ref="applied2"/>
 	</bean>
 	
 

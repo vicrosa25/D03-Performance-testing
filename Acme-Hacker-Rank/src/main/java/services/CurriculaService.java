@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import domain.Curricula;
 import domain.EducationData;
 import domain.Hacker;
 import domain.MiscellaneousData;
+import domain.PersonalData;
 import domain.PositionData;
 
 @Service
@@ -26,6 +28,9 @@ public class CurriculaService {
 	// Supporting services
 	@Autowired
 	private HackerService			hackerService;
+
+	@Autowired
+	private PersonalDataService			personalDataService;
 
 	@Autowired
 	private PositionDataService			positionDataService;
@@ -105,5 +110,62 @@ public class CurriculaService {
 	
 	public void flush() {
 		this.curriculaRepository.flush();
+	}
+
+	public Curricula copyCurricula(Curricula curricula) {
+		Curricula result = this.create();
+		if(curricula.getPersonalData()!=null){
+			PersonalData copy = new PersonalData();
+			PersonalData pd = curricula.getPersonalData();
+			
+			copy.setCurricula(result);
+			copy.setFullName(pd.getFullName());
+			copy.setGitHub(pd.getGitHub());
+			copy.setLinkedIn(pd.getLinkedIn());
+			copy.setPhoneNumber(pd.getPhoneNumber());
+			copy.setStatement(pd.getStatement());
+			copy = this.personalDataService.save(copy);
+			result.setPersonalData(copy);
+		}
+		for(EducationData ed:curricula.getEducationData()){
+			EducationData copy = new EducationData();
+			copy.setCurricula(result);
+			copy.setDegree(ed.getDegree());
+			copy.setEndDate(ed.getEndDate());
+			copy.setInstitution(ed.getInstitution());
+			copy.setMark(ed.getMark());
+			copy.setStartDate(ed.getStartDate());
+			copy = this.educationDataService.save(copy);
+			result.getEducationData().add(copy);
+		}
+		for(MiscellaneousData md:curricula.getMiscellaneousData()){
+			MiscellaneousData copy = new MiscellaneousData();
+			copy.setCurricula(result);
+			copy.setText(md.getText());
+			copy.setAttachments(md.getAttachments());
+			copy = this.miscellaneousDataService.save(copy);
+			result.getMiscellaneousData().add(copy);
+		}
+		for (PositionData pd : curricula.getPositionData()) {
+			PositionData copy = new PositionData();
+			copy.setCurricula(result);
+			copy.setDescription(pd.getDescription());
+			copy.setTitle(pd.getTitle());
+			copy.setEndDate(pd.getEndDate());
+			copy.setStartDate(pd.getStartDate());
+			copy = this.positionDataService.save(copy);
+			result.getPositionData().add(copy);
+		}
+
+		result.setApplied(true);
+
+		return this.save(result);
+	}
+
+	public Collection<Curricula> findAllPrincipalNotApplied() {
+		Collection<Curricula> result = this.curriculaRepository.findAllNoApplied(this.hackerService.findByPrincipal().getId());
+		Assert.notNull(result);
+
+		return result;
 	}
 }

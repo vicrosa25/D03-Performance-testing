@@ -23,6 +23,7 @@ public class Curricula extends DomainEntity {
 	private Collection<EducationData>		educationData;
 	private Collection<MiscellaneousData>	miscellaneousData;
 	private Hacker							hacker;
+	private Boolean							applied;
 
 
 	//	public Integer getRecordNumber(){
@@ -79,6 +80,14 @@ public class Curricula extends DomainEntity {
 
 	public void setMiscellaneousData(final Collection<MiscellaneousData> miscellaneousData) {
 		this.miscellaneousData = miscellaneousData;
+	}
+
+	public Boolean getApplied() {
+		return applied;
+	}
+
+	public void setApplied(Boolean applied) {
+		this.applied = applied;
 	}
 	
 	//	public Integer updateRecordNumber(){

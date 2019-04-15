@@ -66,7 +66,8 @@ public class CurriculaController extends AbstractController {
 		Collection<Curricula> curriculas;
 		try {
 			Hacker principal = this.hackerService.findByPrincipal();
-			curriculas = principal.getCurriculas();
+			Assert.notNull(principal);
+			curriculas = this.curriculaService.findAllPrincipalNotApplied();
 
 			result = new ModelAndView("curricula/list");
 			result.addObject("curriculas", curriculas);
@@ -93,6 +94,7 @@ public class CurriculaController extends AbstractController {
 			curricula = this.curriculaService.findOne(curriculaId);
 
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
+			Assert.isTrue(!curricula.getApplied());
 
 			result = new ModelAndView("curricula/display");
 			result.addObject("curricula", curricula);
@@ -138,6 +140,7 @@ public class CurriculaController extends AbstractController {
 		try {
 			Hacker principal = this.hackerService.findByPrincipal();
 			curricula = this.curriculaService.findOne(curriculaId);
+			Assert.isTrue(!curricula.getApplied());
 
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
 
@@ -167,6 +170,7 @@ public class CurriculaController extends AbstractController {
 		try {
 			principal = this.hackerService.findByPrincipal();
 			curricula = this.curriculaService.findOne(curriculaId);
+			Assert.isTrue(!curricula.getApplied());
 			personalData = this.personalDataService.create();
 
 			personalData.setCurricula(curricula);
@@ -196,6 +200,7 @@ public class CurriculaController extends AbstractController {
 		try {
 			principal = this.hackerService.findByPrincipal();
 			curricula = this.curriculaService.findOne(curriculaId);
+			Assert.isTrue(!curricula.getApplied());
 
 			Assert.isTrue(curricula.getPersonalData() != null);
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
@@ -262,6 +267,7 @@ public class CurriculaController extends AbstractController {
 			positionData.setCurricula(curricula);
 
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
+			Assert.isTrue(!curricula.getApplied());
 
 			result = new ModelAndView("curricula/positionData/hacker/edit");
 			result.addObject("positionData", positionData);
@@ -287,6 +293,7 @@ public class CurriculaController extends AbstractController {
 			positionData = this.positionDataService.findOne(positionDataId);
 
 			Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));
+			Assert.isTrue(!positionData.getCurricula().getApplied());
 
 			result = new ModelAndView("curricula/positionData/hacker/edit");
 			result.addObject("positionData", positionData);
@@ -347,6 +354,7 @@ public class CurriculaController extends AbstractController {
 			positionData = this.positionDataService.findOne(positionDataId);
 
 			Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));
+			Assert.isTrue(!positionData.getCurricula().getApplied());
 
 			result = new ModelAndView("redirect:/curricula/hacker/display.do?curriculaId=" + positionData.getCurricula().getId());
 
@@ -379,6 +387,7 @@ public class CurriculaController extends AbstractController {
 			educationData.setCurricula(curricula);
 
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
+			Assert.isTrue(!curricula.getApplied());
 
 			result = new ModelAndView("curricula/educationData/hacker/edit");
 			result.addObject("educationData", educationData);
@@ -405,6 +414,7 @@ public class CurriculaController extends AbstractController {
 			educationData = this.educationDataService.findOne(educationDataId);
 
 			Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));
+			Assert.isTrue(!educationData.getCurricula().getApplied());
 
 			result = new ModelAndView("curricula/educationData/hacker/edit");
 			result.addObject("educationData", educationData);
@@ -466,6 +476,7 @@ public class CurriculaController extends AbstractController {
 			educationData = this.educationDataService.findOne(educationDataId);
 
 			Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));
+			Assert.isTrue(!educationData.getCurricula().getApplied());
 
 			result = new ModelAndView("redirect:/curricula/hacker/display.do?curriculaId=" + educationData.getCurricula().getId());
 
@@ -496,6 +507,7 @@ public class CurriculaController extends AbstractController {
 			miscellaneousData = this.miscellaneousDataService.create();
 
 			miscellaneousData.setCurricula(curricula);
+			Assert.isTrue(!curricula.getApplied());
 
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
 
@@ -524,6 +536,7 @@ public class CurriculaController extends AbstractController {
 			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
 
 			Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));
+			Assert.isTrue(!miscellaneousData.getCurricula().getApplied());
 
 			result = new ModelAndView("curricula/miscellaneousData/hacker/edit");
 			result.addObject("miscellaneousData", miscellaneousData);
@@ -579,6 +592,7 @@ public class CurriculaController extends AbstractController {
 			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
 
 			Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));
+			Assert.isTrue(!miscellaneousData.getCurricula().getApplied());
 
 			result = new ModelAndView("redirect:/curricula/hacker/display.do?curriculaId=" + miscellaneousData.getCurricula().getId());
 

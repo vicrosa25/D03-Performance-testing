@@ -21,11 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ApplicationService;
 import services.CompanyService;
+import services.CurriculaService;
 import services.HackerService;
 import services.PositionService;
 import domain.Actor;
 import domain.Application;
 import domain.Company;
+import domain.Curricula;
 import domain.Hacker;
 import domain.Position;
 
@@ -47,6 +49,9 @@ public class ApplicationController extends AbstractController {
 
 	@Autowired
 	private PositionService		positionService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -144,6 +149,8 @@ public class ApplicationController extends AbstractController {
 		}
 		else
 			try {
+				Curricula copy = this.curriculaService.copyCurricula(application.getCurricula());
+				application.setCurricula(copy);
 				this.applicationService.save(application);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {

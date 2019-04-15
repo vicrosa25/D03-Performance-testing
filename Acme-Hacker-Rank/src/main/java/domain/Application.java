@@ -66,6 +66,19 @@ public class Application extends DomainEntity {
 	private Answer		answer;
 	private Position	position;
 	private Problem		problem;
+	private Curricula	curricula;
+
+
+	@NotNull
+	@Valid
+	@OneToOne(optional = false)
+	public Curricula getCurricula() {
+		return this.curricula;
+	}
+
+	public void setCurricula(Curricula curricula) {
+		this.curricula = curricula;
+	}
 	
 	
 	@ManyToOne(optional = true)
