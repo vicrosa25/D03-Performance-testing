@@ -327,11 +327,13 @@
 	<!-- Curriculas  ********************************************************************************* -->
 	<bean id="applied1" class="domain.Curricula">
 		<property name="hacker" ref="hacker1"/>
+		<property name="title" value="Applied curricula 1"/>
 		<property name="applied" value="true"/>
 	</bean>
 	
 	<bean id="applied2" class="domain.Curricula">
 		<property name="hacker" ref="hacker1"/>
+		<property name="title" value="Applied curricula 2"/>
 		<property name="applied" value="true"/>
 	</bean>
 	

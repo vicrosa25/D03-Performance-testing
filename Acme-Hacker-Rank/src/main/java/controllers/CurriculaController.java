@@ -117,9 +117,9 @@ public class CurriculaController extends AbstractController {
 		ModelAndView result;
 		try {
 			Curricula curricula = this.curriculaService.create();
-			this.curriculaService.save(curricula);
 
-			result = new ModelAndView("redirect:/curricula/hacker/list.do");
+			result = new ModelAndView("curricula/hacker/create");
+			result.addObject(curricula);
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
@@ -129,6 +129,37 @@ public class CurriculaController extends AbstractController {
 
 		}
 
+		return result;
+	}
+
+	// save ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView personalDataSave(@Valid final Curricula curricula, final BindingResult binding) {
+		ModelAndView result;
+
+		if (binding.hasErrors()) {
+			final List<ObjectError> errors = binding.getAllErrors();
+			for (final ObjectError e : errors)
+				System.out.println(e.toString());
+
+			result = new ModelAndView("curricula/hacker/create");
+			result.addObject(curricula);
+		}
+
+		else
+			try {
+				Curricula clean = this.curriculaService.create();
+				clean.setTitle(curricula.getTitle());
+				this.curriculaService.save(clean);
+				result = new ModelAndView("redirect:/curricula/hacker/list.do");
+			} catch (final Throwable oops) {
+				System.out.println(oops.getMessage());
+				System.out.println(oops.getClass());
+				System.out.println(oops.getCause());
+				oops.printStackTrace();
+				result = new ModelAndView("curricula/hacker/create");
+				result.addObject(curricula);
+			}
 		return result;
 	}
 

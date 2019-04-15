@@ -11,12 +11,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Curricula extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
 	//	private Integer							dataNumber;
+	private String							title;
 	// Relationships ----------------------------------------------------------
 	private PersonalData					personalData;
 	private Collection<PositionData>		positionData;
@@ -88,6 +91,15 @@ public class Curricula extends DomainEntity {
 
 	public void setApplied(Boolean applied) {
 		this.applied = applied;
+	}
+
+	@NotBlank
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	//	public Integer updateRecordNumber(){

@@ -4,15 +4,14 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!-- Listing Grid -->
 <display:table name="curriculas" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
 
-
-	<!-- Personal data -->
-	<spring:message code="curricula.statement" var="statementHeader" />
-	<display:column property="personalData.statement" title="${statementHeader}" />
+	<!-- title -->
+	<spring:message code="curricula.title" var="title" />
+	<display:column property="title" title="${title}" />
 	
 	<!-- Number position data -->
 	<spring:message code="curricula.positionData" var="positionDataHeader" />

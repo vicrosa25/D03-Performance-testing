@@ -13,6 +13,9 @@
 <spring:message code="curricula.edit" var="editHeader" />
 <spring:message code="curricula.delete" var="deleteHeader" />
 
+<h1>${curricula.title}</h1>
+<br>
+
 <!-- Personal Data -->
 <jstl:if test="${not empty curricula.personalData}">
 	<display:table name="curricula.personalData" requestURI="${ requestURI }"   id="row" >
