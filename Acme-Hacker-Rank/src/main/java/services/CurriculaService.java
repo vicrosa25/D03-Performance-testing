@@ -68,6 +68,7 @@ public class CurriculaService {
 		if (curricula.getId() != 0) {
 			Assert.isTrue(principal.getCurriculas().contains(curricula));
 		} else {
+			curricula.setApplied(false);
 			curricula.setHacker(principal);
 		}
 		final Curricula result = this.curriculaRepository.save(curricula);
@@ -114,6 +115,13 @@ public class CurriculaService {
 
 	public Curricula copyCurricula(Curricula curricula) {
 		Curricula result = this.create();
+		result.setHacker(this.hackerService.findByPrincipal());
+		result.setTitle(curricula.getTitle());
+		result.setApplied(true);
+		
+		result = this.curriculaRepository.save(result);
+		curricula.getHacker().getCurriculas().add(result);
+		
 		if(curricula.getPersonalData()!=null){
 			PersonalData copy = new PersonalData();
 			PersonalData pd = curricula.getPersonalData();

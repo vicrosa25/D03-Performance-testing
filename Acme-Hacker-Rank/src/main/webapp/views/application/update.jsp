@@ -47,6 +47,7 @@
 	<form:hidden path="position" />
 	<form:hidden path="problem" />
 	<form:hidden path="creationMoment" />
+	<form:hidden path="curricula" />
 
 	<%-- Answer Text --%>
 	<acme:textarea code="application.answer.text" path="answer.text"/>

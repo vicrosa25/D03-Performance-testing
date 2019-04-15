@@ -292,8 +292,10 @@ public class ApplicationController extends AbstractController {
 	protected ModelAndView createEditModelAndView(Application application, String message) {
 		ModelAndView result;
 		Collection<Position> positions;
+		Collection<Curricula> curriculas;
 
 		positions = this.positionService.findAll();
+		curriculas = this.curriculaService.findAllPrincipalNotApplied();
 
 		for (Application app : this.hackerService.findByPrincipal().getApplications()) {
 			positions.remove(app.getPosition());
@@ -305,6 +307,7 @@ public class ApplicationController extends AbstractController {
 		result = new ModelAndView("application/hacker/create");
 		result.addObject("application", application);
 		result.addObject("positions", positions);
+		result.addObject("curriculas", curriculas);
 		result.addObject("message", message);
 
 		return result;

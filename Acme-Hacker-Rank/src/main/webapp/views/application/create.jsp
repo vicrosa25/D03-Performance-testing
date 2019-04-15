@@ -23,7 +23,7 @@
 	<br>
 	
 	<!-- Select Curricula -->
-	<acme:selectone items="${ curriculas }" itemLabel="personalData.sentence" code="curricula.problems" path="curricula"/>
+	<acme:select items="${ curriculas }" itemLabel="title" code="curricula" path="curricula"/>
 	<br>
 	
 	<%-- Buttons --%>
