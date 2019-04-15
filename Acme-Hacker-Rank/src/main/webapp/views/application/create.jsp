@@ -8,7 +8,7 @@
 
 <form:form action="application/hacker/create.do" modelAttribute="application">
 	
-	<%-- Hidden properties from finder--%>
+	<%-- Hidden properties from application --%>
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="hacker" />
@@ -20,6 +20,10 @@
 		<acme:select items="${ positions }" itemLabel="title" code="application.positions" path="position"/>
 	</jstl:if>
 	<br>
+	<br>
+	
+	<!-- Select Curricula -->
+	<acme:selectone items="${ curriculas }" itemLabel="personalData.sentence" code="curricula.problems" path="curricula"/>
 	<br>
 	
 	<%-- Buttons --%>

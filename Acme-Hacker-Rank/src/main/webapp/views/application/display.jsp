@@ -106,6 +106,94 @@
 </jstl:if>
 <br>
 <br>
+
+<spring:message code="curricula.startDate" var="startDateHeader" />
+<spring:message code="curricula.endDate" var="endDateHeader" />
+<spring:message code="curricula.edit" var="editHeader" />
+<spring:message code="curricula.delete" var="deleteHeader" />
+
+<!-- Personal Data -->
+<jstl:if test="${not empty curricula.personalData}">
+	<display:table name="curricula.personalData" requestURI="${ requestURI }"   id="row" >
+		<spring:message code="curricula.fullName" var="fullNameHeader" />
+		<display:column property="fullName" title="${fullNameHeader}" sortable="false" />
+		
+		<spring:message code="curricula.statement" var="statementHeader" />
+		<display:column property="statement" title="${statementHeader}" sortable="false" />
+
+		<display:column sortable="false" >
+			<a href="${row.gitHub }">GitHub</a>
+		</display:column>
+
+		<display:column sortable="false" >
+			<a href="${row.linkedIn }">LinkedIn</a>
+		</display:column>
+		
+		<spring:message code="curricula.phoneNumber" var="phoneNumberHeader" />
+		<display:column property="phoneNumber" title="${phoneNumberHeader}" sortable="false" />		
+	<display:caption><spring:message code="curricula.personalData"/></display:caption>
+	</display:table>
+</jstl:if>
+<!-- Position Data -->	
+<br>
+<jstl:if test="${not empty curricula.positionData}">
+<display:table name="curricula.positionData"  id="row" >
+	<spring:message code="curricula.title" var="titleHeader" />
+	<display:column property="title" title="${titleHeader}" sortable="false" />
+		
+	<spring:message code="curricula.description" var="descriptionHeader" />
+	<display:column property="description" title="${desscriptionHeader}" sortable="false" />
+	
+	<display:column property="startDate" title="${startDateHeader}" sortable="false" format="{0,date,dd/MM/yyyy}" />
+
+	<display:column property="endDate" title="${endDateHeader}" sortable="false" format="{0,date,dd/MM/yyyy}" />
+	
+<display:caption><spring:message code="curricula.positionData"/></display:caption>
+</display:table>
+</jstl:if>
+	
+	
+<!-- Education data -->	
+<br>
+<jstl:if test="${not empty curricula.educationData}">
+<display:table name="curricula.educationData"  id="row" >
+	<spring:message code="curricula.degree" var="degreeHeader" />
+	<display:column property="degree" title="${degreeHeader}" sortable="false" />
+
+	<spring:message code="curricula.institution" var="institutionHeader" />
+	<display:column property="institution" title="${institutionHeader}" sortable="false" />
+	
+	<spring:message code="curricula.mark" var="markHeader" />
+	<display:column property="mark" title="${markHeader}" sortable="false" />
+	
+	<display:column property="startDate" title="${startDateHeader}" sortable="false" format="{0,date,dd/MM/yyyy}" />
+
+	<display:column property="endDate" title="${endDateHeader}" sortable="false" format="{0,date,dd/MM/yyyy}" />
+	
+<display:caption><spring:message code="curricula.educationData"/></display:caption>
+</display:table>
+</jstl:if>
+	
+	
+<!-- miscellaneousData -->	
+<br>
+<jstl:if test="${not empty application.curricula.miscellaneousData}">
+<display:table name="curricula.miscellaneousData"  id="row" >
+	<spring:message code="curricula.text" var="textHeader" />
+	<display:column property="text" title="${textHeader}" sortable="false" />
+
+	<!-- Attachments -->
+	<spring:message code="problem.attachments" var="attachmentsHeader" />
+	<display:column title="${attachmentsHeader}" sortable="false" >
+		<jstl:forEach var="text" items="${row.attachments}" varStatus="loop">
+				${text.link}${!loop.last ? ',' : ''}&nbsp
+		</jstl:forEach>
+	</display:column>
+<display:caption><spring:message code="curricula.miscellaneousData"/></display:caption>
+</display:table>
+</jstl:if>
+
+
 <security:authorize access="hasRole('HACKER')">
 <jstl:if test="${ application.answer == null }">
 	<acme:cancel url="application/hacker/update.do?appId=${application.id}" code="application.update"/>
