@@ -19,7 +19,7 @@
 
 	<%-- Buttons --%>
 	<input type="submit" name="save" value="<spring:message code="curricula.save"/>" />
-	<acme:cancel code="curricula.cancel" url="curricula/hacker/display.do?curriculaId=${personalData.curricula.id}" />
+	<acme:cancel code="curricula.cancel" url="curricula/hacker/display.do?curriculaId=${miscellaneousData.curricula.id}" />
 </form:form>
 <br>
 <jstl:if test="${not empty miscellaneousData.attachments}">

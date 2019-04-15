@@ -35,5 +35,5 @@
 
 	<%-- Buttons --%>
 	<input type="submit" name="save" value="<spring:message code="curricula.save"/>" />
-	<acme:cancel code="curricula.cancel" url="curricula/hacker/display.do?curriculaId=${personalData.curricula.id}" />
+	<acme:cancel code="curricula.cancel" url="curricula/hacker/display.do?curriculaId=${educationData.curricula.id}" />
 </form:form>

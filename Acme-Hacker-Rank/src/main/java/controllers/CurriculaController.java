@@ -625,12 +625,15 @@ public class CurriculaController extends AbstractController {
 		ModelAndView result;
 		MiscellaneousData miscellaneousData;
 		try {
+			System.out.println("Controller");
 			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
 			Assert.notNull(miscellaneousData);
 			Assert.isTrue(this.hackerService.findByPrincipal().getCurriculas().contains(miscellaneousData.getCurricula()));
 			for (final Url attachment : miscellaneousData.getAttachments()) {
 				if (attachment.getLink().equals(link)) {
+					System.out.println("URL igual encontrada, borrando y guardando");
 					miscellaneousData.getAttachments().remove(attachment);
+					this.miscellaneousDataService.save(miscellaneousData);
 					break;
 				}
 			}
