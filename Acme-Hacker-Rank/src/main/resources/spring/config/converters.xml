@@ -33,8 +33,8 @@
 		<bean class="converters.PositionToStringConverter" />
 		<bean class="converters.StringToPositionConverter" />
 		
-		<bean class="converters.SocialIdentityToStringConverter" />
-		<bean class="converters.StringToSocialIdentityConverter" />
+		<bean class="converters.SocialProfileToStringConverter" />
+		<bean class="converters.StringToSocialProfileConverter" />
 		
 		<bean class="converters.ProblemToStringConverter" />
 		<bean class="converters.StringToProblemConverter" />

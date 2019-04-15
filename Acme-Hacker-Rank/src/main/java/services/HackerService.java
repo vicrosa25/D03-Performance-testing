@@ -15,7 +15,7 @@ import org.springframework.validation.Validator;
 import domain.Application;
 import domain.Hacker;
 import domain.Message;
-import domain.SocialIdentity;
+import domain.SocialProfile;
 import forms.HackerForm;
 import repositories.HackerRepository;
 import security.Authority;
@@ -35,7 +35,7 @@ public class HackerService {
 	private ApplicationService 		applicationService;
 	
 	@Autowired
-	private SocialIdentityService 	socialIdentityService;
+	private SocialProfileService 	socialIdentityService;
 
 	// Validator
 	@Autowired
@@ -94,7 +94,7 @@ public class HackerService {
 		Assert.notNull(hacker);
 
 		Iterator<Application> applications	= new ArrayList<Application>(hacker.getApplications()).iterator();
-		Iterator<SocialIdentity> socialIs 	= new ArrayList<SocialIdentity>(hacker.getSocialIdentities()).iterator();
+		Iterator<SocialProfile> socialIs 	= new ArrayList<SocialProfile>(hacker.getSocialProfiles()).iterator();
 
 		while (applications.hasNext()) {
 			Application next = applications.next();
@@ -104,9 +104,9 @@ public class HackerService {
 		}
 	
 		while (socialIs.hasNext()) {
-			SocialIdentity si = socialIs.next();
+			SocialProfile si = socialIs.next();
 			this.socialIdentityService.delete(si);
-			hacker.getSocialIdentities().remove(si);
+			hacker.getSocialProfiles().remove(si);
 			socialIs.remove();
 		}
 		
@@ -178,8 +178,7 @@ public class HackerService {
 
 		// Relatienships from Actor
 		result.setUserAccount(temp.getUserAccount());
-		//result.setMessageBoxes(temp.getMessageBoxes());
-		result.setSocialIdentities(temp.getSocialIdentities());
+		result.setSocialProfiles(temp.getSocialProfiles());
 
 		this.validator.validate(result, binding);
 

@@ -6,7 +6,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="socialIdentity/edit.do" modelAttribute="socialIdentity">
+<form:form action="socialProfile/edit.do" modelAttribute="socialProfile">
 
 	<%-- Hidden properties--%>
 	<form:hidden path="id" />
@@ -15,7 +15,7 @@
 	
 	
 	
-	<%-- socialIdentity --%>
+	<%-- socialProfile --%>
 
 	<%-- Nick --%>
 	<acme:textbox code="profile.nick" path="nick" />
@@ -34,13 +34,13 @@
 
 	<input type="submit" name="save" value="<spring:message code="profile.save"/>" />
 
-<%-- 	<jstl:if test="${socialIdentity.id != 0 }"> --%>
+<%-- 	<jstl:if test="${socialProfile.id != 0 }"> --%>
 <%-- 		<input type="submit" name="delete" value="<spring:message code="tutorial.delete"/>" /> --%>
 <%-- 	</jstl:if> --%>
 
 	<input type="button" name="cancel"
 		value="<spring:message code="profile.cancel" />"
-		onClick="javascript: window.location.replace('socialIdentity/list.do')" />
+		onClick="javascript: window.location.replace('socialProfile/list.do')" />
 	<br>
 	<br>
 

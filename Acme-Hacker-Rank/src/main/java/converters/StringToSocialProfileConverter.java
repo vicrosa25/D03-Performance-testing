@@ -6,20 +6,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import repositories.SocialIdentityRepository;
-import domain.SocialIdentity;
+import domain.SocialProfile;
+import repositories.SocialProfileRepository;
 
 @Component
 @Transactional
-public class StringToSocialIdentityConverter implements
-Converter<String, SocialIdentity> {
+public class StringToSocialProfileConverter implements
+Converter<String, SocialProfile> {
 
 	@Autowired
-	SocialIdentityRepository socialIdentityRepository;
+	SocialProfileRepository socialProfileRepository;
 
 	@Override
-	public SocialIdentity convert(String text) {
-		SocialIdentity result;
+	public SocialProfile convert(String text) {
+		SocialProfile result;
 		int id;
 
 		try {
@@ -27,7 +27,7 @@ Converter<String, SocialIdentity> {
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				result = this.socialIdentityRepository.findOne(id);
+				result = this.socialProfileRepository.findOne(id);
 			}
 		} catch (Throwable oops) {
 			throw new IllegalArgumentException(oops);

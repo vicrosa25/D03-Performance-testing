@@ -11,7 +11,7 @@
 	<!-- Edit -->
 	<spring:message code="profile.edit" var="editHeader" />
 	<display:column title="${editHeader}">
-		<a href="socialIdentity/edit.do?socialIdentityId=${row.id}"> <spring:message code="profile.edit" /></a>
+		<a href="socialProfile/edit.do?socialProfileId=${row.id}"> <spring:message code="profile.edit" /></a>
 	</display:column>
 
 
@@ -30,14 +30,14 @@
 	<!-- Remove -->
 	<spring:message code="profile.remove.profile" var="removeHeader" />
 	<display:column title="${removeHeader}">
-		<a href="socialIdentity/remove.do?socialIdentityId=${row.id}"> <spring:message code="profile.remove.profile" /></a>
+		<a href="socialProfile/remove.do?socialProfileId=${row.id}"> <spring:message code="profile.remove.profile" /></a>
 	</display:column>
 
 </display:table>
 
 
 <!-- Add Social Profile -->
-<a href=socialIdentity/create.do><spring:message code="profile.create" /></a>
+<a href=socialProfile/create.do><spring:message code="profile.create" /></a>
 
 
 

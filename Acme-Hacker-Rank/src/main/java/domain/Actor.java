@@ -141,18 +141,18 @@ public abstract class Actor extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private UserAccount					userAccount;
-	private Collection<SocialIdentity>	socialIdentities;
+	private Collection<SocialProfile>	socialProfiles;
 	private Collection<Message>			messages;
 
 
 	@Valid
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "actor", fetch = FetchType.EAGER)
-	public Collection<SocialIdentity> getSocialIdentities() {
-		return this.socialIdentities;
+	public Collection<SocialProfile> getSocialProfiles() {
+		return this.socialProfiles;
 	}
 
-	public void setSocialIdentities(final Collection<SocialIdentity> socialIdentities) {
-		this.socialIdentities = socialIdentities;
+	public void setSocialProfiles(Collection<SocialProfile> socialProfiles) {
+		this.socialProfiles = socialProfiles;
 	}
 
 	@NotNull

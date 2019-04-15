@@ -175,7 +175,7 @@ public class CompanyService {
 		// Relantionships
 		result.setPositions(temp.getPositions());
 		result.setProblems(temp.getProblems());
-		result.setSocialIdentities(temp.getSocialIdentities());
+		result.setSocialProfiles(temp.getSocialProfiles());
 		result.setUserAccount(temp.getUserAccount());
 		
 		this.validator.validate(result, binding);

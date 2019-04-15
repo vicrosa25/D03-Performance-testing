@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.Actor;
-import domain.SocialIdentity;
+import domain.SocialProfile;
 import services.ActorService;
-import services.SocialIdentityService;
+import services.SocialProfileService;
 
 @Controller
-@RequestMapping("/socialIdentity")
-public class SocialIdentityController extends AbstractController {
+@RequestMapping("/socialProfile")
+public class SocialProfileController extends AbstractController {
 
 	@Autowired
-	private SocialIdentityService	socialIdentityService;
+	private SocialProfileService	socialProfileService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -43,15 +43,15 @@ public class SocialIdentityController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		Collection<SocialIdentity> profiles;
+		Collection<SocialProfile> profiles;
 
 		final Actor principal = this.actorService.findByPrincipal();
 
-		profiles = this.socialIdentityService.findAllByActor(principal.getId());
+		profiles = this.socialProfileService.findAllByActor(principal.getId());
 
-		result = new ModelAndView("socialIdentity/list");
+		result = new ModelAndView("socialProfile/list");
 		result.addObject("profiles", profiles);
-		result.addObject("requestURI", "socialIdentity/list.do");
+		result.addObject("requestURI", "socialProfile/list.do");
 
 		return result;
 	}
@@ -60,61 +60,61 @@ public class SocialIdentityController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		SocialIdentity socialIdentity;
+		SocialProfile socialProfile;
 
-		socialIdentity = this.socialIdentityService.create();
-		result = this.createEditModelAndView(socialIdentity);
+		socialProfile = this.socialProfileService.create();
+		result = this.createEditModelAndView(socialProfile);
 
 		return result;
 	}
 
 	// Edit -------------------------------------------------------------
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int socialIdentityId) {
+	public ModelAndView edit(@RequestParam final int socialProfileId) {
 		ModelAndView result;
-		SocialIdentity socialIdentity;
+		SocialProfile socialProfile;
 
 		final Actor principal = this.actorService.findByPrincipal();
 
 		try {
-			socialIdentity = this.socialIdentityService.findOne(socialIdentityId);
-			Assert.isTrue(this.socialIdentityService.findAllByActor(principal.getId()).contains(socialIdentity));
+			socialProfile = this.socialProfileService.findOne(socialProfileId);
+			Assert.isTrue(this.socialProfileService.findAllByActor(principal.getId()).contains(socialProfile));
 		} catch (final Throwable oops) {
 			return this.forbiddenOpperation();
 		}
 
-		result = this.createEditModelAndView(socialIdentity);
+		result = this.createEditModelAndView(socialProfile);
 		return result;
 	}
 
 	// Save -------------------------------------------------------------
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final SocialIdentity socialIdentity, final BindingResult binding) {
+	public ModelAndView save(@Valid final SocialProfile socialProfile, final BindingResult binding) {
 		ModelAndView result;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(socialIdentity);
+			result = this.createEditModelAndView(socialProfile);
 		else
 			try {
-				this.socialIdentityService.save(socialIdentity);
+				this.socialProfileService.save(socialProfile);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
 				oops.printStackTrace();
-				result = this.createEditModelAndView(socialIdentity, "profile.commit.error");
+				result = this.createEditModelAndView(socialProfile, "profile.commit.error");
 			}
 		return result;
 	}
 
 	// Delete ------------------------------------------------------
 	@RequestMapping(value = "/remove", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int socialIdentityId) {
+	public ModelAndView delete(@RequestParam final int socialProfileId) {
 		ModelAndView result;
-		SocialIdentity identity;
+		SocialProfile identity;
 
-		identity = this.socialIdentityService.findOne(socialIdentityId);
+		identity = this.socialProfileService.findOne(socialProfileId);
 
 		try {
-			this.socialIdentityService.delete(identity);
+			this.socialProfileService.delete(identity);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(identity, "profile.commit.error");
@@ -124,19 +124,19 @@ public class SocialIdentityController extends AbstractController {
 	}
 
 	// Ancillary methods ------------------------------------------------------
-	protected ModelAndView createEditModelAndView(final SocialIdentity socialIdentity) {
+	protected ModelAndView createEditModelAndView(final SocialProfile socialProfile) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(socialIdentity, null);
+		result = this.createEditModelAndView(socialProfile, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final SocialIdentity socialIdentity, final String message) {
+	protected ModelAndView createEditModelAndView(final SocialProfile socialProfile, final String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("socialIdentity/edit");
-		result.addObject("socialIdentity", socialIdentity);
+		result = new ModelAndView("socialProfile/edit");
+		result.addObject("socialProfile", socialProfile);
 		result.addObject("message", message);
 
 		return result;

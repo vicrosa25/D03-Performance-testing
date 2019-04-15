@@ -86,9 +86,9 @@
 		<property name="phoneNumber" value="+34656256697" />
 		<property name="address" value="admin 18" />
 		<property name="UserAccount" ref="userAccount1" />
-		<property name="socialIdentities">
+		<property name="socialProfiles">
 			<list>
-				<ref bean="socialIdentity1" />
+				<ref bean="socialProfile1" />
 			</list>
 		</property>
 		<property name="messages">
@@ -111,6 +111,11 @@
 		<property name="address" value="hacker1 18" />
 		<property name="UserAccount" ref="userAccount2" />
 		<property name="finder" ref="finder1" />
+		<property name="socialProfiles">
+			<list>
+				<ref bean="socialProfile4" />
+			</list>
+		</property>
 		<property name="applications">
 			<list>
 				<ref bean="application1" />
@@ -139,6 +144,11 @@
 		<property name="isSpammer" value="true" />
 		<property name="UserAccount" ref="userAccount4" />
 		<property name="finder" ref="finder2" />
+		<property name="socialProfiles">
+			<list>
+				<ref bean="socialProfile5" />
+			</list>
+		</property>
 		<property name="applications">
 			<list>
 			</list>
@@ -171,6 +181,11 @@
 		<property name="phoneNumber" value="+34656256697" />
 		<property name="address" value="company1 18" />
 		<property name="UserAccount" ref="userAccount3" />
+		<property name="socialProfiles">
+			<list>
+				<ref bean="socialProfile2" />
+			</list>
+		</property>
 		<property name="positions">
 			<list>
 				<ref bean="position1" />
@@ -202,6 +217,11 @@
 		<property name="phoneNumber" value="+34625677697" />
 		<property name="address" value="Av Bird 18" />
 		<property name="UserAccount" ref="userAccount5" />
+		<property name="socialProfiles">
+			<list>
+				<ref bean="socialProfile3" />
+			</list>
+		</property>
 		<property name="positions">
 			<list>
 				<ref bean="position3" />
@@ -495,41 +515,41 @@
 	</bean>
 
 
-	<!-- SocialIdentities *************************************************************************** -->
-	<bean id="socialIdentity1" class="domain.SocialIdentity">
+	<!-- SocialProfiles *************************************************************************** -->
+	<bean id="socialProfile1" class="domain.SocialProfile">
 		<property name="nick" value="admin" />
 		<property name="socialNetwork" value="facebook" />
 		<property name="link" value="http://www.facebook/admin" />
 		<property name="actor" ref="admin" />
 	</bean>
 
-<!-- 	<bean id="socialIdentity2" class="domain.SocialIdentity"> -->
-<!-- 		<property name="nick" value="member1" /> -->
-<!-- 		<property name="socialNetwork" value="facebook" /> -->
-<!-- 		<property name="link" value="http://www.facebook/member1" /> -->
-<!-- 		<property name="actor" ref="member1" /> -->
-<!-- 	</bean> -->
+	<bean id="socialProfile2" class="domain.SocialProfile">
+		<property name="nick" value="company1" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/member1" />
+		<property name="actor" ref="company1" />
+	</bean>
 
-<!-- 	<bean id="socialIdentity3" class="domain.SocialIdentity"> -->
-<!-- 		<property name="nick" value="member2" /> -->
-<!-- 		<property name="socialNetwork" value="facebook" /> -->
-<!-- 		<property name="link" value="http://www.facebook/member2" /> -->
-<!-- 		<property name="actor" ref="member2" /> -->
-<!-- 	</bean> -->
+	<bean id="socialProfile3" class="domain.SocialProfile">
+		<property name="nick" value="company2" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/member2" />
+		<property name="actor" ref="company2" />
+	</bean>
 
-<!-- 	<bean id="socialIdentity4" class="domain.SocialIdentity"> -->
-<!-- 		<property name="nick" value="brotherhood1" /> -->
-<!-- 		<property name="socialNetwork" value="facebook" /> -->
-<!-- 		<property name="link" value="http://www.facebook/brotherhood1" /> -->
-<!-- 		<property name="actor" ref="brotherhood1" /> -->
-<!-- 	</bean> -->
+	<bean id="socialProfile4" class="domain.SocialProfile">
+		<property name="nick" value="hacker1" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/brotherhood1" />
+		<property name="actor" ref="hacker1" />
+	</bean>
 
-<!-- 	<bean id="socialIdentity5" class="domain.SocialIdentity"> -->
-<!-- 		<property name="nick" value="brotherhood2" /> -->
-<!-- 		<property name="socialNetwork" value="facebook" /> -->
-<!-- 		<property name="link" value="http://www.facebook/brotherhood2" /> -->
-<!-- 		<property name="actor" ref="brotherhood2" /> -->
-<!-- 	</bean> -->
+	<bean id="socialProfile5" class="domain.SocialProfile">
+		<property name="nick" value="hacker2" />
+		<property name="socialNetwork" value="facebook" />
+		<property name="link" value="http://www.facebook/brotherhood2" />
+		<property name="actor" ref="hacker2" />
+	</bean>
 
 
 	
