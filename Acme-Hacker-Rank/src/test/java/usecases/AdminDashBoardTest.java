@@ -30,7 +30,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
 	 * 1. Query 1: The average, the minimum, the maximum, and the standard deviation of the number
-	 * of  positions per company
+	 * of positions per company
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -46,7 +46,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
 	 * 1. Query 1: The average, the minimum, the maximum, and the standard deviation of the number
-	 * of  positions per company
+	 * of positions per company
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
@@ -64,7 +64,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
 	 * 1. Query 2: The average, the minimum, the maximum, and the standard deviation of the
-	 *			   number of applications per hacker
+	 * number of applications per hacker
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -80,7 +80,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
 	 * 1. Query 2: The average, the minimum, the maximum, and the standard deviation of the
-	 *			   number of applications per hacker
+	 * number of applications per hacker
 	 *
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
@@ -161,8 +161,8 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the 
-	 *             the salaries offered.
+	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the
+	 * the salaries offered.
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -177,8 +177,8 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the 
-	 *             the salaries offered.
+	 * 1. Query 5: The average, the minimum, the maximum, and the standard deviation of the
+	 * the salaries offered.
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
@@ -223,11 +223,18 @@ public class AdminDashBoardTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/*********************************
+	 * 
+	 * Dashboard Level B
+	 * 
+	 *********************************/
+
 	// Tests Query7-----------------------------------------------------------------------------------------
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 7: The ratio of parades in draft mode versus parades in final mode.
+	 * 1. Query 7: The average, the minimum, the maximum, and the standard deviation of the number
+	 * of curricula per hacker
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -235,23 +242,24 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query7Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query7();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 7: The ratio of parades in draft mode versus parades in final mode.
+	 * 1. Query 7: The average, the minimum, the maximum, and the standard deviation of the number
+	 * of curricula per hacker
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query7Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query7();
 		super.unauthenticate();
 	}
 
@@ -259,7 +267,8 @@ public class AdminDashBoardTest extends AbstractTest {
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 8: The ratio of parades in final mode grouped by status.
+	 * 1. Query 8: The average, the minimum, the maximum, and the standard deviation of the number
+	 * of results in the finders.
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -267,32 +276,32 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query8Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query8();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query8: The ratio of parades in final mode grouped by status.
+	 * 1. Query 8: The average, the minimum, the maximum, and the standard deviation of the number
+	 * of results in the finders.
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query8Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query8();
 		super.unauthenticate();
 	}
 
-	/********************************* Dashboard Level A **************************************************/
 	// Tests Query9-----------------------------------------------------------------------------------------
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 9: The ratio of active sponsorships.
+	 * 1. Query 9: The ratio of empty versus non-empty finders
 	 * 
 	 * 2. Positive test.
 	 * 
@@ -300,89 +309,23 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query9Positive() {
 		super.authenticate("admin");
-		//this.adminService.query1();
+		this.adminService.query9();
 		super.unauthenticate();
 	}
 
 	/**
 	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
 	 * 
-	 * 1. Query 9: The ratio of active sponsorships.
+	 * 1. Query 9: The ratio of empty versus non-empty finders
 	 * 
 	 * 2. Negative test.
 	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
 	 * 
 	 **/
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void query9Negative() {
 		super.authenticate(null);
-		//this.adminService.query1();
-		super.unauthenticate();
-	}
-
-	// Tests Query10-----------------------------------------------------------------------------------------
-	/**
-	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
-	 * 
-	 * 1. Query 10: The average, the minimum, the maximum, and the standard deviation of active sponsorships
-	 * per sponsor
-	 * 
-	 * 2. Positive test.
-	 * 
-	 **/
-	@Test
-	public void query10Positive() {
-		super.authenticate("admin");
-		//this.adminService.query1();
-		super.unauthenticate();
-	}
-
-	/**
-	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
-	 * 
-	 * 1. Query 10: The average, the minimum, the maximum, and the standard deviation of active sponsorships
-	 * per sponsor
-	 * 
-	 * 2. Negative test.
-	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
-	 * 
-	 **/
-	@Test
-	public void query10Negative() {
-		super.authenticate(null);
-		//this.adminService.query1();
-		super.unauthenticate();
-	}
-
-	// Tests Query11-----------------------------------------------------------------------------------------
-	/**
-	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
-	 * 
-	 * 1. Query 11: The top-5 sponsors in terms of number of active sponsorships.
-	 * 
-	 * 2. Positive test.
-	 * 
-	 **/
-	@Test
-	public void query11Positive() {
-		super.authenticate("admin");
-		//this.adminService.query1();
-		super.unauthenticate();
-	}
-
-	/**
-	 * Requirement: An actor who is authenticated as an administrator must be able to Display a dashboard.
-	 * 
-	 * 1. Query 11: The top-5 sponsors in terms of number of active sponsorships.
-	 * 
-	 * 2. Negative test.
-	 * 3. Business rule that is intended to broke: The actor is not authenticated as an Admin
-	 * 
-	 **/
-	@Test
-	public void query11Negative() {
-		super.authenticate(null);
-		//this.adminService.query1();
+		this.adminService.query9();
 		super.unauthenticate();
 	}
 
