@@ -81,6 +81,7 @@ public class PositionService {
 
 	public Position save(Position position) {
 		Assert.notNull(position);
+		Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
 
 		// If there is no problems, assign an empty collection to avoid nullPointerException
 		if (position.getProblems() == null) {
