@@ -81,6 +81,9 @@ public class CurriculaService {
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.isTrue(principal.getCurriculas().contains(curricula));
 
+		if (curricula.getPersonalData() != null) {
+			this.personalDataService.delete(curricula.getPersonalData());
+		}
 		Iterator<EducationData> education = new ArrayList<EducationData>(curricula.getEducationData()).iterator();
 		Iterator<MiscellaneousData> misc = new ArrayList<MiscellaneousData>(curricula.getMiscellaneousData()).iterator();
 		Iterator<PositionData> position = new ArrayList<PositionData>(curricula.getPositionData()).iterator();

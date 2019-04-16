@@ -59,6 +59,8 @@ public class PersonalDataService {
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.isTrue(principal.getCurriculas().contains(personalData.getCurricula()));
 
+		personalData.getCurricula().setPersonalData(null);
+
 		this.personalDataRepository.delete(personalData);
 	}
 	/*** Other methods ***/
