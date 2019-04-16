@@ -204,8 +204,12 @@ public class PositionController extends AbstractController {
 
 		position = this.positionService.reconstruct(prune, binding);
 		if (prune.getFinalMode() != null) {
-			if (prune.getFinalMode().equals(true) && position.getProblems().size() < 2) {
-				binding.rejectValue("finalMode", "position.error.finalMode", "A position must have, at least, two problems to be in final mode");
+			if (prune.getFinalMode()) {
+				if (position.getProblems() == null) {
+					binding.rejectValue("finalMode", "position.error.finalMode", "A position must have, at least, two problems to be in final mode");
+				} else if (position.getProblems().size() < 2) {
+					binding.rejectValue("finalMode", "position.error.finalMode", "A position must have, at least, two problems to be in final mode");
+				}
 			}
 		}
 

@@ -12,16 +12,16 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.HackerRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Application;
 import domain.Finder;
 import domain.Hacker;
 import domain.Message;
 import domain.SocialProfile;
 import forms.HackerForm;
-import repositories.HackerRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -222,5 +222,11 @@ public class HackerService {
 		Assert.notNull(username);
 
 		return this.hackerRepository.findByUserName(username);
+	}
+
+	public Hacker findByFinder(final Finder finder) {
+		Assert.notNull(finder);
+
+		return this.hackerRepository.findByFinder(finder.getId());
 	}
 }

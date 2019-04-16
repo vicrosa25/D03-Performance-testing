@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,7 +112,7 @@ public class FinderService {
 
 	public Finder updateResults(final Finder finder) {
 		Assert.notNull(finder);
-		final ArrayList<Position> result = new ArrayList<Position>(this.positionService.findAll());
+		final HashSet<Position> result = new HashSet<Position>(this.positionService.findAll());
 
 		if (finder.getMinSalary() != null) {
 			result.retainAll(this.finderRepository.filterByMinSalary(new Double(finder.getMinSalary())));
@@ -129,12 +130,14 @@ public class FinderService {
 			result.retainAll(this.finderRepository.filterByDeadline(finder.getDeadline()));
 		}
 
+		ArrayList<Position> positions = new ArrayList<Position>(result);
+
 		if (result.size() > this.configurationsService.getConfiguration().getFinderMaxResult()) {
-			finder.setPositions(result.subList(0, this.configurationsService.getConfiguration().getFinderMaxResult() - 1));
+			finder.setPositions(positions.subList(0, this.configurationsService.getConfiguration().getFinderMaxResult() - 1));
 		} else {
-			finder.setPositions(result);
+			finder.setPositions(positions);
 		}
 		finder.setLastUpdate(new Date());
-		return this.save(finder);
+		return this.finderRepository.save(finder);
 	}
 }

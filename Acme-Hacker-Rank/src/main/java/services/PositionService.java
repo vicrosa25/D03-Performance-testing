@@ -17,6 +17,8 @@ import repositories.PositionRepository;
 import domain.Actor;
 import domain.Application;
 import domain.Company;
+import domain.Finder;
+import domain.Message;
 import domain.Position;
 import domain.Problem;
 
@@ -34,6 +36,15 @@ public class PositionService {
 
 	@Autowired
 	private CompanyService		companyService;
+
+	@Autowired
+	private FinderService		finderService;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private MessageService		messageService;
 
 	@Autowired
 	@Qualifier("validator")
@@ -83,19 +94,24 @@ public class PositionService {
 		Assert.notNull(position);
 		Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
 
+
 		// If there is no problems, assign an empty collection to avoid nullPointerException
 		if (position.getProblems() == null) {
 			position.setProblems(new ArrayList<Problem>());
 		}
+
 		Position result = this.positionRepository.save(position);
-		for (Problem p : position.getCompany().getProblems()) {
-			if (!p.getPositions().contains(position) && position.getProblems().contains(p)) {
-				p.getPositions().add(position);
+		for (Problem p : result.getCompany().getProblems()) {
+			if (!p.getPositions().contains(result) && position.getProblems().contains(p)) {
+				p.getPositions().add(result);
 			}
-			if (p.getPositions().contains(position) && !position.getProblems().contains(p)) {
-				p.getPositions().remove(position);
+			if (p.getPositions().contains(result) && !position.getProblems().contains(p)) {
+				p.getPositions().remove(result);
 
 			}
+		}
+		if (position.getFinalMode()) {
+			this.automaticNotification(result);
 		}
 
 		return result;
@@ -169,5 +185,26 @@ public class PositionService {
 		this.validator.validate(result, errors);
 
 		return result;
+	}
+
+	private void automaticNotification(Position position) {
+		Collection<Actor> recipients = new ArrayList<Actor>();
+		for (Finder finder : this.finderService.findAll()) {
+			finder = this.finderService.updateResults(finder);
+			if (finder.getPositions().contains(position)) {
+				recipients.add(this.hackerService.findByFinder(finder));
+			}
+		}
+		if (!recipients.isEmpty()) {
+			Message notification = this.messageService.create();
+
+			notification.setBody("Your finder has a new match");
+			notification.setIsNotification(true);
+			notification.setPriority("MEDIUM");
+			notification.setRecipients(recipients);
+			notification.setSubject("The company " + position.getCompany().getCommercialName() + " has made a new offer that match your finder: " + position.getTitle());
+
+			this.messageService.save(notification);
+		}
 	}
 }
