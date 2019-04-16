@@ -285,24 +285,6 @@
 		</property>
 	</bean>
 	
-	<bean id="position4" class="domain.Position">
-		<property name="deadline" value="2019/07/18" />
-		<property name="ticker" value="posi-4999" />
-		<property name="title" value="Especialista en Big Data" />
-		<property name="description" value="Puesto de trabajo para especialistas en big data" />
-		<property name="profile" value="Consultor" />
-		<property name="skills" value="skill1, skill2, skill3" />
-		<property name="technologies" value="tech1, tech2, tech3" />
-		<property name="salary" value="24000.0" />
-		<property name="finalMode" value="false" />
-		<property name="cancelled" value="false" />
-		<property name="company" ref="company1" />
-		<property name="problems">
-			<list>
-			</list>
-		</property>
-	</bean>
-	
 	<bean id="position3" class="domain.Position">
 		<property name="deadline" value="2019/06/20" />
 		<property name="ticker" value="abcd-4739" />
@@ -319,6 +301,24 @@
 				<ref bean="problem4" />
 				<ref bean="problem5" />
 				<ref bean="problem6" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="position4" class="domain.Position">
+		<property name="deadline" value="2019/07/18" />
+		<property name="ticker" value="posi-4999" />
+		<property name="title" value="Especialista en Big Data" />
+		<property name="description" value="Puesto de trabajo para especialistas en big data" />
+		<property name="profile" value="Consultor" />
+		<property name="skills" value="skill1, skill2, skill3" />
+		<property name="technologies" value="tech1, tech2, tech3" />
+		<property name="salary" value="24000.0" />
+		<property name="finalMode" value="false" />
+		<property name="cancelled" value="false" />
+		<property name="company" ref="company1" />
+		<property name="problems">
+			<list>
 			</list>
 		</property>
 	</bean>

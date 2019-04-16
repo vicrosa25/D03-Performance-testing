@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
@@ -134,7 +134,7 @@ public class PositionService {
 		return ticker;
 	}
 
-	public Position reconstruct(final Position position, final BindingResult binding) {
+	public Position reconstruct(final Position position, final Errors errors) {
 		final Position result = this.create();
 
 		if (position.getId() != 0) {
@@ -166,7 +166,7 @@ public class PositionService {
 		result.setCompany(this.companyService.findByPrincipal());
 		result.setProblems(position.getProblems());
 
-		this.validator.validate(result, binding);
+		this.validator.validate(result, errors);
 
 		return result;
 	}
