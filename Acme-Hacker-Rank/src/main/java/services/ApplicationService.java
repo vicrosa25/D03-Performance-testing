@@ -17,6 +17,7 @@ import domain.Answer;
 import domain.Application;
 import domain.Company;
 import domain.Hacker;
+import domain.Message;
 import domain.Problem;
 
 @Service
@@ -37,6 +38,9 @@ public class ApplicationService {
 
 	@Autowired
 	private CompanyService			companyService;
+
+	@Autowired
+	private MessageService			messageService;
 
 
 	/*************************************
@@ -177,6 +181,7 @@ public class ApplicationService {
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
 
 		application.setStatus("ACCEPTED");
+		this.automaticNotification(application, "accepted");
 
 		this.applicationRepository.save(application);
 
@@ -188,8 +193,24 @@ public class ApplicationService {
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
 
 		application.setStatus("REJECTED");
+		this.automaticNotification(application, "rejected");
 
 		this.applicationRepository.save(application);
 
+	}
+
+	private void automaticNotification(Application application, String decission) {
+		Collection<Actor> recipients = new ArrayList<Actor>();
+		recipients.add(application.getHacker());
+
+		Message notification = this.messageService.create();
+
+		notification.setBody("Your application to the position " + application.getPosition().getTitle() + " has been " + decission);
+		notification.setIsNotification(true);
+		notification.setPriority("MEDIUM");
+		notification.setRecipients(recipients);
+		notification.setSubject("The company " + application.getPosition().getCompany().getCommercialName() + " has made a decission on your application");
+
+		this.messageService.save(notification);
 	}
 }
