@@ -28,6 +28,28 @@
 	<spring:message code="company.commercialName" var="commercialNameHeader" />
 	<display:column property="commercialName" title="${commercialNameHeader}" />
 	
+	<!-- Spammer -->
+	<security:authorize access="hasRole('ADMIN')">
+	<spring:message code="company.spammer" var="spammerHeader" />
+	<display:column title="${spammerHeader}">
+		<jstl:choose>
+			<jstl:when test="${row.isSpammer != null}">
+				<jstl:if test="${row.isSpammer}">
+				<spring:message code="company.true" var="trueVar" />
+					${trueVar}
+				</jstl:if>
+				<jstl:if test="${!row.isSpammer}">
+				<spring:message code="company.false" var="falseVar" />
+					${falseVar}
+				</jstl:if>
+			</jstl:when>
+			<jstl:otherwise>
+				N/A
+			</jstl:otherwise>
+		</jstl:choose>
+	</display:column>
+	</security:authorize>
+	
 </display:table>
 
 

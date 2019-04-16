@@ -31,19 +31,6 @@
 			</jstl:otherwise>
 		</jstl:choose>
 	</display:column>
-
-	<!-- Polarity Score -->
-	<spring:message code="company.polarity" var="polarityHeader" />
-	<display:column title="${polarityHeader}">
-		<jstl:choose>
-			<jstl:when test="${row.score != null}">
-				<jstl:out value="${row.score}" />
-			</jstl:when>
-			<jstl:otherwise>
-				N/A
-			</jstl:otherwise>
-		</jstl:choose>
-	</display:column>
 	</security:authorize>
 
 	<!-- name -->
