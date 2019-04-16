@@ -168,23 +168,25 @@
 </table>
 
 
-<!-- Query 8  -->
-<!-- <table> -->
-<!-- 	<caption> -->
-<%-- 		<jstl:out value="${query8Header}"></jstl:out> --%>
-<!-- 	</caption> -->
-<!-- 	<tr> -->
-<%-- 		<th><jstl:out value="${positionHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${memberHeader}"></jstl:out></th> --%>
-<!-- 	</tr> -->
-<%-- 	<jstl:forEach items="${query8}" var="row"> --%>
-<!--       <tr> -->
-<%--         	<td>${row[0]}</td> --%>
-<%--         	<td>${row[1]}</td> --%>
-<!--       </tr> -->
-<%--    </jstl:forEach> --%>
-<!-- </table> -->
-
+<!-- Query 7  -->
+<table>
+	<caption>
+		<jstl:out value="${query7Header}"></jstl:out>
+	</caption>
+	<tr>
+		<th><jstl:out value="${avgHeader}"></jstl:out></th>
+		<th><jstl:out value="${minHeader}"></jstl:out></th>
+		<th><jstl:out value="${maxHeader}"></jstl:out></th>
+		<th><jstl:out value="${stdHeader}"></jstl:out></th>
+	</tr>
+	<tr>
+		<td><jstl:out value="${query7[0]}"></jstl:out></td>
+		<td><jstl:out value="${query7[1]}"></jstl:out></td>
+		<td><jstl:out value="${query7[2]}"></jstl:out></td>
+		<td><jstl:out value="${query7[3]}"></jstl:out></td>
+	</tr>
+</table>
+<br />
 
 <!-- Query 9 -->
 <!-- <table> -->
