@@ -42,14 +42,12 @@
 	</definition>
 	
 	<!-- CACHE -->
-	
 	<definition name="administrator/config/cache" extends="master.page">	
 		<put-attribute name="title" value="Configuración de la Caché" />
 		<put-attribute name="body" value="/views/administrator/config/cache/edit.jsp" />
 	</definition>
 	
 	<!-- Alive config -->
-	
 	<definition name="administrator/config/aliveConfig/edit" extends="master.page">	
 		<put-attribute name="title" value="Configuración" />
 		<put-attribute name="body" value="/views/administrator/config/aliveConfig/edit.jsp" />
@@ -57,7 +55,6 @@
 	
 	
 	<!-- SPAM -->
-	
 	<definition name="administrator/config/spam/list" extends="master.page">	
 		<put-attribute name="title" value="Gestionar Palabras Spam" />
 		<put-attribute name="body" value="/views/administrator/config/spam/list.jsp" />

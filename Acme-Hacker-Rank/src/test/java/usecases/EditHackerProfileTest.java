@@ -75,6 +75,7 @@ public class EditHackerProfileTest extends AbstractTest {
 			hacker1.setCardNumber(cardNumber);
 			hacker1.setEmail(email);
 			hacker1.setPhoneNumber(phoneNumber);
+			
 
 			// Update Hacker1
 			hacker1 = this.hackerService.reconstruct(hacker1, binding);

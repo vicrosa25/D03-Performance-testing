@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import domain.Application;
+import domain.Finder;
 import domain.Hacker;
 import domain.Message;
 import domain.SocialProfile;
@@ -36,6 +37,9 @@ public class HackerService {
 	
 	@Autowired
 	private SocialProfileService 	socialIdentityService;
+	
+	@Autowired
+	private FinderService			finderService;
 
 	// Validator
 	@Autowired
@@ -56,12 +60,14 @@ public class HackerService {
 		authority.setAuthority(Authority.HACKER);
 		authorities.add(authority);
 		userAccount.setAuthorities(authorities);
+		Finder finder = this.finderService.create();
 		
 		// Set Messages
 		Collection<Message> messages = new ArrayList<Message>();
 
 		hacker.setUserAccount(userAccount);
 		hacker.setMessages(messages);
+		hacker.setFinder(finder);
 		hacker.setIsSpammer(false);
 
 		return hacker;
@@ -175,6 +181,7 @@ public class HackerService {
 
 		// Relantionships from Hacker
 		result.setApplications(temp.getApplications());
+		result.setFinder(temp.getFinder());
 
 		// Relatienships from Actor
 		result.setUserAccount(temp.getUserAccount());
