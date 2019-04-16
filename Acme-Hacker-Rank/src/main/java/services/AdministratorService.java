@@ -254,6 +254,61 @@ public class AdministratorService {
 		return this.actorService.save(actor);
 
 	}
+	
+	
+	/**
+	 * 
+	 * Manage Spam Word ****************************************************************************
+	 */
+
+	// Add SPAM Word
+	public void addSpamWord(final String word) {
+
+		// Make sure that the principal is an Admin
+		final Object principal = this.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+
+		Assert.notNull(word);
+		Assert.isTrue(word != "");
+		Assert.isTrue(this.configurationsService.getConfiguration().getSpamWords().contains(word) != true);
+
+		this.configurationsService.getConfiguration().getSpamWords().add(word);
+		this.configurationsService.update(this.configurationsService.getConfiguration());
+	}
+
+	// Edit SPAM Word
+	public void editSpamWord(final String word, final Integer index) {
+
+		// Make sure that the principal is an Admin
+		final Object principal = this.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+
+		Assert.notNull(word);
+		Assert.isTrue(word != "");
+		Assert.notNull(index);
+
+		Assert.isTrue(this.configurationsService.getConfiguration().getSpamWords().contains(word) != true);
+
+		final ArrayList<String> words = new ArrayList<String>(this.configurationsService.getConfiguration().getSpamWords());
+		words.set(index, word);
+
+		this.configurationsService.getConfiguration().setSpamWords(words);
+		this.configurationsService.update(this.configurationsService.getConfiguration());
+	}
+
+	// Remove SPAM Word
+	public void removeSpamWord(final String word) {
+
+		// Make sure that the principal is an Admin
+		final Object principal = this.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+
+		Assert.notNull(word);
+		Assert.isTrue(this.configurationsService.getConfiguration().getSpamWords().contains(word));
+
+		this.configurationsService.getConfiguration().getSpamWords().remove(word);
+		this.configurationsService.update(this.configurationsService.getConfiguration());
+	}
 
 	
 	
