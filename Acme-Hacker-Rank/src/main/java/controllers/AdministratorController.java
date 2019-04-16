@@ -137,6 +137,7 @@ public class AdministratorController extends AbstractController {
 		Collection<Position> query6		= this.administratorService.query6();
 		Object[] query7 				= this.administratorService.query7();
 		Object[] query8 				= this.administratorService.query8();
+		Double query9					= this.administratorService.query9();
 
 
 		result = new ModelAndView("administrator/dashboard");
@@ -149,17 +150,7 @@ public class AdministratorController extends AbstractController {
 		result.addObject("query6", query6);
 		result.addObject("query7", query7);
 		result.addObject("query8", query8);
-//		result.addObject("query10", query10);
-//		result.addObject("query11", query11);
-
-
-//		int spammers = this.administratorService.queryGetSpammers();
-//		int notSpammers = this.administratorService.queryGetNotSpammers();
-//		Double averagePolarity = this.administratorService.getAveragePolarity();
-
-//		result.addObject("spammers", spammers);
-//		result.addObject("notSpammers", notSpammers);
-//		result.addObject("averagePolarity", averagePolarity);
+		result.addObject("query9", query9);
 
 		return result;
 	}

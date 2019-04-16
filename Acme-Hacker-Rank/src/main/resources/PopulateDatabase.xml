@@ -176,10 +176,20 @@
 	<!-- finder ************************************************************************************************** -->
 	<bean id="finder1" class="domain.Finder">
 		<property name="lastUpdate" value="01/01/2000" />
+		<property name="positions">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="finder2" class="domain.Finder">
 		<property name="lastUpdate" value="01/01/2000" />
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+				<ref bean="position2" />
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Companies *************************************************************************** -->

@@ -208,6 +208,20 @@
 </table>
 <br />
 
+<!-- Query 9 -->
+<table>
+	<caption>
+		<jstl:out value="${query9Header}"></jstl:out>
+	</caption>
+	<tr>
+		<th><jstl:out value="${ratioHeader}"></jstl:out></th>
+	</tr>
+	<tr>
+		<td><jstl:out value="${query9}"></jstl:out></td>
+	</tr>
+</table>
+<br />
+
 
 
 
