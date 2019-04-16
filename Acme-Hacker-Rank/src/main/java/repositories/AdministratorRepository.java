@@ -43,5 +43,8 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	// Queries level B
 	@Query("select avg(h.curriculas.size), min(h.curriculas.size), max(h.curriculas.size), stddev(h.curriculas.size) from Hacker h")
 	Object[] query7();
+	
+	@Query("select avg(f.positions.size), min(f.positions.size), max(f.positions.size), stddev(f.positions.size) from Finder f")
+	Object[] query8();
 
 }

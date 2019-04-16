@@ -188,31 +188,25 @@
 </table>
 <br />
 
-<!-- Query 9 -->
-<!-- <table> -->
-<!-- 	<caption> -->
-<%-- 		<jstl:out value="${query9Header}"></jstl:out> --%>
-<!-- 	</caption> -->
-<!-- 	<tr> -->
-<%-- 		<th><jstl:out value="${ratioHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${countHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${avgHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${minHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${maxHeader}"></jstl:out></th> --%>
-<%-- 		<th><jstl:out value="${stdHeader}"></jstl:out></th> --%>
-<!-- 	</tr> -->
-
-<!-- 	<tr> -->
-<%-- 		<td><jstl:out value="${query9[0]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query9[1]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query9[2]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query9[3]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query9[4]}"></jstl:out></td> --%>
-<%-- 		<td><jstl:out value="${query9[5]}"></jstl:out></td> --%>
-<!-- 	</tr> -->
-<!-- </table> -->
-<!-- <br /> -->
-
+<!-- Query 8 -->
+<table>
+	<caption>
+		<jstl:out value="${query8Header}"></jstl:out>
+	</caption>
+	<tr>
+		<th><jstl:out value="${avgHeader}"></jstl:out></th>
+		<th><jstl:out value="${minHeader}"></jstl:out></th>
+		<th><jstl:out value="${maxHeader}"></jstl:out></th>
+		<th><jstl:out value="${stdHeader}"></jstl:out></th>
+	</tr>
+	<tr>
+		<td><jstl:out value="${query8[0]}"></jstl:out></td>
+		<td><jstl:out value="${query8[1]}"></jstl:out></td>
+		<td><jstl:out value="${query8[2]}"></jstl:out></td>
+		<td><jstl:out value="${query8[3]}"></jstl:out></td>
+	</tr>
+</table>
+<br />
 
 
 
