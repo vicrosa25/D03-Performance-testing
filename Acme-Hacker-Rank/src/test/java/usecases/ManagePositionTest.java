@@ -94,6 +94,31 @@ public class ManagePositionTest extends AbstractTest {
 		for (int i = 0; i < testingData.length; i++)
 			this.deleteTemplate((Class<?>) testingData[i][0], (String) testingData[i][1]);
 	}
+	/*
+	 * ------------------------------------------------------------------------------------------------------------------------------------------
+	 * An actor who is authenticated as a company must be able to manage their positions
+	 * CANCEL
+	 * 
+	 * 01- All ok
+	 * 02- Cancel position of other company; Error
+	 * 03- Cancel position in draft mode; Error
+	 */
+
+	@Test
+	public void driverCancel() {
+		final Object testingData[][] = {
+			{
+				null, null, true
+			}, {
+				IllegalArgumentException.class, "company2", true
+			}, {
+				IllegalArgumentException.class, null, false
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.cancelTemplate((Class<?>) testingData[i][0], (String) testingData[i][1], (Boolean) testingData[i][2]);
+	}
 
 	// Ancillary methods ------------------------------------------------------
 	protected void createTemplate(Class<?> expected, String username, String deadline, Double salary, String profile) {
@@ -156,6 +181,35 @@ public class ManagePositionTest extends AbstractTest {
 			}
 
 			Assert.isTrue(this.positionService.findAll().size() < i);
+
+			super.unauthenticate();
+		} catch (Throwable oops) {
+			caught = oops.getClass();
+		}
+		super.checkExceptions(expected, caught);
+	}
+	protected void cancelTemplate(Class<?> expected, String username, Boolean finalMode) {
+		Class<?> caught;
+		caught = null;
+		Position cancelled = null;
+
+		try {
+
+			super.authenticate("company1");
+
+			for (Position position : new ArrayList<Position>(this.companyService.findByPrincipal().getPositions())) {
+				if (position.getFinalMode().equals(finalMode)) {
+					if (username != null) {
+						super.unauthenticate();
+						super.authenticate(username);
+					}
+					cancelled = position;
+					this.positionService.cancel(position);
+					break;
+				}
+			}
+
+			Assert.isTrue(cancelled.getCancelled());
 
 			super.unauthenticate();
 		} catch (Throwable oops) {

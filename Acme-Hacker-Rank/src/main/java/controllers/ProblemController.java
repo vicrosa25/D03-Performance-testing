@@ -149,6 +149,7 @@ public class ProblemController extends AbstractController {
 
 		else
 			try {
+				Assert.isTrue(!problem.getFinalMode());
 				this.problemService.save(problem);
 				result = new ModelAndView("redirect:/problem/company/list.do");
 			} catch (final Throwable oops) {
