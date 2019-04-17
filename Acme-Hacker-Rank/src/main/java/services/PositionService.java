@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,12 @@ public class PositionService {
 
 	@Autowired
 	private MessageService		messageService;
+
+	@Autowired
+	private ApplicationService	applicationService;
+
+	@Autowired
+	private ProblemService		problemService;
 
 	@Autowired
 	@Qualifier("validator")
@@ -124,6 +131,27 @@ public class PositionService {
 
 		for (Problem p : position.getProblems()) {
 			p.getPositions().remove(position);
+		}
+
+		this.positionRepository.delete(position);
+	}
+
+	public void forceDelete(Position position) {
+		Assert.notNull(position);
+		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());
+
+		for (Problem p : this.problemService.findAll()) {
+			p.getPositions().remove(position);
+		}
+		for (Finder finder : this.finderService.findAll())
+			finder.getPositions().remove(position);
+		Iterator<Application> apps = new ArrayList<Application>(position.getApplications()).iterator();
+
+		while (apps.hasNext()) {
+			Application next = apps.next();
+			this.applicationService.forceDelete(next);
+			position.getApplications().remove(next);
+			apps.remove();
 		}
 
 		this.positionRepository.delete(position);

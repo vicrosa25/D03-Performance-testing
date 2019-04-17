@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Company;
-import forms.CompanyForm;
 import services.ActorService;
 import services.CompanyService;
 import utilities.Md5;
+import domain.Company;
+import forms.CompanyForm;
 
 @Controller
 @RequestMapping("/company")
@@ -243,6 +243,26 @@ public class CompanyController extends AbstractController {
 			result = this.forbiddenOpperation();
 		}
 
+		return result;
+	}
+
+	// Delete ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete() {
+		ModelAndView result;
+		Company company;
+
+		try {
+			company = this.companyService.findByPrincipal();
+			this.companyService.delete(company);
+			result = new ModelAndView("redirect:/j_spring_security_logout");
+		} catch (final Throwable oops) {
+			System.out.println(oops.getMessage());
+			System.out.println(oops.getClass());
+			System.out.println(oops.getCause());
+			oops.printStackTrace();
+			result = this.forbiddenOpperation();
+		}
 		return result;
 	}
 

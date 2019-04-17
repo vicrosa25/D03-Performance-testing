@@ -33,6 +33,9 @@ public class ProblemService {
 	private CompanyService		companyService;
 
 	@Autowired
+	private PositionService		positionService;
+
+	@Autowired
 	private ApplicationService	applicationService;
 
 
@@ -48,46 +51,45 @@ public class ProblemService {
 		// Principal must be a Company
 		principal = this.actorService.findByPrincipal();
 		Assert.isInstanceOf(Company.class, principal);
-		Company company = (Company) principal;
+		final Company company = (Company) principal;
 
 		result.setPositions(new ArrayList<Position>());
 		result.setFinalMode(false);
 		result.setCompany(company);
 		result.setAttachments(new ArrayList<Url>());
-		
+
 		return result;
 	}
 
-	public Problem findOne(int problemId) {
-		Problem result = this.problemRepository.findOne(problemId);
+	public Problem findOne(final int problemId) {
+		final Problem result = this.problemRepository.findOne(problemId);
 		Assert.notNull(result);
 
 		return result;
 	}
 
 	public Collection<Problem> findAll() {
-		Collection<Problem> result = this.problemRepository.findAll();
+		final Collection<Problem> result = this.problemRepository.findAll();
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public Problem save(Problem problem) {
+	public Problem save(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());
 
-		Problem result = this.problemRepository.save(problem);
+		final Problem result = this.problemRepository.save(problem);
 
 		return result;
 	}
 
-	public void delete(Problem problem) {
+	public void delete(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());
 
-		for (Position p : problem.getCompany().getPositions()) {
+		for (final Position p : this.positionService.findAll())
 			p.getProblems().remove(problem);
-		}
 
 		this.problemRepository.delete(problem);
 	}
@@ -95,19 +97,19 @@ public class ProblemService {
 	/** OTHER METHODS **/
 
 	public Collection<Problem> getPrincipalFinalMode() {
-		Collection<Problem> result = this.getCompanyFinals(this.companyService.findByPrincipal());
+		final Collection<Problem> result = this.getCompanyFinals(this.companyService.findByPrincipal());
 		Assert.notNull(result);
 		return result;
 	}
 
-	public Collection<Problem> getCompanyFinals(Company company) {
-		Collection<Problem> result = this.problemRepository.getCompanyFinals(company.getId());
+	public Collection<Problem> getCompanyFinals(final Company company) {
+		final Collection<Problem> result = this.problemRepository.getCompanyFinals(company.getId());
 		Assert.notNull(result);
 		return result;
 	}
 
-	public boolean checkApplicationsProblem(Problem problem) {
-		Collection<Application> result = this.applicationService.findByProblem(problem);
+	public boolean checkApplicationsProblem(final Problem problem) {
+		final Collection<Application> result = this.applicationService.findByProblem(problem);
 		Assert.notNull(result);
 
 		return !result.isEmpty();

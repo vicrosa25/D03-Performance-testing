@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,15 +13,16 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import domain.Company;
-import domain.Message;
-import domain.Position;
-import domain.Problem;
-import forms.CompanyForm;
 import repositories.CompanyRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import domain.Company;
+import domain.Message;
+import domain.Position;
+import domain.Problem;
+import domain.SocialProfile;
+import forms.CompanyForm;
 
 @Service
 @Transactional
@@ -29,6 +31,16 @@ public class CompanyService {
 	// Manage Repository
 	@Autowired
 	private CompanyRepository		companyRepository;
+
+	// Supporting services
+	@Autowired
+	private MessageService		messageService;
+	@Autowired
+	private PositionService			positionService;
+	@Autowired
+	private ProblemService			problemService;
+	@Autowired
+	private SocialProfileService	socialProfileService;
 
 	@Autowired
 	@Qualifier("validator")
@@ -84,40 +96,39 @@ public class CompanyService {
 		Assert.notNull(company);
 		Assert.isTrue(this.findByPrincipal() == company);
 
-		//		company.getArea().getCompanys().remove(company);
-		//
-		//		Iterator<Coach> coaches = new ArrayList<Coach>(company.getCoaches()).iterator();
-		//		Iterator<Enrol> enrols = new ArrayList<Enrol>(company.getEnrols()).iterator();
-		//		Iterator<Procession> processions = new ArrayList<Procession>(company.getProcessions()).iterator();
-		//		Iterator<SocialIdentity> socialIs 	= new ArrayList<SocialIdentity>
-		//(company.getSocialIdentities()).iterator();
-		//
-		//		while (coaches.hasNext()) {
-		//			Coach next = coaches.next();
-		//			this.coachService.delete(next.getId());
-		//			company.getCoaches().remove(next);
-		//			coaches.remove();
-		//		}
-		//		while (enrols.hasNext()) {
-		//			Enrol next = enrols.next();
-		//			this.enrolService.delete(next);
-		//			company.getEnrols().remove(next);
-		//			enrols.remove();
-		//		}
-		//		while (processions.hasNext()) {
-		//			Procession p = processions.next();
-		//			this.processionService.delete(p);
-		//			company.getProcessions().remove(p);
-		//			processions.remove();
-		//		}
-		//		while (socialIs.hasNext()) {
-		//			SocialIdentity si = socialIs.next();
-		//			this.socialIdentityService.delete(si);
-		//			company.getSocialIdentities().remove(si);
-		//			socialIs.remove();
-		//		}
-		//		company.setMessageBoxes(new ArrayList<MessageBox>());
-		//		this.messageBoxService.deleteAll(company);
+		Iterator<Message> messages = new ArrayList<Message>(company.getMessages()).iterator();
+		Iterator<Position> positions = new ArrayList<Position>(company.getPositions()).iterator();
+		Iterator<Problem> problems = new ArrayList<Problem>(company.getProblems()).iterator();
+		Iterator<SocialProfile> socialIs 	= new ArrayList<SocialProfile>
+			(company.getSocialProfiles()).iterator();
+
+		while (messages.hasNext()) {
+			Message next = messages.next();
+			if (next.getSender() == company)
+				next.setSender(null);
+			next.getRecipients().remove(company);
+			this.messageService.save(next);
+			company.getMessages().remove(next);
+			messages.remove();
+		}
+		while (positions.hasNext()) {
+			Position next = positions.next();
+			this.positionService.forceDelete(next);
+			company.getPositions().remove(next);
+			positions.remove();
+		}
+		while (problems.hasNext()) {
+			Problem p = problems.next();
+			this.problemService.delete(p);
+			company.getProblems().remove(p);
+			problems.remove();
+		}
+		while (socialIs.hasNext()) {
+			SocialProfile si = socialIs.next();
+			this.socialProfileService.delete(si);
+			company.getSocialProfiles().remove(si);
+			socialIs.remove();
+		}
 
 		this.companyRepository.delete(company);
 	}

@@ -160,6 +160,14 @@ public class ApplicationService {
 		this.applicationRepository.delete(application);
 	}
 
+	public void forceDelete(Application application) {
+		Assert.notNull(application);
+		application.getHacker().getApplications().remove(application);
+		application.getPosition().getApplications().remove(application);
+
+		this.applicationRepository.delete(application);
+	}
+
 	/** OTHER METHODS **/
 	public Collection<Application> findByProblem(Problem problem) {
 		Collection<Application> result = this.applicationRepository.findByProblem(problem.getId());
