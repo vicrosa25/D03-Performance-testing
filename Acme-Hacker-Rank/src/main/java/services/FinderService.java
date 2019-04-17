@@ -84,8 +84,7 @@ public class FinderService {
 	// in the specified time
 	public Finder checkChanges(final Finder finder) {
 		final Finder old = this.findOne(finder.getId());
-		if ((finder.getMinSalary() != old.getMinSalary()) || (finder.getKeyword() != old.getKeyword())
-			|| (finder.getMaxSalary() != old.getMaxSalary()) || (finder.getDeadline() != old.getDeadline())) {
+		if ((finder.getMinSalary() != old.getMinSalary()) || (finder.getKeyword() != old.getKeyword()) || (finder.getMaxSalary() != old.getMaxSalary()) || (finder.getDeadline() != old.getDeadline())) {
 
 			final Finder saved = this.updateResults(finder);
 			return saved;
@@ -104,40 +103,49 @@ public class FinderService {
 
 		siguienteActualizacion.add(Calendar.HOUR, this.configurationsService.getConfiguration().getCacheTime());
 
-		if (actual.after(siguienteActualizacion)) {
+		if (actual.after(siguienteActualizacion))
 			this.updateResults(finder);
-		}
 		return finder.getPositions();
 	}
 
 	public Finder updateResults(final Finder finder) {
 		Assert.notNull(finder);
-		final HashSet<Position> result = new HashSet<Position>(this.positionService.findAll());
+		final HashSet<Position> result = new HashSet<Position>(this.positionService.findAllFinal());
 
-		if (finder.getMinSalary() != null) {
+		if (finder.getMinSalary() != null)
 			result.retainAll(this.finderRepository.filterByMinSalary(new Double(finder.getMinSalary())));
-		}
 
-		if (finder.getMaxSalary() != null) {
+		if (finder.getMaxSalary() != null)
 			result.retainAll(this.finderRepository.filterByMaxSalary(new Double(finder.getMaxSalary())));
-		}
 
-		if (finder.getKeyword() != null) {
+		if (finder.getKeyword() != null)
 			result.retainAll(this.finderRepository.filterByKeyword("%" + finder.getKeyword() + "%"));
-		}
 
-		if (finder.getDeadline() != null) {
+		if (finder.getDeadline() != null)
 			result.retainAll(this.finderRepository.filterByDeadline(finder.getDeadline()));
-		}
 
-		ArrayList<Position> positions = new ArrayList<Position>(result);
+		final ArrayList<Position> positions = new ArrayList<Position>(result);
 
-		if (result.size() > this.configurationsService.getConfiguration().getFinderMaxResult()) {
+		if (result.size() > this.configurationsService.getConfiguration().getFinderMaxResult())
 			finder.setPositions(positions.subList(0, this.configurationsService.getConfiguration().getFinderMaxResult() - 1));
-		} else {
+		else
 			finder.setPositions(positions);
-		}
 		finder.setLastUpdate(new Date());
 		return this.finderRepository.save(finder);
+	}
+
+	public Finder clear(final Finder finder) {
+		Assert.notNull(finder);
+		Assert.isTrue(this.hackerService.findByPrincipal().getFinder() == finder);
+
+		finder.setDeadline(null);
+		finder.setKeyword(null);
+		finder.setLastUpdate(new Date());
+		finder.setMaxSalary(null);
+		finder.setMinSalary(null);
+		finder.setPositions(this.positionService.findAllFinal());
+
+		return this.save(finder);
+
 	}
 }

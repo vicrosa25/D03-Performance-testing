@@ -2,7 +2,6 @@
 package controllers;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -33,6 +32,7 @@ public class FinderController extends AbstractController {
 	@Autowired
 	private HackerService	hackerService;
 
+
 	@ExceptionHandler(TypeMismatchException.class)
 	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
 		return new ModelAndView("redirect:/");
@@ -42,18 +42,10 @@ public class FinderController extends AbstractController {
 	@RequestMapping(value = "/clear", method = RequestMethod.GET)
 	public ModelAndView clear() {
 		ModelAndView result;
-		Finder saved;
-		try{
-			final Finder finder = this.hackerService.findByPrincipal().getFinder();
-			finder.setDeadline(null);
-			finder.setKeyword(null);
-			finder.setLastUpdate(new Date());
-			finder.setMaxSalary(null);
-			finder.setMinSalary(null);
-			saved = this.finderService.updateResults(finder);
-
+		try {
+			final Finder clear = this.finderService.clear(this.hackerService.findByPrincipal().getFinder());
 			result = new ModelAndView("position/list");
-			result.addObject("positions", saved.getPositions());
+			result.addObject("positions", clear.getPositions());
 			result.addObject("requestURI", "finder/hacker/result.do");
 
 		} catch (final Throwable oops) {
@@ -83,20 +75,17 @@ public class FinderController extends AbstractController {
 	public ModelAndView save(@Valid final Finder finder, final BindingResult binding) {
 		ModelAndView result;
 		Finder saved;
-		if (finder.getMaxSalary() != null && finder.getMinSalary() != null) {
-			if (finder.getMaxSalary() < finder.getMinSalary()) {
+		if (finder.getMaxSalary() != null && finder.getMinSalary() != null)
+			if (finder.getMaxSalary() < finder.getMinSalary())
 				binding.rejectValue("maxSalary", "finder.maxSalary.error", "The maximum salary cannot be lower than the minimun");
-			}
-		}
 
 		if (binding.hasErrors()) {
 			final List<ObjectError> errors = binding.getAllErrors();
-			for (final ObjectError e : errors) {
+			for (final ObjectError e : errors)
 				System.out.println(e.toString());
-			}
 			result = this.createEditModelAndView(finder);
 
-		} else {
+		} else
 			try {
 				saved = this.finderService.checkChanges(finder);
 
@@ -111,7 +100,6 @@ public class FinderController extends AbstractController {
 				oops.printStackTrace();
 				result = this.createEditModelAndView(finder);
 			}
-		}
 		return result;
 	}
 

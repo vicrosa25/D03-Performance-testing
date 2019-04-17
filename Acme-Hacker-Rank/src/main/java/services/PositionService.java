@@ -70,7 +70,7 @@ public class PositionService {
 		// Principal must be a Company
 		principal = this.actorService.findByPrincipal();
 		Assert.isInstanceOf(Company.class, principal);
-		Company company = (Company) principal;
+		final Company company = (Company) principal;
 
 		// Generate a ticker for the position
 		result.setTicker(this.generateTicker(company.getCommercialName()));
@@ -79,76 +79,75 @@ public class PositionService {
 		result.setProblems(new ArrayList<Problem>());
 		result.setFinalMode(false);
 		result.setCancelled(false);
-		
+
 		return result;
 	}
 
-	public Position findOne(int positionId) {
-		Position result = this.positionRepository.findOne(positionId);
+	public Position findOne(final int positionId) {
+		final Position result = this.positionRepository.findOne(positionId);
 		Assert.notNull(result);
 
 		return result;
 	}
 
 	public Collection<Position> findAll() {
-		Collection<Position> result = this.positionRepository.findAll();
+		final Collection<Position> result = this.positionRepository.findAll();
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public Position save(Position position) {
-		Assert.notNull(position);
-		Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
-
-
-		// If there is no problems, assign an empty collection to avoid nullPointerException
-		if (position.getProblems() == null) {
-			position.setProblems(new ArrayList<Problem>());
-		}
-
-		Position result = this.positionRepository.save(position);
-		for (Problem p : result.getCompany().getProblems()) {
-			if (!p.getPositions().contains(result) && position.getProblems().contains(p)) {
-				p.getPositions().add(result);
-			}
-			if (p.getPositions().contains(result) && !position.getProblems().contains(p)) {
-				p.getPositions().remove(result);
-
-			}
-		}
-		if (position.getFinalMode()) {
-			this.automaticNotification(result);
-		}
+	public Collection<Position> findAllFinal() {
+		final Collection<Position> result = this.positionRepository.findAllFinal();
+		Assert.notNull(result);
 
 		return result;
 	}
 
-	public void delete(Position position) {
+	public Position save(final Position position) {
+		Assert.notNull(position);
+		Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());
+
+		// If there is no problems, assign an empty collection to avoid nullPointerException
+		if (position.getProblems() == null)
+			position.setProblems(new ArrayList<Problem>());
+
+		final Position result = this.positionRepository.save(position);
+		for (final Problem p : result.getCompany().getProblems()) {
+			if (!p.getPositions().contains(result) && position.getProblems().contains(p))
+				p.getPositions().add(result);
+			if (p.getPositions().contains(result) && !position.getProblems().contains(p))
+				p.getPositions().remove(result);
+		}
+		if (position.getFinalMode())
+			this.automaticNotification(result);
+
+		return result;
+	}
+
+	public void delete(final Position position) {
 		Assert.notNull(position);
 		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());
 		Assert.isTrue(!position.getFinalMode());
 
-		for (Problem p : position.getProblems()) {
+		for (final Problem p : position.getProblems())
 			p.getPositions().remove(position);
-		}
 
 		this.positionRepository.delete(position);
 	}
 
-	public void forceDelete(Position position) {
+	public void forceDelete(final Position position) {
 		Assert.notNull(position);
 		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());
 
-		for (Problem p : this.problemService.findAll()) {
+		for (final Problem p : this.problemService.findAll())
 			p.getPositions().remove(position);
-		}
-		for (Finder finder : this.finderService.findAll())
+		for (final Finder finder : this.finderService.findAll())
 			finder.getPositions().remove(position);
-		Iterator<Application> apps = new ArrayList<Application>(position.getApplications()).iterator();
+		final Iterator<Application> apps = new ArrayList<Application>(position.getApplications()).iterator();
 
 		while (apps.hasNext()) {
-			Application next = apps.next();
+			final Application next = apps.next();
 			this.applicationService.forceDelete(next);
 			position.getApplications().remove(next);
 			apps.remove();
@@ -157,7 +156,7 @@ public class PositionService {
 		this.positionRepository.delete(position);
 	}
 
-	public void cancel(Position position) {
+	public void cancel(final Position position) {
 		Assert.notNull(position);
 		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());
 		Assert.isTrue(position.getFinalMode());
@@ -166,11 +165,11 @@ public class PositionService {
 
 		this.positionRepository.save(position);
 	}
-	
+
 	/*************************************
 	 * Other methods
 	 *************************************/
-	public String generateTicker(String companyName) {
+	public String generateTicker(final String companyName) {
 		String ticker = "";
 		final String tickerText = companyName.substring(0, 4);
 		final String tickerAlphanumeric = RandomStringUtils.randomNumeric(4);
@@ -192,9 +191,8 @@ public class PositionService {
 
 			// Relantionships
 			result.setProblems(temp.getProblems());
-		} else {
+		} else
 			result.setTicker(this.generateTicker(this.companyService.findByPrincipal().getCommercialName()));
-		}
 
 		// Updated attributes
 		result.setId(position.getId());
@@ -215,16 +213,15 @@ public class PositionService {
 		return result;
 	}
 
-	private void automaticNotification(Position position) {
-		Collection<Actor> recipients = new ArrayList<Actor>();
+	private void automaticNotification(final Position position) {
+		final Collection<Actor> recipients = new ArrayList<Actor>();
 		for (Finder finder : this.finderService.findAll()) {
 			finder = this.finderService.updateResults(finder);
-			if (finder.getPositions().contains(position)) {
+			if (finder.getPositions().contains(position))
 				recipients.add(this.hackerService.findByFinder(finder));
-			}
 		}
 		if (!recipients.isEmpty()) {
-			Message notification = this.messageService.create();
+			final Message notification = this.messageService.create();
 
 			notification.setBody("Your finder has a new match");
 			notification.setIsNotification(true);
