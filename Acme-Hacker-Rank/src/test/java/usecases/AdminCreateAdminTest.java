@@ -11,10 +11,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
-import domain.Administrator;
 import services.AdministratorService;
 import utilities.AbstractTest;
 import utilities.Md5;
+import domain.Administrator;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -118,7 +118,6 @@ public class AdminCreateAdminTest extends AbstractTest {
 			super.unauthenticate();
 			
 		} catch (Throwable oops) {
-			oops.printStackTrace();
 			caught = oops.getClass();
 		}
 		super.checkExceptions(expected, caught);

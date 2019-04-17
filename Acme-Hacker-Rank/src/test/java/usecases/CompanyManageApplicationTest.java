@@ -84,7 +84,7 @@ public class CompanyManageApplicationTest extends AbstractTest {
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.acceptTemplate((Class<?>) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2]);
+			this.rejectTemplate((Class<?>) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2]);
 	}
 
 	// Ancillary methods ------------------------------------------------------
@@ -98,6 +98,36 @@ public class CompanyManageApplicationTest extends AbstractTest {
 
 			super.authenticate("company1");
 			
+			for (Application application : new ArrayList<Application>(this.applicationService.findByCompany(this.companyService.findByPrincipal()))) {
+				if (application.getStatus().equals(status)) {
+					if (username != null) {
+						super.unauthenticate();
+						super.authenticate(username);
+					}
+					i = application.getId();
+					this.applicationService.accept(application);
+
+				}
+			}
+
+			Assert.isTrue(this.applicationService.findOne(i).getStatus().equals("ACCEPTED"));
+
+			super.unauthenticate();
+		} catch (Throwable oops) {
+			caught = oops.getClass();
+		}
+		super.checkExceptions(expected, caught);
+	}
+
+	protected void rejectTemplate(Class<?> expected, String username, String status) {
+		Class<?> caught;
+		caught = null;
+		int i = 0;
+
+		try {
+
+			super.authenticate("company1");
+
 			for (Application application : new ArrayList<Application>(this.applicationService.findByCompany(this.companyService.findByPrincipal()))) {
 				if (application.getStatus().equals(status)) {
 					if (username != null) {
