@@ -1,4 +1,7 @@
+
 package services;
+
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,15 +39,21 @@ public class EducationDataService {
 		return result;
 	}
 
+	public Collection<EducationData> findAll() {
+		final Collection<EducationData> result = this.educationDataRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public EducationData save(final EducationData educationData) {
 		boolean nuevo = false;
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(educationData);
 		Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));
 
-		if (educationData.getId() == 0) {
+		if (educationData.getId() == 0)
 			nuevo = true;
-		}
 		final EducationData result = this.educationDataRepository.save(educationData);
 
 		if (nuevo)
@@ -63,7 +72,7 @@ public class EducationDataService {
 		this.educationDataRepository.delete(educationData);
 	}
 	/*** Other methods ***/
-	
+
 	public void flush() {
 		this.educationDataRepository.flush();
 	}

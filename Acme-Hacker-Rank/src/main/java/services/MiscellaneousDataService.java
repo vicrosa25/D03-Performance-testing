@@ -1,4 +1,7 @@
+
 package services;
+
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ public class MiscellaneousDataService {
 
 	// Supporting services
 	@Autowired
-	private HackerService			hackerService;
+	private HackerService				hackerService;
 
 
 	// CRUD methods
@@ -36,15 +39,21 @@ public class MiscellaneousDataService {
 		return result;
 	}
 
+	public Collection<MiscellaneousData> findAll() {
+		final Collection<MiscellaneousData> result = this.miscellaneousDataRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public MiscellaneousData save(final MiscellaneousData miscellaneousData) {
 		boolean nuevo = false;
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(miscellaneousData);
 		Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));
 
-		if (miscellaneousData.getId() == 0) {
+		if (miscellaneousData.getId() == 0)
 			nuevo = true;
-		}
 		final MiscellaneousData result = this.miscellaneousDataRepository.save(miscellaneousData);
 
 		if (nuevo)
@@ -63,7 +72,7 @@ public class MiscellaneousDataService {
 		this.miscellaneousDataRepository.delete(miscellaneousData);
 	}
 	/*** Other methods ***/
-	
+
 	public void flush() {
 		this.miscellaneousDataRepository.flush();
 	}

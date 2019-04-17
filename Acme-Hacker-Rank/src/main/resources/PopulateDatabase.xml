@@ -364,6 +364,21 @@
 		<property name="title" value="first curricula of hacker 1"/>
 		<property name="applied" value="false"/>
 		<property name="personalData" ref="personalData1"/>
+		<property name="positionData">
+			<list>
+				<ref bean="positionData1" />
+			</list>
+		</property>
+		<property name="educationData">
+			<list>
+				<ref bean="educationData1" />
+			</list>
+		</property>
+		<property name="miscellaneousData">
+			<list>
+				<ref bean="miscellaneousData1" />
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="curricula2" class="domain.Curricula">
@@ -373,7 +388,7 @@
 		<property name="personalData" ref="personalData2"/>
 	</bean>
  	
-	<!-- Personal data (curricula) ********************************************************************************* -->
+	<!-- DATA (curricula) ********************************************************************************* -->
 	
 	<bean id="personalData1" class="domain.PersonalData">
 		<property name="curricula" ref="curricula1"/>
@@ -391,6 +406,26 @@
 		<property name="phoneNumber" value="632888412"/>
 		<property name="gitHub" value="https://www.google.com/"/>
 		<property name="linkedIn" value="https://www.google.com/"/>
+	</bean>
+	
+	<bean id="positionData1" class="domain.PositionData">
+		<property name="curricula" ref="curricula1"/>
+		<property name="title" value="CEO"/>
+		<property name="description" value="I was CEO of sony"/>
+		<property name="startDate" value="2015/10/10"/>
+	</bean>
+	
+	<bean id="educationData1" class="domain.EducationData">
+		<property name="curricula" ref="curricula1"/>
+		<property name="institution" value="MIT"/>
+		<property name="degree" value="Engineering"/>
+		<property name="mark" value="7.75"/>
+		<property name="startDate" value="2015/10/10"/>
+	</bean>
+	
+	<bean id="miscellaneousData1" class="domain.MiscellaneousData">
+		<property name="curricula" ref="curricula1"/>
+		<property name="text" value="I have several experience with some things"/>
 	</bean>
 
 	<!-- Applications  ********************************************************************************* -->

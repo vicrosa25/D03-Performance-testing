@@ -1,4 +1,7 @@
+
 package services;
+
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,15 +39,20 @@ public class PositionDataService {
 		return result;
 	}
 
+	public Collection<PositionData> findAll() {
+		final Collection<PositionData> result = this.positionDataRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
 	public PositionData save(final PositionData positionData) {
 		boolean nuevo = false;
 		final Hacker principal = this.hackerService.findByPrincipal();
 		Assert.notNull(positionData);
 		Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));
 
-		if (positionData.getId() == 0) {
+		if (positionData.getId() == 0)
 			nuevo = true;
-		}
 		final PositionData result = this.positionDataRepository.save(positionData);
 
 		if (nuevo)
@@ -63,7 +71,7 @@ public class PositionDataService {
 		this.positionDataRepository.delete(positionData);
 	}
 	/*** Other methods ***/
-	
+
 	public void flush() {
 		this.positionDataRepository.flush();
 	}
