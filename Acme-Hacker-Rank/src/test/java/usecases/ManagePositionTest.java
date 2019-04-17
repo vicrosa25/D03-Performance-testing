@@ -194,8 +194,6 @@ public class ManagePositionTest extends AbstractTest {
 		Position cancelled = null;
 
 		try {
-			int i;
-			i = this.positionService.findAll().size();
 
 			super.authenticate("company1");
 

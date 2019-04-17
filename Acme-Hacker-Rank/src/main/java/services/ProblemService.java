@@ -15,6 +15,7 @@ import domain.Application;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
+import domain.Url;
 
 @Service
 @Transactional
@@ -52,6 +53,7 @@ public class ProblemService {
 		result.setPositions(new ArrayList<Position>());
 		result.setFinalMode(false);
 		result.setCompany(company);
+		result.setAttachments(new ArrayList<Url>());
 		
 		return result;
 	}
@@ -72,6 +74,8 @@ public class ProblemService {
 
 	public Problem save(Problem problem) {
 		Assert.notNull(problem);
+		Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());
+
 		Problem result = this.problemRepository.save(problem);
 
 		return result;
