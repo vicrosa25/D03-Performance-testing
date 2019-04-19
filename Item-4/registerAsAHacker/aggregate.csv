@@ -1,5 +1,0 @@
-sampler_label,aggregate_report_count,average,aggregate_report_median,aggregate_report_90%_line,aggregate_report_min,aggregate_report_max,aggregate_report_error%,aggregate_report_rate,aggregate_report_bandwidth
-/Acme-Hacker-Rank/,1000,8,10,12,1,14,0.0,3.282972534651775,14.494451981602223
-/Acme-Hacker-Rank/hacker/create.do,2000,15,12,26,2,42,0.0,6.559097468188377,40.06237804178145
-/Acme-Hacker-Rank/security/login.do,1000,6,7,8,1,9,0.0,3.2796562920205963,10.66131706897117
-TOTAL,4000,11,9,25,1,42,0.0,12.9905558658855,64.56826395023319

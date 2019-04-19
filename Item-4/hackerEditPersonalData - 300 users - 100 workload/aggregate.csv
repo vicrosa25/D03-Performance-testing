@@ -1,0 +1,6 @@
+sampler_label,aggregate_report_count,average,aggregate_report_median,aggregate_report_90%_line,aggregate_report_min,aggregate_report_max,aggregate_report_error%,aggregate_report_rate,aggregate_report_bandwidth
+/Acme-Hacker-Rank/,30000,5,3,10,1,238,0.0,97.8326800284367,432.76249705482866
+/Acme-Hacker-Rank/security/login.do,30000,5,2,10,1,214,0.0,97.81386022399374,318.7279664090902
+/Acme-Hacker-Rank/j_spring_security_check,30000,10,6,24,2,191,0.0,97.80652565139145,523.8218777355263
+/Acme-Hacker-Rank/hacker/edit.do,60000,14,12,29,2,316,0.0,195.5818069803147,1164.9957091694457
+TOTAL,150000,10,5,22,1,316,0.0,484.4695220223696,2417.5839026775416
