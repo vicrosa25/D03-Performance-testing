@@ -1,0 +1,3 @@
+sampler_label,aggregate_report_count,average,aggregate_report_median,aggregate_report_90%_line,aggregate_report_min,aggregate_report_max,aggregate_report_error%,aggregate_report_rate,aggregate_report_bandwidth
+/Acme-Hacker-Rank/message/admin/broadcast.do,20000,7,8,10,1,114,0.0,260.0239222008425,908.8499472029553
+TOTAL,20000,7,8,10,1,114,0.0,260.0239222008425,908.8499472029553
