@@ -1,0 +1,6 @@
+sampler_label,aggregate_report_count,average,aggregate_report_median,aggregate_report_90%_line,aggregate_report_min,aggregate_report_max,aggregate_report_error%,aggregate_report_rate,aggregate_report_bandwidth
+/Acme-Hacker-Rank/socialProfile/list.do,3000,8,9,11,1,58,0.0,52.60758250622523,187.8212795753253
+/Acme-Hacker-Rank/socialProfile/create.do,3000,7,7,12,1,47,0.0,52.39900092571568,180.22786469704644
+/Acme-Hacker-Rank/socialProfile/edit.do,9000,7,7,12,1,73,0.0,152.79357587898747,525.2921779238749
+/Acme-Hacker-Rank/socialProfile/remove.do,3000,8,8,10,2,61,0.0,52.24114512590116,179.5169000104482
+TOTAL,18000,7,8,11,1,73,0.0,291.12081513828235,1007.270012660723

@@ -1,9 +1,0 @@
-sampler_label,aggregate_report_count,average,aggregate_report_median,aggregate_report_90%_line,aggregate_report_min,aggregate_report_max,aggregate_report_error%,aggregate_report_rate,aggregate_report_bandwidth
-/Acme-Hacker-Rank/,1000,833,21,1632,2,33713,0.0,5.000425036128071,22.077071863608406
-/Acme-Hacker-Rank/security/login.do,1000,1118,36,3399,2,29481,0.0,4.99775101204458,16.242690789144884
-/Acme-Hacker-Rank/j_spring_security_check,1000,2407,283,8329,23,37577,0.0,4.996003197442046,26.643236192296165
-/Acme-Hacker-Rank/socialProfile/list.do,1000,1118,290,2210,75,26292,0.0,4.994530988567519,29.957430988068065
-/Acme-Hacker-Rank/socialProfile/create.do,1000,738,29,788,2,27339,0.0,4.9959033592454185,23.481721550828322
-/Acme-Hacker-Rank/socialProfile/edit.do,3000,1518,352,4406,48,33173,0.0,14.849059312092578,93.16431288452877
-/Acme-Hacker-Rank/socialProfile/remove.do,1000,603,27,688,2,28492,0.0,4.995004995004995,59.69128527722278
-TOTAL,9000,1263,198,3703,2,37577,0.0,43.516521772766396,263.36514396111556
