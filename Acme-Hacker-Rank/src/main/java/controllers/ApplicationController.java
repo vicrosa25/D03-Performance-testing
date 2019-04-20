@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
-import services.ApplicationService;
-import services.CompanyService;
-import services.CurriculaService;
-import services.HackerService;
-import services.PositionService;
 import domain.Actor;
 import domain.Application;
 import domain.Company;
 import domain.Curricula;
 import domain.Hacker;
 import domain.Position;
+import services.ActorService;
+import services.ApplicationService;
+import services.CompanyService;
+import services.CurriculaService;
+import services.HackerService;
+import services.PositionService;
 
 @Controller
 @RequestMapping("/application")

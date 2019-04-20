@@ -61,6 +61,6 @@
 	
 	<%-- Buttons --%>
 	<acme:submit name="update" code="application.update"/>	
-	<acme:cancel code="company.cancel" url="application/hacker/display.do?appId=${ application.id }" />
+	<acme:cancel code="company.cancel" url="application/display.do?appId=${ application.id }" />
 
 </form:form>

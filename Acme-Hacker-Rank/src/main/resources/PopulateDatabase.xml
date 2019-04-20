@@ -341,6 +341,9 @@
 		<property name="company" ref="company1" />
 		<property name="problems">
 			<list>
+				<ref bean="problem4" />
+				<ref bean="problem5" />
+				<ref bean="problem6" />
 			</list>
 		</property>
 	</bean>
@@ -517,6 +520,7 @@
 		<property name="positions">
 			<list>
 				<ref bean="position3" />
+				<ref bean="position4" />
 			</list>
  		</property>
 	</bean>
@@ -533,6 +537,7 @@
 		<property name="positions">
 			<list>
 				<ref bean="position3" />
+				<ref bean="position4" />
 			</list>
  		</property>
 	</bean>
@@ -553,7 +558,8 @@
 		</property>
 		<property name="positions">
 			<list>
-				<ref bean="position1" />
+				<ref bean="position3" />
+				<ref bean="position4" />
 			</list>
 		</property>
 	</bean>

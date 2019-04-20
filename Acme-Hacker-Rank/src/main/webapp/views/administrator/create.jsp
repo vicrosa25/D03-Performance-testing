@@ -21,7 +21,7 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="userAccount.Authorities" />
-<%-- 	<form:hidden path="messageBoxes" /> --%>
+	<form:hidden path="messages" />
 
 	<%-- UserAccount--%>
 

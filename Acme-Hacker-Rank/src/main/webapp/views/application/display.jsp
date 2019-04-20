@@ -77,6 +77,7 @@
 </display:table>
 
 
+
 <display:table name="application.problem.attachments" id="row" requestURI="${ requestUri }" class="displaytag">
 	
 	<!-- Caption -->
@@ -192,6 +193,8 @@
 <display:caption><spring:message code="curricula.miscellaneousData"/></display:caption>
 </display:table>
 </jstl:if>
+<br>
+<br>
 
 
 <security:authorize access="hasRole('HACKER')">
