@@ -50,7 +50,7 @@ public class PositionController extends AbstractController {
 		Collection<Position> positions;
 		try {
 
-			positions = this.positionService.findAll();
+			positions = this.positionService.findAllFinal();
 
 			result = new ModelAndView("position/list");
 			result.addObject("positions", positions);
