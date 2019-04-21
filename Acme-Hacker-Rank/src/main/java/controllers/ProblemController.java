@@ -149,7 +149,6 @@ public class ProblemController extends AbstractController {
 
 		else
 			try {
-				Assert.isTrue(!problem.getFinalMode());
 				this.problemService.save(problem);
 				result = new ModelAndView("redirect:/problem/company/list.do");
 			} catch (final Throwable oops) {
@@ -173,11 +172,10 @@ public class ProblemController extends AbstractController {
 			Assert.isTrue(problem.getCompany() == this.companyService.findByPrincipal());
 
 			result = this.principalList();
-			if (this.problemService.checkApplicationsProblem(problem)) {
+			if (this.problemService.checkApplicationsProblem(problem))
 				result.addObject("application", "problem.delete.application");
-			} else {
+			else
 				this.problemService.delete(problem);
-			}
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
@@ -220,12 +218,11 @@ public class ProblemController extends AbstractController {
 		ModelAndView result;
 		try {
 			final Problem c = this.problemService.findOne(problemId);
-			for (final Url picture : c.getAttachments()) {
+			for (final Url picture : c.getAttachments())
 				if (picture.getLink().equals(link)) {
 					c.getAttachments().remove(picture);
 					break;
 				}
-			}
 			result = this.createEditModelAndView(c);
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
@@ -243,13 +240,12 @@ public class ProblemController extends AbstractController {
 		ModelAndView result;
 		if (binding.hasErrors()) {
 			final List<ObjectError> errors = binding.getAllErrors();
-			for (final ObjectError e : errors) {
+			for (final ObjectError e : errors)
 				System.out.println(e.toString());
-			}
 
 			result = new ModelAndView("problem/company/addAttachment");
 			result.addObject("url", url);
-		} else {
+		} else
 			try {
 				Problem c = this.problemService.findOne(url.getTargetId());
 				c.getAttachments().add(url);
@@ -264,7 +260,6 @@ public class ProblemController extends AbstractController {
 				result = new ModelAndView("problem/company/addAttachment");
 				result.addObject("url", url);
 			}
-		}
 		return result;
 	}
 
@@ -286,7 +281,6 @@ public class ProblemController extends AbstractController {
 
 		return result;
 	}
-
 
 	private ModelAndView forbiddenOpperation() {
 		return new ModelAndView("redirect:/");

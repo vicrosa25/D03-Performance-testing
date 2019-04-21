@@ -55,7 +55,6 @@
 
 <jstl:if test="${not empty company.positions}">
 <display:table name="company.positions" id="row" requestURI="company/display.do" class="displaytag">
-	<jstl:if test="${row.finalMode}">
 	
 	<!-- Title -->
 	<spring:message code="position.title" var="titleHeader" />
@@ -64,8 +63,6 @@
 	<!-- description -->
 	<spring:message code="position.description" var="descriptionHeader" />
 	<display:column property="description" title="${descriptionHeader}" sortable="false" />
-	
-	</jstl:if>
 	<display:caption><spring:message code="company.positions"/></display:caption>
 </display:table>
 <br>
