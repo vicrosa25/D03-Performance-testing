@@ -1,0 +1,5 @@
+sampler_label,aggregate_report_count,average,aggregate_report_median,aggregate_report_90%_line,aggregate_report_min,aggregate_report_max,aggregate_report_error%,aggregate_report_rate,aggregate_report_bandwidth
+/company/list.do,15000,2199,718,6319,12,44509,0.0,35.68412413317315,126.99889407093409
+/position/company.do,15000,2148,690,6214,12,47637,0.0,35.69830647234095,144.5477860319369
+/,7500,2123,719,6067,11,49821,0.0,17.93889295503796,80.24033650522858
+TOTAL,37500,2163,708,6232,11,49821,0.0,89.00978395545238,350.50682541858333
