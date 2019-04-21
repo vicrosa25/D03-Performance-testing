@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.AdministratorRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Hacker;
 import domain.Message;
 import domain.Position;
-import repositories.AdministratorRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 
 @Service
 @Transactional
@@ -31,10 +31,10 @@ public class AdministratorService {
 	// Supporting services
 	@Autowired
 	private ActorService			actorService;
-	
+
 	@Autowired
 	private ConfigurationsService	configurationsService;
-	
+
 	@Autowired
 	private MessageService			messageService;
 
@@ -170,7 +170,7 @@ public class AdministratorService {
 
 		return result;
 	}
-	
+
 	public Object[] query7() {
 		Actor principal;
 
@@ -180,8 +180,8 @@ public class AdministratorService {
 
 		return this.adminRepository.query7();
 	}
-	
-	
+
+
 	public Object[] query8() {
 		Actor principal;
 
@@ -191,7 +191,7 @@ public class AdministratorService {
 
 		return this.adminRepository.query8();
 	}
-	
+
 	public Double query9() {
 		Actor principal;
 
@@ -234,7 +234,7 @@ public class AdministratorService {
 		}
 	}
 
-	
+
 	public Collection<Actor> getSpammers() {
 		Actor principal;
 
@@ -285,8 +285,8 @@ public class AdministratorService {
 		return this.actorService.save(actor);
 
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * Manage Spam Word ****************************************************************************
@@ -341,10 +341,10 @@ public class AdministratorService {
 		this.configurationsService.update(this.configurationsService.getConfiguration());
 	}
 
-	
-	
-	
-	
+
+
+
+
 	/*************************************
 	 * Other business methods
 	 ********************************/
@@ -369,5 +369,18 @@ public class AdministratorService {
 		result = this.adminRepository.findByUserAccountId(userAccount.getId());
 
 		return result;
+	}
+
+	public void informSecurityBreach() {
+		final Message message = this.messageService.create();
+		message.setBody("There has been a security breach in our data system.");
+
+		message.setIsNotification(true);
+		message.setPriority("HIGH");
+		message.setSubject("Security breach notification");
+		Collection<Actor> recipients = new ArrayList<Actor>(this.actorService.findAll());
+		message.setRecipients(recipients);
+
+		this.messageService.save(message);
 	}
 }

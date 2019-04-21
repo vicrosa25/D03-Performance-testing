@@ -28,16 +28,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
+import services.AdministratorService;
+import services.ConfigurationsService;
+import utilities.Md5;
 import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Configurations;
 import domain.Hacker;
 import domain.Position;
-import services.ActorService;
-import services.AdministratorService;
-import services.ConfigurationsService;
-import utilities.Md5;
 
 @Controller
 @RequestMapping("/administrator")
@@ -48,7 +48,7 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private ConfigurationsService	configurationsService;
-	
+
 	@Autowired
 	private ActorService			actorService;
 
@@ -121,7 +121,7 @@ public class AdministratorController extends AbstractController {
 
 	/*******************************************************************
 	 * 
-	 * Admin Dashboard Queries 
+	 * Admin Dashboard Queries
 	 * 
 	 *******************************************************************/
 	@RequestMapping("/dashboard")
@@ -154,8 +154,8 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * Manage CACHE ****************************************************************************
@@ -213,7 +213,7 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/config/aliveConfig/edit", method = RequestMethod.POST, params = "update")
 	public ModelAndView config(@Valid Configurations configurations, BindingResult binding) {
 		ModelAndView result;
@@ -236,7 +236,7 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * SPAM
@@ -306,12 +306,12 @@ public class AdministratorController extends AbstractController {
 
 		return result;
 	}
-	
-	
+
+
 	private ModelAndView forbiddenOpperation() {
 		return new ModelAndView("redirect:/");
 	}
-	
+
 	/**
 	 * 
 	 * Manage Spam Word ****************************************************************************
@@ -408,6 +408,21 @@ public class AdministratorController extends AbstractController {
 
 		this.administratorService.removeSpamWord(word);
 		return this.spamWordList();
+	}
+
+	// Inform security breach -------------------------------------------------------------
+	@RequestMapping(value = "/securityBreach", method = RequestMethod.GET)
+	public ModelAndView informBreach() {
+		ModelAndView result;
+
+		try {
+			this.administratorService.informSecurityBreach();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
+		result = new ModelAndView("redirect:/");
+		return result;
 	}
 
 }
