@@ -30,9 +30,9 @@
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		
 <!-- 		Clever Cloud  -->
-		<property name="jdbcUrl" value="jdbc:mysql://bz0vcevszgzld02rwdd0-mysql.services.clever-cloud.com:3306/bz0vcevszgzld02rwdd0" />
-		<property name="user" value="uoh2ceakklqhvczl" />
- 		<property name="password" value="ohR7M8G5xe7RGnfj0UAW" />		
+		<property name="jdbcUrl" value="jdbc:mysql://bmn7tcjkoby6ckp5ij3m-mysql.services.clever-cloud.com:3306/bmn7tcjkoby6ckp5ij3m" />
+		<property name="user" value="umogi24wlywvvge3" />
+ 		<property name="password" value="nSqPv5zs6S41ljWPOdc4" />		
 		
 		<!-- Normal -->
 <!--   		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/Acme-Hacker-Rank" />  -->
