@@ -1,0 +1,11 @@
+{
+  "deploy": {
+    "container": "TOMCAT7",
+    "war": [
+      {
+        "file": "Acme-Hacker-Rank.war",
+        "context": "/"
+      }
+    ]
+  }
+}

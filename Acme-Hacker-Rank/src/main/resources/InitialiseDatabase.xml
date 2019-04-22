@@ -32,75 +32,29 @@
 
 
 	<!-- Administrators *************************************************************************** -->
-	<bean id="admin1" class="domain.Administrator">
+	<bean id="admin" class="domain.Administrator">
 		<property name="name" value="admin" />
 		<property name="username" value="admin" />
-		<property name="middleName" value="middlename1" />
 		<property name="surname" value="surname1" />
-		<property name="email" value="admin1@gmail.com" />
+		<property name="vat" value="1" />
+		<property name="cardNumber" value="378721273855309" />
+		<property name="email" value="admin@gmail.com" />
 		<property name="phoneNumber" value="+34656256697" />
-		<property name="address" value="admin1 18" />
+		<property name="address" value="admin 18" />
 		<property name="UserAccount" ref="userAccount1" />
-		<property name="messageBoxes">
+		<property name="socialProfiles">
 			<list>
-				<ref bean="admin1-Spam" />
-				<ref bean="admin1-in" />
-				<ref bean="admin1-out" />
-				<ref bean="admin1-trash" />
-				<ref bean="admin1-notification" />
+				<ref bean="socialProfile1" />
+			</list>
+		</property>
+		<property name="messages">
+			<list>
+				<ref bean="message5" />
 			</list>
 		</property>
 	</bean>
 	
-	<!-- MessageBoxes *************************************************************************** -->
-
-	<!-- Admin MessageBoxes -->
-	<bean id="admin1-in" class="domain.MessageBox">
-		<property name="name" value="in" />
-		<property name="isSystemBox" value="true" />
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="admin1-out" class="domain.MessageBox">
-		<property name="name" value="out" />
-		<property name="isSystemBox" value="true" />
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="admin1-Spam" class="domain.MessageBox">
-		<property name="name" value="spam" />
-		<property name="isSystemBox" value="true" />
-		<property name="messages">
-			<list>
-
-			</list>
-		</property>
-	</bean>
-
-	<bean id="admin1-notification" class="domain.MessageBox">
-		<property name="name" value="notification" />
-		<property name="isSystemBox" value="true" />
-		<property name="messages">
-			<list>
-
-			</list>
-		</property>
-	</bean>
-
-	<bean id="admin1-trash" class="domain.MessageBox">
-		<property name="name" value="trash" />
-		<property name="isSystemBox" value="true" />
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-	</bean>
+	
 
 	<!-- positions default **************************************************************************************** -->
 	<bean id="President" class="domain.Position">
