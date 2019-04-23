@@ -147,7 +147,9 @@ public class PositionController extends AbstractController {
 
 			position = this.positionService.create();
 
-			result = this.createEditModelAndView(position);
+			result = new ModelAndView("position/company/create");
+			result.addObject("position", position);
+			result.addObject("problems", this.problemService.getPrincipalFinalMode());
 
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());

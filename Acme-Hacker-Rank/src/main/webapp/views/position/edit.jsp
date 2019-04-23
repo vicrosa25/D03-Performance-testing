@@ -41,7 +41,7 @@
 	
 	
 	<!-- Select Problems -->
-	<acme:select items="${ problems }" itemLabel="title" code="position.problems" path="problems"/>
+	<acme:select2 items="${ problems }" itemLabel="title" code="position.problems" path="problems"/>
 	<br>
 	
 	
