@@ -28,16 +28,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
-import services.AdministratorService;
-import services.ConfigurationsService;
-import utilities.Md5;
 import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Configurations;
 import domain.Hacker;
 import domain.Position;
+import services.ActorService;
+import services.AdministratorService;
+import services.ConfigurationsService;
+import utilities.Md5;
 
 @Controller
 @RequestMapping("/administrator")
@@ -134,7 +134,8 @@ public class AdministratorController extends AbstractController {
 		Collection<Company> query3 		= this.administratorService.query3();
 		Collection<Hacker> query4 		= this.administratorService.query4();
 		Object[] query5 				= this.administratorService.query5();
-		Collection<Position> query6		= this.administratorService.query6();
+		Collection<Position> query6a	= this.administratorService.query6a();
+		Collection<Position> query6b	= this.administratorService.query6b();
 		Object[] query7 				= this.administratorService.query7();
 		Object[] query8 				= this.administratorService.query8();
 		Double query9					= this.administratorService.query9();
@@ -147,7 +148,8 @@ public class AdministratorController extends AbstractController {
 		result.addObject("query3", query3);
 		result.addObject("query4", query4);
 		result.addObject("query5", query5);
-		result.addObject("query6", query6);
+		result.addObject("query6a", query6a);
+		result.addObject("query6b", query6b);
 		result.addObject("query7", query7);
 		result.addObject("query8", query8);
 		result.addObject("query9", query9);

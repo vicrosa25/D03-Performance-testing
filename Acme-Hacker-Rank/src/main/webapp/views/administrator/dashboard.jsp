@@ -159,7 +159,17 @@
 		<th><jstl:out value="${hackerHeader}"></jstl:out></th>
 		<th><jstl:out value="${salaryHeader}"></jstl:out></th>
 	</tr>
-	<jstl:forEach items="${query6}" var="row">
+	<jstl:forEach items="${query6a}" var="row">
+      <tr>
+        	<td>${row.title}</td>
+        	<td>${row.salary}</td>
+      </tr>
+   </jstl:forEach>
+   <tr>
+		<th><jstl:out value="${hackerHeader}"></jstl:out></th>
+		<th><jstl:out value="${salaryHeader}"></jstl:out></th>
+	</tr>
+	<jstl:forEach items="${query6b}" var="row">
       <tr>
         	<td>${row.title}</td>
         	<td>${row.salary}</td>

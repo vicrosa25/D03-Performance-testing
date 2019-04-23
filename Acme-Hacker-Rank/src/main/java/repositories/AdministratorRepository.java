@@ -35,10 +35,10 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	Object[] query5();
 	
 	@Query("select p1 from Position p1 where p1.salary = (Select max(p2.salary) from Position p2)")
-	Position query6a();
+	Collection<Position> query6a();
 	
 	@Query("select p1 from Position p1 where p1.salary = (Select min(p2.salary) from Position p2)")
-	Position query6b();
+	Collection<Position> query6b();
 	
 	// Queries level B
 	@Query("select avg(h.curriculas.size), min(h.curriculas.size), max(h.curriculas.size), stddev(h.curriculas.size) from Hacker h")

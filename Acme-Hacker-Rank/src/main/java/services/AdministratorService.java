@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import repositories.AdministratorRepository;
-import security.Authority;
-import security.LoginService;
-import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Hacker;
 import domain.Message;
 import domain.Position;
+import repositories.AdministratorRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 
 @Service
 @Transactional
@@ -157,7 +157,7 @@ public class AdministratorService {
 		return this.adminRepository.query5();
 	}
 
-	public Collection<Position> query6() {
+	public Collection<Position> query6a() {
 		Actor principal;
 
 		// Check principal must be an admin
@@ -165,9 +165,20 @@ public class AdministratorService {
 		Assert.isInstanceOf(Administrator.class, principal);
 
 		Collection<Position> result = new ArrayList<Position>();
-		result.add(this.adminRepository.query6a());
-		result.add(this.adminRepository.query6b());
+		result.addAll(this.adminRepository.query6a());
+		return result;
+	}
+	
+	
+	public Collection<Position> query6b() {
+		Actor principal;
 
+		// Check principal must be an admin
+		principal = this.actorService.findByPrincipal();
+		Assert.isInstanceOf(Administrator.class, principal);
+
+		Collection<Position> result = new ArrayList<Position>();
+		result.addAll(this.adminRepository.query6b());
 		return result;
 	}
 
