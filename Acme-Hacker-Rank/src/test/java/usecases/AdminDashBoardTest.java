@@ -203,7 +203,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test
 	public void query6Positive() {
 		super.authenticate("admin");
-		this.adminService.query6();
+		this.adminService.query6a();
 		super.unauthenticate();
 	}
 
@@ -219,7 +219,7 @@ public class AdminDashBoardTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void query6Negative() {
 		super.authenticate(null);
-		this.adminService.query6();
+		this.adminService.query6b();
 		super.unauthenticate();
 	}
 
