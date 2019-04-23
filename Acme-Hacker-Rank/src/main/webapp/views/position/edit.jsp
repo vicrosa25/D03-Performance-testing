@@ -36,8 +36,9 @@
 	<br>
 	
 	<%-- deadline--%>
-	<acme:textbox code="position.deadline" path="deadline" />
+	<acme:dateinput code="position.deadline" format="{0,date,dd/MM/yyyy}" path="deadline" placeholder="dd/mm/yyyy"/>
 	<br>
+	
 	
 	<!-- Select Problems -->
 	<acme:select items="${ problems }" itemLabel="title" code="position.problems" path="problems"/>
