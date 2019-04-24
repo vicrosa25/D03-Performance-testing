@@ -739,21 +739,6 @@
 		<property name="body" value="This is bad, horrible" />
 		<property name="priority" value="LOW" />
 	</bean>
-	
-
-	
-
-	<!-- finder ************************************************************************************************** -->
-<!-- 	<bean id="finder1" class="domain.Finder"> -->
-<!-- 		<property name="lastUpdate" value="01/01/2000" /> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean id="finder2" class="domain.Finder"> -->
-<!-- 		<property name="lastUpdate" value="01/01/2000" /> -->
-<!-- 	</bean> -->
-
-
-
 
 
 	<!-- pictures *************************************************************************** -->
