@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HackerForm.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">forms</a> &gt; <span class="el_source">HackerForm.java</span></div><h1>HackerForm.java</h1><pre class="source lang-java linenums">
+package forms;
+
+import security.UserAccount;
+
+<span class="nc" id="L6">public class HackerForm {</span>
+
+	private UserAccount	userAccount;
+	private String		name;
+	private String		surname;
+	private Integer		vat;
+	private String		cardNumber;
+	private String		phoneNumber;
+	private String		email;
+	private String		address;
+	private String		photo;
+	private boolean		accepted;
+
+
+	// Getters and Setters
+	public UserAccount getUserAccount() {
+<span class="nc" id="L22">		return this.userAccount;</span>
+	}
+	public void setUserAccount(final UserAccount userAccount) {
+<span class="nc" id="L25">		this.userAccount = userAccount;</span>
+<span class="nc" id="L26">	}</span>
+
+	public String getName() {
+<span class="nc" id="L29">		return this.name;</span>
+	}
+	public void setName(final String name) {
+<span class="nc" id="L32">		this.name = name;</span>
+<span class="nc" id="L33">	}</span>
+
+	public String getPhoneNumber() {
+<span class="nc" id="L36">		return this.phoneNumber;</span>
+	}
+	public void setPhoneNumber(final String phoneNumber) {
+<span class="nc" id="L39">		this.phoneNumber = phoneNumber;</span>
+<span class="nc" id="L40">	}</span>
+
+	public String getEmail() {
+<span class="nc" id="L43">		return this.email;</span>
+	}
+	public void setEmail(final String email) {
+<span class="nc" id="L46">		this.email = email;</span>
+<span class="nc" id="L47">	}</span>
+
+	public String getSurname() {
+<span class="nc" id="L50">		return this.surname;</span>
+	}
+	public void setSurname(final String surname) {
+<span class="nc" id="L53">		this.surname = surname;</span>
+<span class="nc" id="L54">	}</span>
+
+	public String getAddress() {
+<span class="nc" id="L57">		return this.address;</span>
+	}
+	public void setAddress(final String address) {
+<span class="nc" id="L60">		this.address = address;</span>
+<span class="nc" id="L61">	}</span>
+
+	public String getPhoto() {
+<span class="nc" id="L64">		return this.photo;</span>
+	}
+	public void setPhoto(final String photo) {
+<span class="nc" id="L67">		this.photo = photo;</span>
+<span class="nc" id="L68">	}</span>
+
+	public boolean isAccepted() {
+<span class="nc" id="L71">		return this.accepted;</span>
+	}
+
+	public void setAccepted(boolean accepted) {
+<span class="nc" id="L75">		this.accepted = accepted;</span>
+<span class="nc" id="L76">	}</span>
+
+	public Integer getVat() {
+<span class="nc" id="L79">		return vat;</span>
+	}
+
+	public void setVat(Integer vat) {
+<span class="nc" id="L83">		this.vat = vat;</span>
+<span class="nc" id="L84">	}</span>
+
+	public String getCardNumber() {
+<span class="nc" id="L87">		return cardNumber;</span>
+	}
+
+	public void setCardNumber(String cardNumber) {
+<span class="nc" id="L91">		this.cardNumber = cardNumber;</span>
+<span class="nc" id="L92">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L96">		return &quot;RegistrationFormCustomer [Name=&quot; + this.name + &quot;]&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

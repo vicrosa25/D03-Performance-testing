@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="curricula/hacker/create" extends="master.page">	
+		<put-attribute name="title" value="Añadir titulo al curriculum, no se podrá modificar después" />
+		<put-attribute name="body" value="/views/curricula/create.jsp" />
+	</definition>
+
+	<definition name="curricula/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de Curriculum" />
+		<put-attribute name="body" value="/views/curricula/list.jsp" />
+	</definition>
+
+	<definition name="curricula/display" extends="master.page">	
+		<put-attribute name="title" value="Curriculum" />
+		<put-attribute name="body" value="/views/curricula/display.jsp" />
+	</definition>
+
+	<definition name="curricula/educationData/hacker/edit" extends="master.page">	
+		<put-attribute name="title" value="Datos educativos" />
+		<put-attribute name="body" value="/views/curricula/educationData.jsp" />
+	</definition>
+
+	<definition name="curricula/positionData/hacker/edit" extends="master.page">	
+		<put-attribute name="title" value="Datos de Puesto" />
+		<put-attribute name="body" value="/views/curricula/positionData.jsp" />
+	</definition>
+
+	<definition name="curricula/miscellaneousData/hacker/edit" extends="master.page">	
+		<put-attribute name="title" value="Otros datos" />
+		<put-attribute name="body" value="/views/curricula/miscellaneousData.jsp" />
+	</definition>
+
+	<definition name="curricula/miscellaneousData/hacker/addAttachment" extends="master.page">	
+		<put-attribute name="title" value="Añadir adjunto" />
+		<put-attribute name="body" value="/views/curricula/addAttachment.jsp" />
+	</definition>
+
+	<definition name="curricula/personalData/hacker/edit" extends="master.page">	
+		<put-attribute name="title" value="Datos personales" />
+		<put-attribute name="body" value="/views/curricula/personalData.jsp" />
+	</definition>
+	
+</tiles-definitions>

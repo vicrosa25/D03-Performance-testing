@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProblemController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">ProblemController.java</span></div><h1>ProblemController.java</h1><pre class="source lang-java linenums">
+package controllers;
+
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+import javax.validation.Valid;
+
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CompanyService;
+import services.ProblemService;
+import domain.Problem;
+import domain.Url;
+
+@Controller
+@RequestMapping(&quot;/problem&quot;)
+<span class="fc" id="L29">public class ProblemController extends AbstractController {</span>
+
+	@Autowired
+	private ProblemService	problemService;
+
+	@Autowired
+	private CompanyService	companyService;
+
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
+<span class="nc" id="L40">		JOptionPane.showMessageDialog(null, &quot;Forbidden operation&quot;);</span>
+<span class="nc" id="L41">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	// principal List -------------------------------------------------------------
+	@RequestMapping(value = &quot;/company/list&quot;, method = RequestMethod.GET)
+	public ModelAndView principalList() {
+		ModelAndView result;
+		Collection&lt;Problem&gt; problems;
+		try {
+
+<span class="nc" id="L51">			problems = this.companyService.findByPrincipal().getProblems();</span>
+
+<span class="nc" id="L53">			result = new ModelAndView(&quot;problem/list&quot;);</span>
+<span class="nc" id="L54">			result.addObject(&quot;problems&quot;, problems);</span>
+<span class="nc" id="L55">			result.addObject(&quot;requestURI&quot;, &quot;problem/company/list.do&quot;);</span>
+
+<span class="nc" id="L57">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L58">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L59">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L60">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L61">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L63">		}</span>
+
+<span class="nc" id="L65">		return result;</span>
+	}
+
+	// Display -------------------------------------------------------------
+	@RequestMapping(value = &quot;/company/display&quot;, method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int problemId) {
+		ModelAndView result;
+		Problem problem;
+		try {
+<span class="nc" id="L74">			problem = this.problemService.findOne(problemId);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">			Assert.isTrue(problem.getCompany() == this.companyService.findByPrincipal());</span>
+
+<span class="nc" id="L77">			result = new ModelAndView(&quot;problem/company/display&quot;);</span>
+<span class="nc" id="L78">			result.addObject(&quot;problem&quot;, problem);</span>
+
+<span class="nc" id="L80">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L81">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L82">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L83">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L84">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L86">		}</span>
+
+<span class="nc" id="L88">		return result;</span>
+	}
+
+	// create -------------------------------------------------------------
+	@RequestMapping(value = &quot;/company/create&quot;, method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		Problem problem;
+		try {
+
+<span class="nc" id="L98">			problem = this.problemService.create();</span>
+
+<span class="nc" id="L100">			result = this.createEditModelAndView(problem);</span>
+
+<span class="nc" id="L102">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L103">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L104">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L105">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L106">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L108">		}</span>
+
+<span class="nc" id="L110">		return result;</span>
+	}
+
+	// edit -------------------------------------------------------------
+	@RequestMapping(value = &quot;/company/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int problemId) {
+		ModelAndView result;
+		Problem problem;
+
+		try {
+<span class="nc" id="L120">			problem = this.problemService.findOne(problemId);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			Assert.isTrue(!problem.getFinalMode());</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">			Assert.isTrue(problem.getCompany() == this.companyService.findByPrincipal());</span>
+
+<span class="nc" id="L124">			result = this.createEditModelAndView(problem);</span>
+
+<span class="nc" id="L126">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L127">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L128">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L129">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L130">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L132">		}</span>
+
+<span class="nc" id="L134">		return result;</span>
+	}
+
+	// save ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;company/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView saveEdit(@Valid final Problem problem, final BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L143">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L145">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L147">			result = this.createEditModelAndView(problem);</span>
+<span class="nc" id="L148">		}</span>
+
+		else
+			try {
+<span class="nc" id="L152">				this.problemService.save(problem);</span>
+<span class="nc" id="L153">				result = new ModelAndView(&quot;redirect:/problem/company/list.do&quot;);</span>
+<span class="nc" id="L154">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L155">				System.out.println(problem);</span>
+<span class="nc" id="L156">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L157">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L158">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L159">				result = this.createEditModelAndView(problem, &quot;company.registration.error&quot;);</span>
+<span class="nc" id="L160">			}</span>
+<span class="nc" id="L161">		return result;</span>
+	}
+
+	// delete ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;company/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int problemId) {
+		ModelAndView result;
+		Problem problem;
+
+		try {
+<span class="nc" id="L171">			problem = this.problemService.findOne(problemId);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			Assert.isTrue(problem.getCompany() == this.companyService.findByPrincipal());</span>
+
+<span class="nc" id="L174">			result = this.principalList();</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (this.problemService.checkApplicationsProblem(problem))</span>
+<span class="nc" id="L176">				result.addObject(&quot;application&quot;, &quot;problem.delete.application&quot;);</span>
+			else
+<span class="nc" id="L178">				this.problemService.delete(problem);</span>
+
+<span class="nc" id="L180">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L181">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L182">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L183">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L184">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L186">		}</span>
+
+<span class="nc" id="L188">		return result;</span>
+	}
+
+	// Attachment  ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/company/addAttachment&quot;, method = RequestMethod.GET)
+	public ModelAndView addAttachment(@RequestParam final int problemId) {
+		ModelAndView result;
+		final Url url;
+		Problem problem;
+
+		try {
+<span class="nc" id="L199">			problem = this.problemService.findOne(problemId);</span>
+<span class="nc" id="L200">			Assert.notNull(problem);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">			Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());</span>
+<span class="nc" id="L202">			url = new Url();</span>
+<span class="nc" id="L203">			url.setTargetId(problemId);</span>
+<span class="nc" id="L204">			result = new ModelAndView(&quot;problem/company/addAttachment&quot;);</span>
+<span class="nc" id="L205">			result.addObject(&quot;url&quot;, url);</span>
+<span class="nc" id="L206">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L207">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L208">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L209">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L210">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L211">		}</span>
+
+<span class="nc" id="L213">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/company/deleteAttachment&quot;, method = RequestMethod.GET)
+	public ModelAndView deletePicture(@RequestParam final String link, @RequestParam final int problemId) {
+		ModelAndView result;
+		try {
+<span class="nc" id="L220">			final Problem c = this.problemService.findOne(problemId);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">			for (final Url picture : c.getAttachments())</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				if (picture.getLink().equals(link)) {</span>
+<span class="nc" id="L223">					c.getAttachments().remove(picture);</span>
+<span class="nc" id="L224">					break;</span>
+				}
+<span class="nc" id="L226">			result = this.createEditModelAndView(c);</span>
+<span class="nc" id="L227">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L228">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L229">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L230">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L231">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L232">		}</span>
+
+<span class="nc" id="L234">		return result;</span>
+	}
+
+	// save attachment ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/company/addAttachment&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView savePicture(@Valid final Url url, final BindingResult binding) {
+		ModelAndView result;
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L242">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L244">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L246">			result = new ModelAndView(&quot;problem/company/addAttachment&quot;);</span>
+<span class="nc" id="L247">			result.addObject(&quot;url&quot;, url);</span>
+<span class="nc" id="L248">		} else</span>
+			try {
+<span class="nc" id="L250">				Problem c = this.problemService.findOne(url.getTargetId());</span>
+<span class="nc" id="L251">				c.getAttachments().add(url);</span>
+<span class="nc" id="L252">				c = this.problemService.save(c);</span>
+<span class="nc" id="L253">				result = this.createEditModelAndView(c);</span>
+<span class="nc" id="L254">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L255">				System.out.println(url);</span>
+<span class="nc" id="L256">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L257">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L258">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L259">				oops.printStackTrace();</span>
+<span class="nc" id="L260">				result = new ModelAndView(&quot;problem/company/addAttachment&quot;);</span>
+<span class="nc" id="L261">				result.addObject(&quot;url&quot;, url);</span>
+<span class="nc" id="L262">			}</span>
+<span class="nc" id="L263">		return result;</span>
+	}
+
+	// Ancillary methods -----------------------------------------------------------------------
+	protected ModelAndView createEditModelAndView(final Problem problem) {
+		ModelAndView result;
+
+<span class="nc" id="L270">		result = this.createEditModelAndView(problem, null);</span>
+
+<span class="nc" id="L272">		return result;</span>
+	}
+
+	protected ModelAndView createEditModelAndView(final Problem problem, final String message) {
+		ModelAndView result;
+
+<span class="nc" id="L278">		result = new ModelAndView(&quot;problem/company/edit&quot;);</span>
+<span class="nc" id="L279">		result.addObject(&quot;problem&quot;, problem);</span>
+<span class="nc" id="L280">		result.addObject(&quot;message&quot;, message);</span>
+
+<span class="nc" id="L282">		return result;</span>
+	}
+
+	private ModelAndView forbiddenOpperation() {
+<span class="nc" id="L286">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

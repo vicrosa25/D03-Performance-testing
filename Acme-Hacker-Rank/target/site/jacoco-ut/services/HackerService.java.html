@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HackerService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">HackerService.java</span></div><h1>HackerService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+
+import repositories.HackerRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
+import domain.Application;
+import domain.Finder;
+import domain.Hacker;
+import domain.Message;
+import domain.SocialProfile;
+import forms.HackerForm;
+
+@Service
+@Transactional
+<span class="fc" id="L28">public class HackerService {</span>
+
+	// Manage Repository
+	@Autowired
+	private HackerRepository		hackerRepository;
+
+	// Supporting services
+	@Autowired
+	private ApplicationService 		applicationService;
+	
+	@Autowired
+	private SocialProfileService 	socialIdentityService;
+	
+	@Autowired
+	private FinderService			finderService;
+
+	// Validator
+	@Autowired
+	private Validator			validator;
+
+
+	/*************************************
+	 * CRUD methods
+	 *************************************/
+	public Hacker create() {
+
+<span class="fc" id="L54">		Hacker hacker = new Hacker();</span>
+
+		// Initialice
+<span class="fc" id="L57">		UserAccount userAccount = new UserAccount();</span>
+<span class="fc" id="L58">		Collection&lt;Authority&gt; authorities = new ArrayList&lt;Authority&gt;();</span>
+<span class="fc" id="L59">		Authority authority = new Authority();</span>
+<span class="fc" id="L60">		authority.setAuthority(Authority.HACKER);</span>
+<span class="fc" id="L61">		authorities.add(authority);</span>
+<span class="fc" id="L62">		userAccount.setAuthorities(authorities);</span>
+<span class="fc" id="L63">		Finder finder = this.finderService.create();</span>
+		
+		// Set Messages
+<span class="fc" id="L66">		Collection&lt;Message&gt; messages = new ArrayList&lt;Message&gt;();</span>
+
+<span class="fc" id="L68">		hacker.setUserAccount(userAccount);</span>
+<span class="fc" id="L69">		hacker.setMessages(messages);</span>
+<span class="fc" id="L70">		hacker.setFinder(finder);</span>
+<span class="fc" id="L71">		hacker.setIsSpammer(false);</span>
+
+<span class="fc" id="L73">		return hacker;</span>
+
+	}
+
+	public Collection&lt;Hacker&gt; findAll() {
+<span class="fc" id="L78">		final Collection&lt;Hacker&gt; result = this.hackerRepository.findAll();</span>
+<span class="fc" id="L79">		Assert.notNull(result);</span>
+<span class="fc" id="L80">		Assert.notEmpty(result);</span>
+
+<span class="fc" id="L82">		return result;</span>
+	}
+
+	public Hacker findOne(int adminID) {
+<span class="fc" id="L86">		Hacker result = this.hackerRepository.findOne(adminID);</span>
+<span class="fc" id="L87">		Assert.notNull(result);</span>
+<span class="fc" id="L88">		return result;</span>
+	}
+
+	public Hacker save(Hacker hacker) {
+<span class="fc" id="L92">		Assert.notNull(hacker);</span>
+<span class="fc" id="L93">		Hacker result = this.hackerRepository.save(hacker);</span>
+
+<span class="fc" id="L95">		return result;</span>
+	}
+
+	public void delete(Hacker hacker) {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		Assert.isTrue(this.findByPrincipal() == hacker);</span>
+<span class="nc" id="L100">		Assert.notNull(hacker);</span>
+
+<span class="nc" id="L102">		Iterator&lt;Application&gt; applications	= new ArrayList&lt;Application&gt;(hacker.getApplications()).iterator();</span>
+<span class="nc" id="L103">		Iterator&lt;SocialProfile&gt; socialIs 	= new ArrayList&lt;SocialProfile&gt;(hacker.getSocialProfiles()).iterator();</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		while (applications.hasNext()) {</span>
+<span class="nc" id="L106">			Application next = applications.next();</span>
+<span class="nc" id="L107">			this.applicationService.delete(next.getId());</span>
+<span class="nc" id="L108">			hacker.getApplications().remove(next);</span>
+<span class="nc" id="L109">			applications.remove();</span>
+<span class="nc" id="L110">		}</span>
+	
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		while (socialIs.hasNext()) {</span>
+<span class="nc" id="L113">			SocialProfile si = socialIs.next();</span>
+<span class="nc" id="L114">			this.socialIdentityService.delete(si);</span>
+<span class="nc" id="L115">			hacker.getSocialProfiles().remove(si);</span>
+<span class="nc" id="L116">			socialIs.remove();</span>
+<span class="nc" id="L117">		}</span>
+		
+//		hacker.setMessageBoxes(new ArrayList&lt;MessageBox&gt;());
+//		this.messageBoxService.deleteAll(hacker);
+		
+<span class="nc" id="L122">		this.hackerRepository.delete(hacker);</span>
+
+<span class="nc" id="L124">	}</span>
+
+	/**************************************************************
+	 * Reconstruct object, check validity and update binding
+	 **************************************************************/
+
+	/** Form Object **/
+	public Hacker reconstruct(HackerForm hackerForm, BindingResult binding) {
+<span class="nc" id="L132">		Hacker result = this.create();</span>
+
+		// UserAccount
+<span class="nc" id="L135">		result.getUserAccount().setPassword(hackerForm.getUserAccount().getPassword());</span>
+<span class="nc" id="L136">		result.getUserAccount().setUsername(hackerForm.getUserAccount().getUsername());</span>
+
+		// Hacker Attributes
+<span class="nc" id="L139">		result.setName(hackerForm.getName());</span>
+<span class="nc" id="L140">		result.setSurname(hackerForm.getSurname());</span>
+<span class="nc" id="L141">		result.setVat(hackerForm.getVat());</span>
+<span class="nc" id="L142">		result.setCardNumber(hackerForm.getCardNumber());</span>
+<span class="nc" id="L143">		result.setPhoto(hackerForm.getPhoto());</span>
+<span class="nc" id="L144">		result.setEmail(hackerForm.getEmail());</span>
+<span class="nc" id="L145">		result.setPhoneNumber(hackerForm.getPhoneNumber());</span>
+<span class="nc" id="L146">		result.setAddress(hackerForm.getAddress());</span>
+
+		// Default attributes from Actor
+<span class="nc" id="L149">		result.setUsername(hackerForm.getUserAccount().getUsername());</span>
+<span class="nc" id="L150">		result.setIsBanned(false);</span>
+
+<span class="nc" id="L152">		this.validator.validate(result, binding);</span>
+
+<span class="nc" id="L154">		return result;</span>
+	}
+
+	/** Pruned Object **/
+	public Hacker reconstruct(Hacker hacker, BindingResult binding) {
+<span class="fc" id="L159">		Hacker result = this.create();</span>
+<span class="fc" id="L160">		Hacker temp = this.findOne(hacker.getId());</span>
+
+		// Check the principal is updating his own data.
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		Assert.isTrue(this.findByPrincipal().getId() == hacker.getId());</span>
+
+		// Updated attributes
+<span class="fc" id="L166">		result.setName(hacker.getName());</span>
+<span class="fc" id="L167">		result.setSurname(hacker.getSurname());</span>
+<span class="fc" id="L168">		result.setVat(hacker.getVat());</span>
+<span class="fc" id="L169">		result.setCardNumber(hacker.getCardNumber());</span>
+<span class="fc" id="L170">		result.setPhoto(hacker.getPhoto());</span>
+<span class="fc" id="L171">		result.setEmail(hacker.getEmail());</span>
+<span class="fc" id="L172">		result.setPhoneNumber(hacker.getPhoneNumber());</span>
+<span class="fc" id="L173">		result.setAddress(hacker.getAddress());</span>
+
+		// Not updated attributes
+<span class="fc" id="L176">		result.setId(temp.getId());</span>
+<span class="fc" id="L177">		result.setVersion(temp.getVersion());</span>
+<span class="fc" id="L178">		result.setUsername(temp.getUsername());</span>
+<span class="fc" id="L179">		result.setIsSpammer(temp.getIsSpammer());</span>
+<span class="fc" id="L180">		result.setIsBanned(temp.getIsBanned());</span>
+
+		// Relantionships from Hacker
+<span class="fc" id="L183">		result.setApplications(temp.getApplications());</span>
+<span class="fc" id="L184">		result.setFinder(temp.getFinder());</span>
+
+		// Relatienships from Actor
+<span class="fc" id="L187">		result.setUserAccount(temp.getUserAccount());</span>
+<span class="fc" id="L188">		result.setSocialProfiles(temp.getSocialProfiles());</span>
+
+<span class="fc" id="L190">		this.validator.validate(result, binding);</span>
+
+<span class="fc" id="L192">		return result;</span>
+	}
+
+	/*************************************
+	 * Other business methods
+	 *************************************/
+	public Hacker findByPrincipal() {
+		Hacker result;
+		UserAccount userAccount;
+
+<span class="fc" id="L202">		userAccount = LoginService.getPrincipal();</span>
+<span class="fc" id="L203">		Assert.notNull(userAccount);</span>
+
+<span class="fc" id="L205">		result = this.findByUserAccount(userAccount);</span>
+<span class="fc" id="L206">		Assert.notNull(result);</span>
+
+<span class="fc" id="L208">		return result;</span>
+	}
+
+	public Hacker findByUserAccount(final UserAccount userAccount) {
+<span class="fc" id="L212">		Assert.notNull(userAccount);</span>
+
+		Hacker result;
+
+<span class="fc" id="L216">		result = this.hackerRepository.findByUserAccountId(userAccount.getId());</span>
+
+<span class="fc" id="L218">		return result;</span>
+	}
+
+	public Hacker findOneByUsername(final String username) {
+<span class="nc" id="L222">		Assert.notNull(username);</span>
+
+<span class="nc" id="L224">		return this.hackerRepository.findByUserName(username);</span>
+	}
+
+	public Hacker findByFinder(final Finder finder) {
+<span class="nc" id="L228">		Assert.notNull(finder);</span>
+
+<span class="nc" id="L230">		return this.hackerRepository.findByFinder(finder.getId());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PersonalData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">PersonalData.java</span></div><h1>PersonalData.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L17">public class PersonalData extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private String	fullName;
+	private String	statement;
+	private String	phoneNumber;
+	private String	gitHub;
+	private String	linkedIn;
+	// Relationship -----------------------------------------------------------
+	private Curricula	curricula;
+
+
+	@NotNull
+	@Valid
+	@OneToOne(optional = false)
+	public Curricula getCurricula() {
+<span class="fc" id="L33">		return this.curricula;</span>
+	}
+
+	public void setCurricula(Curricula curricula) {
+<span class="fc" id="L37">		this.curricula = curricula;</span>
+<span class="fc" id="L38">	}</span>
+
+	@NotBlank
+	public String getFullName() {
+<span class="fc" id="L42">		return this.fullName;</span>
+	}
+	public void setFullName(String fullName) {
+<span class="fc" id="L45">		this.fullName = fullName;</span>
+<span class="fc" id="L46">	}</span>
+
+	@NotBlank
+	public String getStatement() {
+<span class="fc" id="L50">		return statement;</span>
+	}
+	public void setStatement(String statement) {
+<span class="fc" id="L53">		this.statement = statement;</span>
+<span class="fc" id="L54">	}</span>
+
+	@NotBlank
+	@Pattern(regexp = &quot;[0-9]{9}&quot;)
+	public String getPhoneNumber() {
+<span class="fc" id="L59">		return phoneNumber;</span>
+	}
+	public void setPhoneNumber(String phoneNumber) {
+<span class="fc" id="L62">		this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L63">	}</span>
+
+	@NotBlank
+	@URL
+	public String getGitHub() {
+<span class="fc" id="L68">		return gitHub;</span>
+	}
+	public void setGitHub(String gitHub) {
+<span class="fc" id="L71">		this.gitHub = gitHub;</span>
+<span class="fc" id="L72">	}</span>
+
+	@NotBlank
+	@URL
+	public String getLinkedIn() {
+<span class="fc" id="L77">		return linkedIn;</span>
+	}
+	public void setLinkedIn(String linkedIn) {
+<span class="fc" id="L80">		this.linkedIn = linkedIn;</span>
+<span class="fc" id="L81">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

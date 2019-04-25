@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DatabaseEnquirer.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">utilities.internal</a> &gt; <span class="el_source">DatabaseEnquirer.java</span></div><h1>DatabaseEnquirer.java</h1><pre class="source lang-java linenums">/*
+ * QueryDatabase.java
+ * 
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
+ * http://www.tdg-seville.info/License.html
+ */
+
+package utilities.internal;
+
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+
+import utilities.DatabaseConfig;
+
+<span class="nc" id="L21">public class DatabaseEnquirer {</span>
+
+	public static void run(final String title) {
+		DatabaseUtil databaseUtil;
+		ConsoleReader reader;
+		String line;
+		boolean quit;
+
+<span class="nc" id="L29">		EclipseConsole.fix();</span>
+<span class="nc" id="L30">		LogManager.getLogger(&quot;org.hibernate&quot;).setLevel(Level.OFF);</span>
+<span class="nc" id="L31">		databaseUtil = null;</span>
+
+		try {
+<span class="nc" id="L34">			System.out.println(title);</span>
+<span class="nc" id="L35">			System.out.println(String.format(&quot;%1$&quot; + title.length() + &quot;s&quot;, &quot;&quot;).replace(&quot; &quot;, &quot;-&quot;));</span>
+<span class="nc" id="L36">			System.out.println();</span>
+
+<span class="nc" id="L38">			System.out.printf(&quot;Initialising persistence context `%s'.%n&quot;, DatabaseConfig.PersistenceUnit);</span>
+<span class="nc" id="L39">			databaseUtil = new DatabaseUtil();</span>
+<span class="nc" id="L40">			databaseUtil.initialise();</span>
+<span class="nc" id="L41">			databaseUtil.setReadUncommittedIsolationLevel();</span>
+<span class="nc" id="L42">			System.out.println();</span>
+
+<span class="nc" id="L44">			reader = new ConsoleReader();</span>
+			do {
+<span class="nc" id="L46">				line = reader.readCommand();</span>
+<span class="nc" id="L47">				quit = DatabaseEnquirer.interpretLine(databaseUtil, line);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">			} while (!quit);</span>
+<span class="nc" id="L49">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L50">			ThrowablePrinter.print(oops);</span>
+		} finally {
+<span class="nc bnc" id="L52" title="All 6 branches missed.">			if (databaseUtil != null) {</span>
+<span class="nc" id="L53">				System.out.println(&quot;Closing persistence context.&quot;);</span>
+<span class="nc" id="L54">				databaseUtil.shutdown();</span>
+			}
+<span class="nc" id="L56">		}</span>
+<span class="nc" id="L57">	}</span>
+
+	private static boolean interpretLine(final DatabaseUtil databaseUtil, final String line) {
+		boolean result;
+		String command;
+		List&lt;?&gt; objects;
+		int affected;
+
+<span class="nc" id="L65">		result = false;</span>
+		try {
+<span class="nc" id="L67">			command = StringUtils.substringBefore(line, &quot; &quot;);</span>
+<span class="nc bnc" id="L68" title="All 44 branches missed.">			switch (command) {</span>
+			case &quot;quit&quot;:
+			case &quot;exit&quot;:
+<span class="nc" id="L71">				result = true;</span>
+<span class="nc" id="L72">				break;</span>
+			case &quot;begin&quot;:
+			case &quot;open&quot;:
+			case &quot;start&quot;:
+<span class="nc" id="L76">				databaseUtil.startTransaction();</span>
+<span class="nc" id="L77">				System.out.println(&quot;Transaction started&quot;);</span>
+<span class="nc" id="L78">				break;</span>
+			case &quot;end&quot;:
+			case &quot;close&quot;:
+			case &quot;commit&quot;:
+<span class="nc" id="L82">				databaseUtil.commitTransaction();</span>
+<span class="nc" id="L83">				System.out.println(&quot;Transaction committed&quot;);</span>
+<span class="nc" id="L84">				break;</span>
+			case &quot;rollback&quot;:
+<span class="nc" id="L86">				databaseUtil.rollbackTransaction();</span>
+<span class="nc" id="L87">				System.out.println(&quot;Transaction rollbacked&quot;);</span>
+<span class="nc" id="L88">				break;</span>
+			case &quot;update&quot;:
+			case &quot;delete&quot;:
+<span class="nc" id="L91">				affected = databaseUtil.executeUpdate(line);</span>
+<span class="nc" id="L92">				System.out.printf(&quot;%d objects %sd%n&quot;, affected, command);</span>
+<span class="nc" id="L93">				break;</span>
+			case &quot;select&quot;:
+<span class="nc" id="L95">				objects = databaseUtil.executeSelect(line);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">				System.out.printf(&quot;%d object%s selected%n&quot;, objects.size(), (objects.size() == 1 ? &quot;&quot; : &quot;s&quot;));</span>
+<span class="nc" id="L97">				SchemaPrinter.print(objects);</span>
+<span class="nc" id="L98">				break;</span>
+			default:
+<span class="nc" id="L100">				System.err.println(&quot;Command not understood&quot;);</span>
+			}
+<span class="nc" id="L102">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L103">			ThrowablePrinter.print(oops);</span>
+<span class="nc" id="L104">		}</span>
+
+<span class="nc" id="L106">		return result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProblemService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">ProblemService.java</span></div><h1>ProblemService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.ProblemRepository;
+import domain.Actor;
+import domain.Application;
+import domain.Company;
+import domain.Position;
+import domain.Problem;
+import domain.Url;
+
+@Service
+@Transactional
+<span class="fc" id="L22">public class ProblemService {</span>
+
+	// Manage Repository
+	@Autowired
+	private ProblemRepository	problemRepository;
+
+	// Supporting services
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private CompanyService		companyService;
+
+	@Autowired
+	private PositionService		positionService;
+
+	@Autowired
+	private ApplicationService	applicationService;
+
+
+	/*************************************
+	 * CRUD methods
+	 *************************************/
+	public Problem create() {
+		Problem result;
+		Actor principal;
+
+<span class="fc" id="L49">		result = new Problem();</span>
+
+		// Principal must be a Company
+<span class="fc" id="L52">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L53">		Assert.isInstanceOf(Company.class, principal);</span>
+<span class="fc" id="L54">		final Company company = (Company) principal;</span>
+
+<span class="fc" id="L56">		result.setPositions(new ArrayList&lt;Position&gt;());</span>
+<span class="fc" id="L57">		result.setFinalMode(false);</span>
+<span class="fc" id="L58">		result.setCompany(company);</span>
+<span class="fc" id="L59">		result.setAttachments(new ArrayList&lt;Url&gt;());</span>
+
+<span class="fc" id="L61">		return result;</span>
+	}
+
+	public Problem findOne(final int problemId) {
+<span class="nc" id="L65">		final Problem result = this.problemRepository.findOne(problemId);</span>
+<span class="nc" id="L66">		Assert.notNull(result);</span>
+
+<span class="nc" id="L68">		return result;</span>
+	}
+
+	public Collection&lt;Problem&gt; findAll() {
+<span class="fc" id="L72">		final Collection&lt;Problem&gt; result = this.problemRepository.findAll();</span>
+<span class="fc" id="L73">		Assert.notNull(result);</span>
+
+<span class="fc" id="L75">		return result;</span>
+	}
+
+	public Problem save(final Problem problem) {
+<span class="fc" id="L79">		Assert.notNull(problem);</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());</span>
+
+<span class="fc" id="L82">		final Problem result = this.problemRepository.save(problem);</span>
+
+<span class="fc" id="L84">		return result;</span>
+	}
+
+	public void delete(final Problem problem) {
+<span class="fc" id="L88">		Assert.notNull(problem);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		Assert.isTrue(this.companyService.findByPrincipal() == problem.getCompany());</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		for (final Position p : this.positionService.findAll())</span>
+<span class="fc" id="L92">			p.getProblems().remove(problem);</span>
+
+<span class="fc" id="L94">		this.problemRepository.delete(problem);</span>
+<span class="fc" id="L95">	}</span>
+
+	/** OTHER METHODS **/
+
+	public Collection&lt;Problem&gt; getPrincipalFinalMode() {
+<span class="nc" id="L100">		final Collection&lt;Problem&gt; result = this.getCompanyFinals(this.companyService.findByPrincipal());</span>
+<span class="nc" id="L101">		Assert.notNull(result);</span>
+<span class="nc" id="L102">		return result;</span>
+	}
+
+	public Collection&lt;Problem&gt; getCompanyFinals(final Company company) {
+<span class="nc" id="L106">		final Collection&lt;Problem&gt; result = this.problemRepository.getCompanyFinals(company.getId());</span>
+<span class="nc" id="L107">		Assert.notNull(result);</span>
+<span class="nc" id="L108">		return result;</span>
+	}
+
+	public boolean checkApplicationsProblem(final Problem problem) {
+<span class="nc" id="L112">		final Collection&lt;Application&gt; result = this.applicationService.findByProblem(problem);</span>
+<span class="nc" id="L113">		Assert.notNull(result);</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		return !result.isEmpty();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

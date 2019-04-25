@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Position.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Position.java</span></div><h1>Position.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L26">public class Position extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private Date	deadline;
+	private String	ticker;
+	private String	title;
+	private String	description;
+	private Boolean	finalMode;
+	private Boolean	cancelled;
+	private String	profile;
+	private String	skills;
+	private String	technologies;
+	private Double	salary;
+
+
+	@NotNull
+	@Future
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+	public Date getDeadline() {
+<span class="fc" id="L46">		return this.deadline;</span>
+	}
+
+	public void setDeadline(Date deadline) {
+<span class="fc" id="L50">		this.deadline = deadline;</span>
+<span class="fc" id="L51">	}</span>
+
+	@NotBlank
+	@Column(unique = true)
+	@Pattern(regexp = &quot;^([a-zA-Z]{4})(-)([0-9]{4})$&quot;)
+	public String getTicker() {
+<span class="fc" id="L57">		return this.ticker;</span>
+	}
+
+	public void setTicker(final String ticker) {
+<span class="fc" id="L61">		this.ticker = ticker;</span>
+<span class="fc" id="L62">	}</span>
+
+	@NotBlank
+	public String getTitle() {
+<span class="fc" id="L66">		return this.title;</span>
+	}
+
+	public void setTitle(final String title) {
+<span class="fc" id="L70">		this.title = title;</span>
+<span class="fc" id="L71">	}</span>
+
+	@NotBlank
+	public String getDescription() {
+<span class="fc" id="L75">		return this.description;</span>
+	}
+
+	public void setDescription(final String description) {
+<span class="fc" id="L79">		this.description = description;</span>
+<span class="fc" id="L80">	}</span>
+
+	@NotNull
+	public Boolean getFinalMode() {
+<span class="fc" id="L84">		return this.finalMode;</span>
+	}
+
+	public void setFinalMode(Boolean finalMode) {
+<span class="fc" id="L88">		this.finalMode = finalMode;</span>
+<span class="fc" id="L89">	}</span>
+
+	public Boolean getCancelled() {
+<span class="fc" id="L92">		return this.cancelled;</span>
+	}
+
+	public void setCancelled(Boolean cancelled) {
+<span class="fc" id="L96">		this.cancelled = cancelled;</span>
+<span class="fc" id="L97">	}</span>
+
+	@NotBlank
+	public String getProfile() {
+<span class="fc" id="L101">		return this.profile;</span>
+	}
+
+	public void setProfile(final String profile) {
+<span class="fc" id="L105">		this.profile = profile;</span>
+<span class="fc" id="L106">	}</span>
+
+	@NotBlank
+	public String getSkills() {
+<span class="fc" id="L110">		return this.skills;</span>
+	}
+
+	public void setSkills(final String skills) {
+<span class="fc" id="L114">		this.skills = skills;</span>
+<span class="fc" id="L115">	}</span>
+
+	@NotBlank
+	public String getTechnologies() {
+<span class="fc" id="L119">		return this.technologies;</span>
+	}
+
+	public void setTechnologies(final String technologies) {
+<span class="fc" id="L123">		this.technologies = technologies;</span>
+<span class="fc" id="L124">	}</span>
+
+	@NotNull
+	@DecimalMin(&quot;0.0&quot;)
+	public Double getSalary() {
+<span class="fc" id="L129">		return this.salary;</span>
+	}
+
+	public void setSalary(Double salary) {
+<span class="fc" id="L133">		this.salary = salary;</span>
+<span class="fc" id="L134">	}</span>
+
+
+	// Relationships ----------------------------------------------------------
+	private Company					company;
+	private Collection&lt;Problem&gt;		problems;
+	private Collection&lt;Application&gt;	applications;
+
+
+	@OneToMany(mappedBy = &quot;position&quot;)
+	public Collection&lt;Application&gt; getApplications() {
+<span class="fc" id="L145">		return applications;</span>
+	}
+
+	public void setApplications(Collection&lt;Application&gt; applications) {
+<span class="fc" id="L149">		this.applications = applications;</span>
+<span class="fc" id="L150">	}</span>
+
+
+	@ManyToOne(optional = false)
+	public Company getCompany() {
+<span class="fc" id="L155">		return this.company;</span>
+	}
+
+	public void setCompany(Company company) {
+<span class="fc" id="L159">		this.company = company;</span>
+<span class="fc" id="L160">	}</span>
+
+	@ManyToMany
+	public Collection&lt;Problem&gt; getProblems() {
+<span class="fc" id="L164">		return this.problems;</span>
+	}
+
+	public void setProblems(Collection&lt;Problem&gt; problems) {
+<span class="fc" id="L168">		this.problems = problems;</span>
+<span class="fc" id="L169">	}</span>
+	
+	// Other methods
+	@Override
+	public String toString() {
+<span class="nc" id="L174">		return &quot;Position [deadline=&quot; + deadline + &quot;, ticker=&quot; + ticker + &quot;, title=&quot; + title + &quot;, description=&quot; + description + &quot;, finalMode=&quot; + finalMode + &quot;, profile=&quot; + profile + &quot;, skills=&quot; + skills + &quot;, technologies=&quot; + technologies + &quot;, salary=&quot;</span>
+			+ salary + &quot;]&quot;;
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Message.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Message.java</span></div><h1>Message.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L24">public class Message extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private Date				moment;
+	private String				subject;
+	private String				body;
+	private String				priority;
+	private Boolean				isNotification;
+	private Boolean 			isSpam;
+	private Collection&lt;String&gt;	tags;
+
+
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@Past
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy HH:mm&quot;)
+	public Date getMoment() {
+<span class="fc" id="L41">		return this.moment;</span>
+	}
+
+	public void setMoment(final Date moment) {
+<span class="fc" id="L45">		this.moment = moment;</span>
+<span class="fc" id="L46">	}</span>
+
+	@NotBlank
+	public String getSubject() {
+<span class="fc" id="L50">		return this.subject;</span>
+	}
+
+	public void setSubject(final String subject) {
+<span class="fc" id="L54">		this.subject = subject;</span>
+<span class="fc" id="L55">	}</span>
+
+	@NotBlank
+	public String getBody() {
+<span class="fc" id="L59">		return this.body;</span>
+	}
+
+	public void setBody(final String body) {
+<span class="fc" id="L63">		this.body = body;</span>
+<span class="fc" id="L64">	}</span>
+
+	@NotBlank
+	@Pattern(regexp = &quot;^(LOW)|(MEDIUM)|(HIGH)$&quot;)
+	public String getPriority() {
+<span class="fc" id="L69">		return this.priority;</span>
+	}
+
+	public void setPriority(final String priority) {
+<span class="fc" id="L73">		this.priority = priority;</span>
+<span class="fc" id="L74">	}</span>
+	
+	
+	@ElementCollection(targetClass = String.class)
+	public Collection&lt;String&gt; getTags() {
+<span class="fc" id="L79">		return this.tags;</span>
+	}
+
+	public void setTags(final Collection&lt;String&gt; tags) {
+<span class="fc" id="L83">		this.tags = tags;</span>
+<span class="fc" id="L84">	}</span>
+	
+	public Boolean getIsNotification() {
+<span class="fc" id="L87">		return isNotification;</span>
+	}
+
+	public void setIsNotification(Boolean isNotification) {
+<span class="fc" id="L91">		this.isNotification = isNotification;</span>
+<span class="fc" id="L92">	}</span>
+	
+	public Boolean getIsSpam() {
+<span class="fc" id="L95">		return isSpam;</span>
+	}
+
+	
+	public void setIsSpam(Boolean isSpam) {
+<span class="fc" id="L100">		this.isSpam = isSpam;</span>
+<span class="fc" id="L101">	}</span>
+
+
+
+
+	// Relationships ----------------------------------------------------------
+	private Actor					sender;
+	private Collection&lt;Actor&gt;		recipients;
+
+	@OneToOne(optional = true)
+	public Actor getSender() {
+<span class="fc" id="L112">		return this.sender;</span>
+	}
+
+	public void setSender(final Actor sender) {
+<span class="fc" id="L116">		this.sender = sender;</span>
+<span class="fc" id="L117">	}</span>
+
+	@NotNull
+	@ManyToMany
+	public Collection&lt;Actor&gt; getRecipients() {
+<span class="fc" id="L122">		return this.recipients;</span>
+	}
+
+	public void setRecipients(final Collection&lt;Actor&gt; recipients) {
+<span class="fc" id="L126">		this.recipients = recipients;</span>
+<span class="fc" id="L127">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L131">		return &quot;Message [sender=&quot; + this.sender + &quot;, recipient=&quot; + this.recipients + &quot;, moment=&quot; + this.moment + &quot;, subject=&quot; + this.subject + &quot;, priority=&quot; + this.priority + &quot;, tags=&quot; + this.tags  + &quot;]&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FinderController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">FinderController.java</span></div><h1>FinderController.java</h1><pre class="source lang-java linenums">
+package controllers;
+
+import java.util.Collection;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.FinderService;
+import services.HackerService;
+import domain.Finder;
+import domain.Hacker;
+import domain.Position;
+
+@Controller
+@RequestMapping(&quot;/finder/hacker&quot;)
+<span class="fc" id="L27">public class FinderController extends AbstractController {</span>
+
+	@Autowired
+	private FinderService	finderService;
+
+	@Autowired
+	private HackerService	hackerService;
+
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
+<span class="nc" id="L38">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	// Clear -----------------------------------------------------------
+	@RequestMapping(value = &quot;/clear&quot;, method = RequestMethod.GET)
+	public ModelAndView clear() {
+		ModelAndView result;
+		try {
+<span class="nc" id="L46">			final Finder clear = this.finderService.clear(this.hackerService.findByPrincipal().getFinder());</span>
+<span class="nc" id="L47">			result = new ModelAndView(&quot;position/list&quot;);</span>
+<span class="nc" id="L48">			result.addObject(&quot;positions&quot;, clear.getPositions());</span>
+<span class="nc" id="L49">			result.addObject(&quot;requestURI&quot;, &quot;finder/hacker/result.do&quot;);</span>
+
+<span class="nc" id="L51">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L52">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L53">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L54">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L55">			oops.printStackTrace();</span>
+<span class="nc" id="L56">			result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L57">		}</span>
+<span class="nc" id="L58">		return result;</span>
+	}
+
+	// Edit -----------------------------------------------------------
+	@RequestMapping(value = &quot;/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+
+<span class="nc" id="L66">		final Hacker hacker = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L67">		final Finder finder = hacker.getFinder();</span>
+
+<span class="nc" id="L69">		result = this.createEditModelAndView(finder);</span>
+
+<span class="nc" id="L71">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView save(@Valid final Finder finder, final BindingResult binding) {
+		ModelAndView result;
+		Finder saved;
+<span class="nc bnc" id="L78" title="All 4 branches missed.">		if (finder.getMaxSalary() != null &amp;&amp; finder.getMinSalary() != null)</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">			if (finder.getMaxSalary() &lt; finder.getMinSalary())</span>
+<span class="nc" id="L80">				binding.rejectValue(&quot;maxSalary&quot;, &quot;finder.maxSalary.error&quot;, &quot;The maximum salary cannot be lower than the minimun&quot;);</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L83">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L85">				System.out.println(e.toString());</span>
+<span class="nc" id="L86">			result = this.createEditModelAndView(finder);</span>
+
+<span class="nc" id="L88">		} else</span>
+			try {
+<span class="nc" id="L90">				saved = this.finderService.checkChanges(finder);</span>
+
+<span class="nc" id="L92">				result = new ModelAndView(&quot;position/list&quot;);</span>
+<span class="nc" id="L93">				result.addObject(&quot;positions&quot;, saved.getPositions());</span>
+<span class="nc" id="L94">				result.addObject(&quot;requestURI&quot;, &quot;finder/hacker/result.do&quot;);</span>
+<span class="nc" id="L95">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L96">				System.out.println(finder);</span>
+<span class="nc" id="L97">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L98">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L99">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L100">				oops.printStackTrace();</span>
+<span class="nc" id="L101">				result = this.createEditModelAndView(finder);</span>
+<span class="nc" id="L102">			}</span>
+<span class="nc" id="L103">		return result;</span>
+	}
+
+	// Search -----------------------------------------------------------
+	@RequestMapping(value = &quot;/result&quot;, method = RequestMethod.GET)
+	public ModelAndView result() {
+		ModelAndView result;
+
+		try {
+<span class="nc" id="L112">			final Hacker hacker = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L113">			final Finder finder = hacker.getFinder();</span>
+<span class="nc" id="L114">			final Collection&lt;Position&gt; positions = this.finderService.getResults(finder);</span>
+
+<span class="nc" id="L116">			result = new ModelAndView(&quot;position/list&quot;);</span>
+<span class="nc" id="L117">			result.addObject(&quot;positions&quot;, positions);</span>
+<span class="nc" id="L118">			result.addObject(&quot;requestURI&quot;, &quot;finder/hacker/result.do&quot;);</span>
+<span class="nc" id="L119">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L120">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L121">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L122">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L123">			result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L124">		}</span>
+<span class="nc" id="L125">		return result;</span>
+	}
+
+	// Ancillary methods ------------------------------------------------------
+	protected ModelAndView createEditModelAndView(final Finder finder) {
+		ModelAndView result;
+
+<span class="nc" id="L132">		result = this.createEditModelAndView(finder, null);</span>
+
+<span class="nc" id="L134">		return result;</span>
+	}
+
+	protected ModelAndView createEditModelAndView(final Finder finder, final String message) {
+		ModelAndView result;
+
+<span class="nc" id="L140">		result = new ModelAndView(&quot;finder/hacker/edit&quot;);</span>
+<span class="nc" id="L141">		result.addObject(&quot;finder&quot;, finder);</span>
+<span class="nc" id="L142">		result.addObject(&quot;message&quot;, message);</span>
+
+<span class="nc" id="L144">		return result;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

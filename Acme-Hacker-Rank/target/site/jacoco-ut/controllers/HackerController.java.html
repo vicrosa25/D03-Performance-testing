@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HackerController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">HackerController.java</span></div><h1>HackerController.java</h1><pre class="source lang-java linenums">
+package controllers;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import domain.Hacker;
+import forms.HackerForm;
+import services.ActorService;
+import services.HackerService;
+import utilities.Md5;
+
+@Controller
+@RequestMapping(&quot;/hacker&quot;)
+<span class="fc" id="L32">public class HackerController extends AbstractController {</span>
+
+	@Autowired
+	private HackerService hackerService;
+	
+	
+	@Autowired
+	private ActorService actorService;
+
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
+<span class="nc" id="L44">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	/********************************************
+	 * Register a Hacker from a hackerForm object
+	 ********************************************/
+
+	// Register Form Object GEST------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/create&quot;, method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		HackerForm hackerForm;
+
+		try {
+			//Se crea un hackerform vacio
+<span class="nc" id="L59">			hackerForm = new HackerForm();</span>
+<span class="nc" id="L60">			result = new ModelAndView(&quot;hacker/create&quot;);</span>
+<span class="nc" id="L61">			result.addObject(&quot;hackerForm&quot;, hackerForm);</span>
+<span class="nc" id="L62">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L63">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L64">		}</span>
+
+<span class="nc" id="L66">		return result;</span>
+	}
+
+	// Register Form Object POST ----------------------------------------------------------------------
+	@RequestMapping(value = &quot;/create&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView save(HackerForm hackerForm, BindingResult binding) {
+		ModelAndView result;
+		String password;
+
+<span class="nc" id="L75">		Hacker hacker = this.hackerService.reconstruct(hackerForm, binding);</span>
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (!hackerForm.isAccepted()) {</span>
+<span class="nc" id="L78">			binding.rejectValue(&quot;accepted&quot;, &quot;register.terms.error&quot;, &quot;Service terms must be accepted&quot;);</span>
+		}
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L81">			result = this.createEditModelAndView(hackerForm);</span>
+		} else {
+			try {
+<span class="nc" id="L84">				password = Md5.encodeMd5(hacker.getUserAccount().getPassword());</span>
+<span class="nc" id="L85">				hacker.getUserAccount().setPassword(password);</span>
+<span class="nc" id="L86">				this.hackerService.save(hacker);</span>
+<span class="nc" id="L87">				result = new ModelAndView(&quot;redirect:../security/login.do&quot;);</span>
+
+<span class="nc" id="L89">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L90">				result = this.createEditModelAndView(hackerForm, &quot;hacker.commit.error&quot;);</span>
+<span class="nc" id="L91">			}</span>
+		}
+<span class="nc" id="L93">		return result;</span>
+	}
+
+	/********************************************
+	 * Edit a Hacker from a pruned object
+	 ********************************************/
+
+	// Edit GET------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		Hacker hacker;
+
+		try {
+<span class="nc" id="L107">			hacker = this.hackerService.findByPrincipal();</span>
+
+			// Set relations to null to use as a prune object
+<span class="nc" id="L110">			hacker.setApplications(null);</span>
+
+<span class="nc" id="L112">			result = new ModelAndView(&quot;hacker/edit&quot;);</span>
+<span class="nc" id="L113">			result.addObject(&quot;hacker&quot;, hacker);</span>
+<span class="nc" id="L114">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L115">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L116">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L117">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L118">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L119">		}</span>
+
+<span class="nc" id="L121">		return result;</span>
+	}
+
+	// Edit POST ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView saveEdit(Hacker prune, final BindingResult binding) {
+		ModelAndView result;
+		Hacker hacker;
+
+<span class="nc" id="L130">		hacker = this.hackerService.reconstruct(prune, binding);</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L133">			List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			for (final ObjectError e : errors) {</span>
+<span class="nc" id="L135">				System.out.println(e.toString());</span>
+<span class="nc" id="L136">			}</span>
+<span class="nc" id="L137">			result = new ModelAndView(&quot;hacker/edit&quot;);</span>
+<span class="nc" id="L138">			result.addObject(&quot;hacker&quot;, prune);</span>
+<span class="nc" id="L139">		} else {</span>
+			try {
+<span class="nc" id="L141">				this.hackerService.save(hacker);</span>
+<span class="nc" id="L142">				result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L143">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L144">				System.out.println();</span>
+<span class="nc" id="L145">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L146">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L147">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L148">				result = this.editModelAndView(hacker, &quot;hacker.registration.error&quot;);</span>
+<span class="nc" id="L149">			}</span>
+		}
+<span class="nc" id="L151">		return result;</span>
+	}
+
+	/*********************
+	 * Delete
+	 *********************/
+	@RequestMapping(value = &quot;/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView delete() {
+		ModelAndView result;
+		Hacker hacker;
+
+		try {
+<span class="nc" id="L163">			hacker = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L164">			this.hackerService.delete(hacker);</span>
+<span class="nc" id="L165">			result = new ModelAndView(&quot;redirect:/j_spring_security_logout&quot;);</span>
+<span class="nc" id="L166">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L167">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L168">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L169">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L170">			oops.printStackTrace();</span>
+<span class="nc" id="L171">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L172">		}</span>
+<span class="nc" id="L173">		return result;</span>
+	}
+
+	/*********************
+	 * Generate PDG
+	 *********************/
+	@RequestMapping(value = &quot;/generatePDF&quot;)
+	public void generatePDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Hacker hacker;
+
+		try {
+<span class="nc" id="L184">			final ServletContext servletContext = request.getSession().getServletContext();</span>
+<span class="nc" id="L185">			final File tempDirectory = (File) servletContext.getAttribute(&quot;javax.servlet.context.tempdir&quot;);</span>
+<span class="nc" id="L186">			final String temperotyFilePath = tempDirectory.getAbsolutePath();</span>
+<span class="nc" id="L187">			hacker = this.hackerService.findByPrincipal();</span>
+
+<span class="nc" id="L189">			String fileName = hacker.getName() + &quot;.pdf&quot;;</span>
+<span class="nc" id="L190">			response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L191">			response.setHeader(&quot;Content-disposition&quot;, &quot;attachment; filename=&quot; + fileName);</span>
+
+<span class="nc" id="L193">			this.actorService.generatePersonalInformationPDF(hacker, temperotyFilePath + &quot;\\&quot; + fileName);</span>
+<span class="nc" id="L194">			ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="nc" id="L195">			baos = convertPDFToByteArrayOutputStream(temperotyFilePath + &quot;\\&quot; + fileName);</span>
+<span class="nc" id="L196">			OutputStream os = response.getOutputStream();</span>
+<span class="nc" id="L197">			baos.writeTo(os);</span>
+<span class="nc" id="L198">			os.flush();</span>
+<span class="nc" id="L199">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L200">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L201">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L202">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L203">			oops.printStackTrace();</span>
+<span class="nc" id="L204">		}</span>
+<span class="nc" id="L205">	}</span>
+
+	/*********************
+	 * Ancillary Methods
+	 *********************/
+	protected ModelAndView createEditModelAndView(HackerForm hackerForm) {
+		ModelAndView result;
+
+<span class="nc" id="L213">		result = this.createEditModelAndView(hackerForm, null);</span>
+
+<span class="nc" id="L215">		return result;</span>
+	}
+
+	protected ModelAndView createEditModelAndView(HackerForm hackerForm, String messageCode) {
+		final ModelAndView result;
+
+<span class="nc" id="L221">		result = new ModelAndView(&quot;hacker/create&quot;);</span>
+<span class="nc" id="L222">		result.addObject(&quot;hackerForm&quot;, hackerForm);</span>
+<span class="nc" id="L223">		result.addObject(&quot;message&quot;, messageCode);</span>
+
+<span class="nc" id="L225">		return result;</span>
+
+	}
+
+	protected ModelAndView editModelAndView(Hacker hacker) {
+		ModelAndView result;
+
+<span class="nc" id="L232">		result = this.editModelAndView(hacker, null);</span>
+
+<span class="nc" id="L234">		return result;</span>
+	}
+
+	protected ModelAndView editModelAndView(Hacker hacker, String message) {
+		ModelAndView result;
+
+<span class="nc" id="L240">		result = new ModelAndView(&quot;hacker/edit&quot;);</span>
+<span class="nc" id="L241">		result.addObject(&quot;hacker&quot;, hacker);</span>
+<span class="nc" id="L242">		result.addObject(&quot;message&quot;, message);</span>
+
+<span class="nc" id="L244">		return result;</span>
+	}
+
+	private ModelAndView forbiddenOpperation() {
+<span class="nc" id="L248">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

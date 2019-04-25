@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Application.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Application.java</span></div><h1>Application.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L23">public class Application extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private Date	creationMoment;
+	private String	status;
+	private Date	submitMoment;
+
+
+	@NotNull
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+	public Date getCreationMoment() {
+<span class="fc" id="L36">		return creationMoment;</span>
+	}
+
+	public void setCreationMoment(Date creationMoment) {
+<span class="fc" id="L40">		this.creationMoment = creationMoment;</span>
+<span class="fc" id="L41">	}</span>
+
+	@NotBlank
+	@Pattern(regexp = &quot;^(PENDING|SUBMITTED|ACCEPTED|REJECTED)$&quot;)
+	public String getStatus() {
+<span class="fc" id="L46">		return status;</span>
+	}
+
+	public void setStatus(String status) {
+<span class="fc" id="L50">		this.status = status;</span>
+<span class="fc" id="L51">	}</span>
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+	public Date getSubmitMoment() {
+<span class="fc" id="L56">		return submitMoment;</span>
+	}
+
+	public void setSubmitMoment(Date submitMoment) {
+<span class="fc" id="L60">		this.submitMoment = submitMoment;</span>
+<span class="fc" id="L61">	}</span>
+
+
+	// Relationships ----------------------------------------------------------
+	private Hacker		hacker;
+	private Answer		answer;
+	private Position	position;
+	private Problem		problem;
+	private Curricula	curricula;
+
+
+	@NotNull
+	@Valid
+	@OneToOne(optional = false)
+	public Curricula getCurricula() {
+<span class="fc" id="L76">		return this.curricula;</span>
+	}
+
+	public void setCurricula(Curricula curricula) {
+<span class="fc" id="L80">		this.curricula = curricula;</span>
+<span class="fc" id="L81">	}</span>
+	
+	
+	@ManyToOne(optional = true)
+	public Hacker getHacker() {
+<span class="fc" id="L86">		return hacker;</span>
+	}
+
+	
+	public void setHacker(Hacker hacker) {
+<span class="fc" id="L91">		this.hacker = hacker;</span>
+<span class="fc" id="L92">	}</span>
+
+	
+	@Valid
+	@OneToOne(optional = true)
+	public Answer getAnswer() {
+<span class="fc" id="L98">		return answer;</span>
+	}
+
+	public void setAnswer(Answer answer) {
+<span class="fc" id="L102">		this.answer = answer;</span>
+<span class="fc" id="L103">	}</span>
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	public Position getPosition() {
+<span class="fc" id="L109">		return position;</span>
+	}
+
+	public void setPosition(Position position) {
+<span class="fc" id="L113">		this.position = position;</span>
+<span class="fc" id="L114">	}</span>
+	
+	
+	@Valid
+	@ManyToOne(optional = false)
+	public Problem getProblem() {
+<span class="fc" id="L120">		return problem;</span>
+	}
+
+	
+	public void setProblem(Problem problem) {
+<span class="fc" id="L125">		this.problem = problem;</span>
+<span class="fc" id="L126">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L130">		return &quot;Application [creationMoment=&quot; + creationMoment + &quot;, status=&quot; + status + &quot;, submitMoment=&quot; + submitMoment + &quot;, answer=&quot; + answer + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+       
+<tiles-definitions>
+
+	<definition name="application/hacker/list" extends="master.page">	
+		<put-attribute name="title" value="Applications List" />
+		<put-attribute name="body" value="/views/application/list.jsp" />
+	</definition>
+	
+	<definition name="application/hacker/create" extends="master.page">	
+		<put-attribute name="title" value="Create Application" />
+		<put-attribute name="body" value="/views/application/create.jsp" />
+	</definition>
+	
+	<definition name="application/hacker/update" extends="master.page">	
+		<put-attribute name="title" value="Update Application" />
+		<put-attribute name="body" value="/views/application/update.jsp" />
+	</definition>
+	
+	<definition name="application/display" extends="master.page">	
+		<put-attribute name="title" value="Application" />
+		<put-attribute name="body" value="/views/application/display.jsp" />
+	</definition>
+
+	<definition name="application/company/list" extends="master.page">	
+		<put-attribute name="title" value="Application list" />
+		<put-attribute name="body" value="/views/application/list.jsp" />
+	</definition>
+	
+</tiles-definitions>

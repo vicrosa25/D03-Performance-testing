@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FinderService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">FinderService.java</span></div><h1>FinderService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.FinderRepository;
+import domain.Finder;
+import domain.Hacker;
+import domain.Position;
+
+@Service
+@Transactional
+<span class="fc" id="L22">public class FinderService {</span>
+
+	// Manage Repository
+	@Autowired
+	private FinderRepository		finderRepository;
+
+	// Other services
+	@Autowired
+	private HackerService			hackerService;
+
+	@Autowired
+	private PositionService			positionService;
+
+	@Autowired
+	private ConfigurationsService	configurationsService;
+
+
+	// CRUD methods
+	public Finder create() {
+<span class="fc" id="L41">		final Finder result = new Finder();</span>
+
+<span class="fc" id="L43">		final Calendar lastUpdate = Calendar.getInstance();</span>
+<span class="fc" id="L44">		lastUpdate.add(Calendar.YEAR, -20);</span>
+
+<span class="fc" id="L46">		result.setLastUpdate(lastUpdate.getTime());</span>
+<span class="fc" id="L47">		return this.finderRepository.save(result);</span>
+	}
+
+	public Finder findOne(final int finderID) {
+<span class="fc" id="L51">		final Finder result = this.finderRepository.findOne(finderID);</span>
+<span class="fc" id="L52">		Assert.notNull(result);</span>
+
+<span class="fc" id="L54">		return result;</span>
+	}
+
+	public Collection&lt;Finder&gt; findAll() {
+<span class="nc" id="L58">		final Collection&lt;Finder&gt; result = this.finderRepository.findAll();</span>
+<span class="nc" id="L59">		Assert.notNull(result);</span>
+
+<span class="nc" id="L61">		return result;</span>
+	}
+
+	public Finder save(final Finder finder) {
+<span class="fc" id="L65">		Assert.notNull(finder);</span>
+<span class="fc" id="L66">		final Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">		Assert.isTrue(principal.getFinder().getId() == finder.getId());</span>
+
+<span class="fc" id="L69">		final Finder result = this.finderRepository.save(finder);</span>
+
+<span class="fc" id="L71">		return result;</span>
+	}
+
+	public void delete(final Finder finder) {
+<span class="nc" id="L75">		Assert.notNull(finder);</span>
+<span class="nc" id="L76">		final Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		Assert.isTrue(principal.getFinder().getId() == finder.getId());</span>
+
+<span class="nc" id="L79">		this.finderRepository.delete(finder);</span>
+<span class="nc" id="L80">	}</span>
+
+	// Check if something has changed, if so the results are updated
+	// If not, the results are updated if it has not been updated
+	// in the specified time
+	public Finder checkChanges(final Finder finder) {
+<span class="fc" id="L86">		final Finder old = this.findOne(finder.getId());</span>
+<span class="pc bpc" id="L87" title="4 of 8 branches missed.">		if ((finder.getMinSalary() != old.getMinSalary()) || (finder.getKeyword() != old.getKeyword()) || (finder.getMaxSalary() != old.getMaxSalary()) || (finder.getDeadline() != old.getDeadline())) {</span>
+
+<span class="nc" id="L89">			final Finder saved = this.updateResults(finder);</span>
+<span class="nc" id="L90">			return saved;</span>
+
+		} else {
+<span class="fc" id="L93">			finder.setPositions(this.getResults(finder));</span>
+<span class="fc" id="L94">			return finder;</span>
+		}
+	}
+
+	// Check if it has passed enough time to update and return the results
+	public Collection&lt;Position&gt; getResults(final Finder finder) {
+<span class="fc" id="L100">		final Calendar siguienteActualizacion = Calendar.getInstance();</span>
+<span class="fc" id="L101">		siguienteActualizacion.setTime(finder.getLastUpdate());</span>
+<span class="fc" id="L102">		final Calendar actual = Calendar.getInstance();</span>
+
+<span class="fc" id="L104">		siguienteActualizacion.add(Calendar.HOUR, this.configurationsService.getConfiguration().getCacheTime());</span>
+
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (actual.after(siguienteActualizacion))</span>
+<span class="fc" id="L107">			this.updateResults(finder);</span>
+<span class="fc" id="L108">		return finder.getPositions();</span>
+	}
+
+	public Finder updateResults(final Finder finder) {
+<span class="fc" id="L112">		Assert.notNull(finder);</span>
+<span class="fc" id="L113">		final HashSet&lt;Position&gt; result = new HashSet&lt;Position&gt;(this.positionService.findAllFinal());</span>
+
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (finder.getMinSalary() != null)</span>
+<span class="nc" id="L116">			result.retainAll(this.finderRepository.filterByMinSalary(new Double(finder.getMinSalary())));</span>
+
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (finder.getMaxSalary() != null)</span>
+<span class="nc" id="L119">			result.retainAll(this.finderRepository.filterByMaxSalary(new Double(finder.getMaxSalary())));</span>
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (finder.getKeyword() != null)</span>
+<span class="fc" id="L122">			result.retainAll(this.finderRepository.filterByKeyword(&quot;%&quot; + finder.getKeyword() + &quot;%&quot;));</span>
+
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">		if (finder.getDeadline() != null)</span>
+<span class="nc" id="L125">			result.retainAll(this.finderRepository.filterByDeadline(finder.getDeadline()));</span>
+
+<span class="fc" id="L127">		final ArrayList&lt;Position&gt; positions = new ArrayList&lt;Position&gt;(result);</span>
+
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (result.size() &gt; this.configurationsService.getConfiguration().getFinderMaxResult())</span>
+<span class="nc" id="L130">			finder.setPositions(positions.subList(0, this.configurationsService.getConfiguration().getFinderMaxResult() - 1));</span>
+		else
+<span class="fc" id="L132">			finder.setPositions(positions);</span>
+<span class="fc" id="L133">		finder.setLastUpdate(new Date());</span>
+<span class="fc" id="L134">		return this.finderRepository.save(finder);</span>
+	}
+
+	public Finder clear(final Finder finder) {
+<span class="fc" id="L138">		Assert.notNull(finder);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		Assert.isTrue(this.hackerService.findByPrincipal().getFinder() == finder);</span>
+
+<span class="fc" id="L141">		finder.setDeadline(null);</span>
+<span class="fc" id="L142">		finder.setKeyword(null);</span>
+<span class="fc" id="L143">		finder.setLastUpdate(new Date());</span>
+<span class="fc" id="L144">		finder.setMaxSalary(null);</span>
+<span class="fc" id="L145">		finder.setMinSalary(null);</span>
+<span class="fc" id="L146">		finder.setPositions(this.positionService.findAllFinal());</span>
+
+<span class="fc" id="L148">		return this.save(finder);</span>
+
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

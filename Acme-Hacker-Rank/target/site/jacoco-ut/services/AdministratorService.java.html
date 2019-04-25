@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdministratorService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">AdministratorService.java</span></div><h1>AdministratorService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import domain.Actor;
+import domain.Administrator;
+import domain.Company;
+import domain.Hacker;
+import domain.Message;
+import domain.Position;
+import repositories.AdministratorRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
+
+@Service
+@Transactional
+<span class="fc" id="L25">public class AdministratorService {</span>
+
+	// Manage Repository
+	@Autowired
+	private AdministratorRepository	adminRepository;
+
+	// Supporting services
+	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
+	private ConfigurationsService	configurationsService;
+
+	@Autowired
+	private MessageService			messageService;
+
+
+	/*************************************
+	 * CRUD methods
+	 *************************************/
+	public Administrator create() {
+		// Initialice
+<span class="fc" id="L47">		UserAccount userAccount = new UserAccount();</span>
+<span class="fc" id="L48">		Collection&lt;Authority&gt; authorities = new ArrayList&lt;Authority&gt;();</span>
+<span class="fc" id="L49">		Authority authority = new Authority();</span>
+<span class="fc" id="L50">		authority.setAuthority(Authority.ADMIN);</span>
+<span class="fc" id="L51">		authorities.add(authority);</span>
+<span class="fc" id="L52">		userAccount.setAuthorities(authorities);</span>
+
+		// Set Messages
+<span class="fc" id="L55">		Collection&lt;Message&gt; messages = new ArrayList&lt;Message&gt;();</span>
+
+<span class="fc" id="L57">		Administrator admin = new Administrator();</span>
+<span class="fc" id="L58">		admin.setUserAccount(userAccount);</span>
+<span class="fc" id="L59">		admin.setMessages(messages);</span>
+
+<span class="fc" id="L61">		return admin;</span>
+	}
+
+	public Collection&lt;Administrator&gt; findAll() {
+<span class="fc" id="L65">		final Collection&lt;Administrator&gt; result = this.adminRepository.findAll();</span>
+<span class="fc" id="L66">		Assert.notNull(result);</span>
+<span class="fc" id="L67">		return result;</span>
+	}
+
+	public Administrator findOne(final int adminID) {
+<span class="nc" id="L71">		final Administrator result = this.adminRepository.findOne(adminID);</span>
+<span class="nc" id="L72">		Assert.notNull(result);</span>
+<span class="nc" id="L73">		return result;</span>
+	}
+
+	public Administrator save(final Administrator admin) {
+<span class="fc" id="L77">		Assert.notNull(admin);</span>
+		UserAccount userAccount;
+
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (admin.getId() == 0) {</span>
+			//admin.setMessageBoxes(this.messageBoxService.createSystemMessageBox());
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">			if (!admin.getPhoneNumber().startsWith(&quot;+&quot;)) {</span>
+<span class="nc" id="L83">				final String countryCode = this.configurationsService.getConfiguration().getCountryCode();</span>
+<span class="nc" id="L84">				final String phoneNumer = admin.getPhoneNumber();</span>
+<span class="nc" id="L85">				admin.setPhoneNumber(countryCode.concat(phoneNumer));</span>
+<span class="nc" id="L86">			}</span>
+		} else {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">			if (!admin.getPhoneNumber().startsWith(&quot;+&quot;)) {</span>
+<span class="nc" id="L89">				final String countryCode = this.configurationsService.getConfiguration().getCountryCode();</span>
+<span class="nc" id="L90">				final String phoneNumer = admin.getPhoneNumber();</span>
+<span class="nc" id="L91">				admin.setPhoneNumber(countryCode.concat(phoneNumer));</span>
+			}
+<span class="nc" id="L93">			userAccount = LoginService.getPrincipal();</span>
+<span class="nc" id="L94">			Assert.isTrue(userAccount.equals(admin.getUserAccount()));</span>
+		}
+<span class="fc" id="L96">		return this.adminRepository.save(admin);</span>
+	}
+
+	public void delete(final Administrator admin) {
+<span class="nc" id="L100">		Assert.notNull(admin);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		Assert.isTrue(admin.getId() != 0);</span>
+<span class="nc" id="L102">		this.adminRepository.delete(admin);</span>
+<span class="nc" id="L103">	}</span>
+
+	/*********************************************
+	 * 
+	 * Admin Dashboard Queries
+	 * 
+	 *********************************************/
+	public Object[] query1() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L114">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L115">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L117">		return this.adminRepository.query1();</span>
+	}
+
+	public Object[] query2() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L124">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L125">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L127">		return this.adminRepository.query2();</span>
+	}
+
+	public Collection&lt;Company&gt; query3() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L134">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L135">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L137">		return this.adminRepository.query3();</span>
+	}
+
+	public Collection&lt;Hacker&gt; query4() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L144">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L145">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L147">		return this.adminRepository.query4();</span>
+	}
+
+	public Object[] query5() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L154">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L155">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L157">		return this.adminRepository.query5();</span>
+	}
+
+	public Collection&lt;Position&gt; query6a() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L164">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L165">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L167">		Collection&lt;Position&gt; result = new ArrayList&lt;Position&gt;();</span>
+<span class="fc" id="L168">		result.addAll(this.adminRepository.query6a());</span>
+<span class="fc" id="L169">		return result;</span>
+	}
+	
+	
+	public Collection&lt;Position&gt; query6b() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="nc" id="L177">		principal = this.actorService.findByPrincipal();</span>
+<span class="nc" id="L178">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="nc" id="L180">		Collection&lt;Position&gt; result = new ArrayList&lt;Position&gt;();</span>
+<span class="nc" id="L181">		result.addAll(this.adminRepository.query6b());</span>
+<span class="nc" id="L182">		return result;</span>
+	}
+
+	public Object[] query7() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L189">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L190">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L192">		return this.adminRepository.query7();</span>
+	}
+
+
+	public Object[] query8() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L200">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L201">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L203">		return this.adminRepository.query8();</span>
+	}
+
+	public Double query9() {
+		Actor principal;
+
+		// Check principal must be an admin
+<span class="fc" id="L210">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L211">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L213">		return this.adminRepository.query9();</span>
+	}
+
+	/*********************************************
+	 * 
+	 * 24.2 Computer Spammers
+	 * 
+	 *********************************************/
+	public void computeSpammers() {
+		Actor principal;
+		Collection&lt;Message&gt; messages;
+		int spamMessages;
+<span class="fc" id="L225">		Collection&lt;Actor&gt; users = this.actorService.findAll();</span>
+<span class="fc" id="L226">		Collection&lt;String&gt; spamWords = this.configurationsService.getConfiguration().getSpamWords();</span>
+
+		// Make sure that the principal is an Admin
+<span class="fc" id="L229">		principal = this.findByPrincipal();</span>
+<span class="fc" id="L230">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		for (Actor user : users) {</span>
+<span class="fc" id="L233">			spamMessages = 0;</span>
+<span class="fc" id="L234">			messages = this.messageService.findAllBySender(user.getId());</span>
+
+<span class="pc bpc" id="L236" title="2 of 4 branches missed.">			if ((messages != null) &amp;&amp; !messages.isEmpty())</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">				for (Message message : messages)</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">					for (String spamWord : spamWords)</span>
+<span class="pc bpc" id="L239" title="1 of 4 branches missed.">						if (message.getBody().contains(spamWord) || message.getSubject().contains(spamWord))</span>
+<span class="fc" id="L240">							spamMessages++;</span>
+<span class="pc bpc" id="L241" title="1 of 4 branches missed.">			if ((spamMessages != 0) &amp;&amp; (spamMessages &gt;= (messages.size() * 0.1)))</span>
+<span class="fc" id="L242">				user.setIsSpammer(true);</span>
+			else
+<span class="fc" id="L244">				user.setIsSpammer(false);</span>
+<span class="fc" id="L245">		}</span>
+<span class="fc" id="L246">	}</span>
+
+
+	public Collection&lt;Actor&gt; getSpammers() {
+		Actor principal;
+
+		// Make sure that the principal is an Admin
+<span class="nc" id="L253">		principal = this.findByPrincipal();</span>
+<span class="nc" id="L254">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="nc" id="L256">		return this.actorService.findSpammers();</span>
+	}
+
+	/*********************************************
+	 * 
+	 * 24.3 Ban an Actor
+	 * 
+	 *********************************************/
+	public Actor banAnActor(final Actor actor) {
+<span class="fc" id="L265">		Assert.notNull(actor);</span>
+<span class="fc" id="L266">		Assert.isTrue(actor.getIsSpammer());</span>
+
+		// Make sure that the principal is an Admin
+<span class="fc" id="L269">		final Object principal = this.findByPrincipal();</span>
+<span class="fc" id="L270">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L272">		actor.setUsername(actor.getUserAccount().getUsername());</span>
+<span class="fc" id="L273">		actor.getUserAccount().setUsername(null);</span>
+<span class="fc" id="L274">		actor.setIsBanned(true);</span>
+
+<span class="fc" id="L276">		return this.actorService.save(actor);</span>
+
+	}
+
+	/*********************************************
+	 * 
+	 * 24.4 Unban an Actor
+	 * 
+	 *********************************************/
+	public Actor unBanAnActor(final Actor actor) {
+<span class="fc" id="L286">		Assert.notNull(actor);</span>
+		// Assert.notNull(actor.getUsername());
+
+		// Make sure that the principal is an Admin
+<span class="fc" id="L290">		final Object principal = this.findByPrincipal();</span>
+<span class="fc" id="L291">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="fc" id="L293">		actor.getUserAccount().setUsername(actor.getUsername());</span>
+<span class="fc" id="L294">		actor.setIsBanned(false);</span>
+
+<span class="fc" id="L296">		return this.actorService.save(actor);</span>
+
+	}
+
+
+	/**
+	 * 
+	 * Manage Spam Word ****************************************************************************
+	 */
+
+	// Add SPAM Word
+	public void addSpamWord(final String word) {
+
+		// Make sure that the principal is an Admin
+<span class="nc" id="L310">		final Object principal = this.findByPrincipal();</span>
+<span class="nc" id="L311">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="nc" id="L313">		Assert.notNull(word);</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		Assert.isTrue(word != &quot;&quot;);</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		Assert.isTrue(this.configurationsService.getConfiguration().getSpamWords().contains(word) != true);</span>
+
+<span class="nc" id="L317">		this.configurationsService.getConfiguration().getSpamWords().add(word);</span>
+<span class="nc" id="L318">		this.configurationsService.update(this.configurationsService.getConfiguration());</span>
+<span class="nc" id="L319">	}</span>
+
+	// Edit SPAM Word
+	public void editSpamWord(final String word, final Integer index) {
+
+		// Make sure that the principal is an Admin
+<span class="nc" id="L325">		final Object principal = this.findByPrincipal();</span>
+<span class="nc" id="L326">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="nc" id="L328">		Assert.notNull(word);</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		Assert.isTrue(word != &quot;&quot;);</span>
+<span class="nc" id="L330">		Assert.notNull(index);</span>
+
+<span class="nc bnc" id="L332" title="All 2 branches missed.">		Assert.isTrue(this.configurationsService.getConfiguration().getSpamWords().contains(word) != true);</span>
+
+<span class="nc" id="L334">		final ArrayList&lt;String&gt; words = new ArrayList&lt;String&gt;(this.configurationsService.getConfiguration().getSpamWords());</span>
+<span class="nc" id="L335">		words.set(index, word);</span>
+
+<span class="nc" id="L337">		this.configurationsService.getConfiguration().setSpamWords(words);</span>
+<span class="nc" id="L338">		this.configurationsService.update(this.configurationsService.getConfiguration());</span>
+<span class="nc" id="L339">	}</span>
+
+	// Remove SPAM Word
+	public void removeSpamWord(final String word) {
+
+		// Make sure that the principal is an Admin
+<span class="nc" id="L345">		final Object principal = this.findByPrincipal();</span>
+<span class="nc" id="L346">		Assert.isInstanceOf(Administrator.class, principal);</span>
+
+<span class="nc" id="L348">		Assert.notNull(word);</span>
+<span class="nc" id="L349">		Assert.isTrue(this.configurationsService.getConfiguration().getSpamWords().contains(word));</span>
+
+<span class="nc" id="L351">		this.configurationsService.getConfiguration().getSpamWords().remove(word);</span>
+<span class="nc" id="L352">		this.configurationsService.update(this.configurationsService.getConfiguration());</span>
+<span class="nc" id="L353">	}</span>
+
+
+
+
+
+	/*************************************
+	 * Other business methods
+	 ********************************/
+	public Administrator findByPrincipal() {
+		Administrator result;
+		UserAccount userAccount;
+
+<span class="fc" id="L366">		userAccount = LoginService.getPrincipal();</span>
+<span class="fc" id="L367">		Assert.notNull(userAccount);</span>
+
+<span class="fc" id="L369">		result = this.findByUserAccount(userAccount);</span>
+<span class="fc" id="L370">		Assert.notNull(result);</span>
+
+<span class="fc" id="L372">		return result;</span>
+	}
+
+	public Administrator findByUserAccount(final UserAccount userAccount) {
+<span class="fc" id="L376">		Assert.notNull(userAccount);</span>
+
+		Administrator result;
+
+<span class="fc" id="L380">		result = this.adminRepository.findByUserAccountId(userAccount.getId());</span>
+
+<span class="fc" id="L382">		return result;</span>
+	}
+
+	public void informSecurityBreach() {
+<span class="nc" id="L386">		final Message message = this.messageService.create();</span>
+<span class="nc" id="L387">		message.setBody(&quot;There has been a security breach in our data system.&quot;);</span>
+
+<span class="nc" id="L389">		message.setIsNotification(true);</span>
+<span class="nc" id="L390">		message.setPriority(&quot;HIGH&quot;);</span>
+<span class="nc" id="L391">		message.setSubject(&quot;Security breach notification&quot;);</span>
+<span class="nc" id="L392">		Collection&lt;Actor&gt; recipients = new ArrayList&lt;Actor&gt;(this.actorService.findAll());</span>
+<span class="nc" id="L393">		message.setRecipients(recipients);</span>
+
+<span class="nc" id="L395">		this.messageService.save(message);</span>
+<span class="nc" id="L396">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

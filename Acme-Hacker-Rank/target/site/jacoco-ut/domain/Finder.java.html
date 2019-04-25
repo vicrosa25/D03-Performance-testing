@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Finder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Finder.java</span></div><h1>Finder.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L20">public class Finder extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private String	keyword;
+	private Date	deadline;
+	private Integer	minSalary;
+	private Integer	maxSalary;
+	private Date	lastUpdate;
+
+
+	public String getKeyword() {
+<span class="fc" id="L31">		return this.keyword;</span>
+	}
+
+	public void setKeyword(final String keyword) {
+<span class="fc" id="L35">		this.keyword = keyword;</span>
+<span class="fc" id="L36">	}</span>
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+	public Date getDeadline() {
+<span class="fc" id="L41">		return this.deadline;</span>
+	}
+
+	public void setDeadline(final Date deadline) {
+<span class="fc" id="L45">		this.deadline = deadline;</span>
+<span class="fc" id="L46">	}</span>
+
+	@Min(0)
+	public Integer getMinSalary() {
+<span class="fc" id="L50">		return minSalary;</span>
+	}
+
+	public void setMinSalary(Integer minSalary) {
+<span class="fc" id="L54">		this.minSalary = minSalary;</span>
+<span class="fc" id="L55">	}</span>
+
+	@Min(0)
+	public Integer getMaxSalary() {
+<span class="fc" id="L59">		return maxSalary;</span>
+	}
+
+	public void setMaxSalary(Integer maxSalary) {
+<span class="fc" id="L63">		this.maxSalary = maxSalary;</span>
+<span class="fc" id="L64">	}</span>
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy HH:mm&quot;)
+	public Date getLastUpdate() {
+<span class="fc" id="L69">		return this.lastUpdate;</span>
+	}
+	public void setLastUpdate(final Date lastUpdate) {
+<span class="fc" id="L72">		this.lastUpdate = lastUpdate;</span>
+<span class="fc" id="L73">	}</span>
+
+
+	// Relationships -------------------------------------------------------------
+	private Collection&lt;Position&gt;	positions;
+	
+	@Valid
+	@ManyToMany
+	public Collection&lt;Position&gt; getPositions() {
+<span class="fc" id="L82">		return this.positions;</span>
+	}
+
+	public void setPositions(final Collection&lt;Position&gt; positions) {
+<span class="fc" id="L86">		this.positions = positions;</span>
+<span class="fc" id="L87">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CompanyController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">CompanyController.java</span></div><h1>CompanyController.java</h1><pre class="source lang-java linenums">
+package controllers;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.ActorService;
+import services.CompanyService;
+import utilities.Md5;
+import domain.Company;
+import forms.CompanyForm;
+
+@Controller
+@RequestMapping(&quot;/company&quot;)
+<span class="fc" id="L35">public class CompanyController extends AbstractController {</span>
+
+	@Autowired
+	private CompanyService	companyService;
+	
+	@Autowired
+	private ActorService	actorService;
+	
+	
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
+<span class="nc" id="L47">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	// List ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/list&quot;, method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result;
+		Collection&lt;Company&gt; companies;
+
+		try {
+<span class="nc" id="L57">			companies = this.companyService.findAll();</span>
+<span class="nc" id="L58">			result = new ModelAndView(&quot;company/list&quot;);</span>
+<span class="nc" id="L59">			result.addObject(&quot;requestUri&quot;, &quot;company/list.do&quot;);</span>
+<span class="nc" id="L60">			result.addObject(&quot;companies&quot;, companies);</span>
+<span class="nc" id="L61">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L62">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L63">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L64">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L65">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L66">		}</span>
+		
+
+<span class="nc" id="L69">		return result;</span>
+	}
+
+
+	// Register ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/create&quot;, method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		CompanyForm company;
+
+		try {
+<span class="nc" id="L80">			company = new CompanyForm();</span>
+<span class="nc" id="L81">			result = this.createEditModelAndView(company);</span>
+<span class="nc" id="L82">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L83">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L84">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L85">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L86">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L87">		}</span>
+
+<span class="nc" id="L89">		return result;</span>
+	}
+
+	// Save the new company ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/create&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView save(final CompanyForm companyForm, final BindingResult binding) {
+		ModelAndView result;
+		Company company;
+		String password;
+		
+<span class="nc" id="L99">		company = this.companyService.reconstruct(companyForm, binding);</span>
+		
+<span class="nc bnc" id="L101" title="All 2 branches missed.">		if (!companyForm.isAccepted()) {</span>
+<span class="nc" id="L102">			binding.rejectValue(&quot;accepted&quot;, &quot;register.terms.error&quot;, &quot;Service terms must be accepted&quot;);</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		}if (binding.hasErrors()) {</span>
+<span class="nc" id="L104">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L106">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L108">			result = this.createEditModelAndView(companyForm);</span>
+<span class="nc" id="L109">		}</span>
+
+		else
+			try {
+<span class="nc" id="L113">				password = Md5.encodeMd5(company.getUserAccount().getPassword());</span>
+<span class="nc" id="L114">				company.getUserAccount().setPassword(password);</span>
+<span class="nc" id="L115">				this.companyService.save(company);</span>
+<span class="nc" id="L116">				result = new ModelAndView(&quot;redirect:../security/login.do&quot;);</span>
+<span class="nc" id="L117">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L118">				System.out.println(company);</span>
+<span class="nc" id="L119">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L120">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L121">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L122">				result = this.createEditModelAndView(companyForm);</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">				if (oops instanceof DataIntegrityViolationException)</span>
+<span class="nc" id="L125">					result = this.createEditModelAndView(companyForm, &quot;company.duplicated.username&quot;);</span>
+				else
+<span class="nc" id="L127">					result = this.createEditModelAndView(companyForm, &quot;company.registration.error&quot;);</span>
+<span class="nc" id="L128">			}</span>
+<span class="nc" id="L129">		return result;</span>
+	}
+
+	// Edit ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		Company company;
+<span class="nc" id="L137">		Company pruned = new Company();</span>
+
+		try {
+<span class="nc" id="L140">			company = this.companyService.findByPrincipal();</span>
+
+			// Fill attributes to edit with the original ones
+<span class="nc" id="L143">			pruned.setAddress(company.getAddress());</span>
+<span class="nc" id="L144">			pruned.setCardNumber(company.getCardNumber());</span>
+<span class="nc" id="L145">			pruned.setCommercialName(company.getCommercialName());</span>
+<span class="nc" id="L146">			pruned.setEmail(company.getEmail());</span>
+<span class="nc" id="L147">			pruned.setId(company.getId());</span>
+<span class="nc" id="L148">			pruned.setName(company.getName());</span>
+<span class="nc" id="L149">			pruned.setPhoneNumber(company.getPhoneNumber());</span>
+<span class="nc" id="L150">			pruned.setPhoto(company.getPhoto());</span>
+<span class="nc" id="L151">			pruned.setSurname(company.getSurname());</span>
+<span class="nc" id="L152">			pruned.setVat(company.getVat());</span>
+
+<span class="nc" id="L154">			result = new ModelAndView(&quot;company/edit&quot;);</span>
+<span class="nc" id="L155">			result.addObject(&quot;company&quot;, pruned);</span>
+<span class="nc" id="L156">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L157">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L158">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L159">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L160">			oops.printStackTrace();</span>
+<span class="nc" id="L161">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L162">		}</span>
+
+<span class="nc" id="L164">		return result;</span>
+	}
+
+	// save edit ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView saveEdit(final Company prune, final BindingResult binding) {
+		ModelAndView result;
+		final Company company;
+
+<span class="nc" id="L173">		company = this.companyService.reconstruct(prune, binding);</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L176">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L178">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L180">			result = new ModelAndView(&quot;company/edit&quot;);</span>
+<span class="nc" id="L181">			result.addObject(&quot;company&quot;, prune);</span>
+<span class="nc" id="L182">		}</span>
+
+		else
+			try {
+<span class="nc" id="L186">				this.companyService.save(company);</span>
+<span class="nc" id="L187">				result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L188">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L189">				System.out.println(company);</span>
+<span class="nc" id="L190">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L191">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L192">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L193">				result = this.editModelAndView(company, &quot;company.registration.error&quot;);</span>
+<span class="nc" id="L194">			}</span>
+<span class="nc" id="L195">		return result;</span>
+	}
+
+	// Generate pdf ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/generatePDF&quot;)
+	public void generatePDF(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Company company;
+
+		try {
+<span class="nc" id="L204">			final ServletContext servletContext = request.getSession().getServletContext();</span>
+<span class="nc" id="L205">			final File tempDirectory = (File) servletContext.getAttribute(&quot;javax.servlet.context.tempdir&quot;);</span>
+<span class="nc" id="L206">			final String temperotyFilePath = tempDirectory.getAbsolutePath();</span>
+<span class="nc" id="L207">			company = this.companyService.findByPrincipal();</span>
+
+<span class="nc" id="L209">			String fileName = company.getName() + &quot;.pdf&quot;;</span>
+<span class="nc" id="L210">			response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L211">			response.setHeader(&quot;Content-disposition&quot;, &quot;attachment; filename=&quot; + fileName);</span>
+
+<span class="nc" id="L213">			this.actorService.generatePersonalInformationPDF(company, temperotyFilePath + &quot;\\&quot; + fileName);</span>
+<span class="nc" id="L214">			ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="nc" id="L215">			baos = convertPDFToByteArrayOutputStream(temperotyFilePath + &quot;\\&quot; + fileName);</span>
+<span class="nc" id="L216">			OutputStream os = response.getOutputStream();</span>
+<span class="nc" id="L217">			baos.writeTo(os);</span>
+<span class="nc" id="L218">			os.flush();</span>
+<span class="nc" id="L219">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L220">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L221">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L222">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L223">			oops.printStackTrace();</span>
+<span class="nc" id="L224">		}</span>
+<span class="nc" id="L225">	}</span>
+
+	// Display ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/display&quot;, method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam int companyId) {
+		ModelAndView result;
+		Company company;
+
+		try {
+<span class="nc" id="L234">			company = this.companyService.findOne(companyId);</span>
+
+<span class="nc" id="L236">			result = new ModelAndView(&quot;company/display&quot;);</span>
+<span class="nc" id="L237">			result.addObject(&quot;company&quot;, company);</span>
+<span class="nc" id="L238">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L239">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L240">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L241">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L242">			oops.printStackTrace();</span>
+<span class="nc" id="L243">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L244">		}</span>
+
+<span class="nc" id="L246">		return result;</span>
+	}
+
+	// Delete ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView delete() {
+		ModelAndView result;
+		Company company;
+
+		try {
+<span class="nc" id="L256">			company = this.companyService.findByPrincipal();</span>
+<span class="nc" id="L257">			this.companyService.delete(company);</span>
+<span class="nc" id="L258">			result = new ModelAndView(&quot;redirect:/j_spring_security_logout&quot;);</span>
+<span class="nc" id="L259">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L260">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L261">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L262">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L263">			oops.printStackTrace();</span>
+<span class="nc" id="L264">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L265">		}</span>
+<span class="nc" id="L266">		return result;</span>
+	}
+
+	// Ancillary methods -----------------------------------------------------------------------
+	protected ModelAndView createEditModelAndView(final CompanyForm companyForm) {
+		ModelAndView result;
+
+<span class="nc" id="L273">		result = this.createEditModelAndView(companyForm, null);</span>
+
+<span class="nc" id="L275">		return result;</span>
+	}
+
+	protected ModelAndView createEditModelAndView(final CompanyForm companyForm, final String message) {
+		ModelAndView result;
+
+<span class="nc" id="L281">		result = new ModelAndView(&quot;company/create&quot;);</span>
+<span class="nc" id="L282">		result.addObject(&quot;companyForm&quot;, companyForm);</span>
+<span class="nc" id="L283">		result.addObject(&quot;message&quot;, message);</span>
+
+<span class="nc" id="L285">		return result;</span>
+	}
+
+	protected ModelAndView editModelAndView(final Company company) {
+		ModelAndView result;
+
+<span class="nc" id="L291">		result = this.editModelAndView(company, null);</span>
+
+<span class="nc" id="L293">		return result;</span>
+	}
+
+	protected ModelAndView editModelAndView(final Company company, final String message) {
+		ModelAndView result;
+
+<span class="nc" id="L299">		result = new ModelAndView(&quot;company/edit&quot;);</span>
+<span class="nc" id="L300">		result.addObject(&quot;company&quot;, company);</span>
+<span class="nc" id="L301">		result.addObject(&quot;message&quot;, message);</span>
+
+<span class="nc" id="L303">		return result;</span>
+	}
+
+	private ModelAndView forbiddenOpperation() {
+<span class="nc" id="L307">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

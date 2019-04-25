@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MessageService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">MessageService.java</span></div><h1>MessageService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.GregorianCalendar;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import domain.Actor;
+import domain.Configurations;
+import domain.Message;
+import repositories.MessageRepository;
+import security.LoginService;
+
+@Service
+@Transactional
+<span class="fc" id="L22">public class MessageService {</span>
+
+	// Manage Repository
+	@Autowired
+	private MessageRepository		messageRepository;
+
+	// Supporting devices
+	@Autowired
+	private ConfigurationsService	configurationsService;
+
+	@Autowired
+	private ActorService			actorService;
+
+
+	// CRUD methods
+	public Message create() {
+<span class="fc" id="L38">		Message result = new Message();</span>
+<span class="fc" id="L39">		Calendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L40">		Collection&lt;Actor&gt; recipients = new ArrayList&lt;Actor&gt;();</span>
+<span class="fc" id="L41">		Collection&lt;String&gt; tags = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L43">		result.setRecipients(recipients);</span>
+<span class="fc" id="L44">		result.setTags(tags);</span>
+<span class="fc" id="L45">		result.setMoment(calendar.getTime());</span>
+
+<span class="fc" id="L47">		return result;</span>
+	}
+
+	public Message findOne(int messageID) {
+<span class="fc" id="L51">		final Message result = this.messageRepository.findOne(messageID);</span>
+<span class="fc" id="L52">		Assert.notNull(result);</span>
+
+<span class="fc" id="L54">		return result;</span>
+	}
+	
+	
+	public Collection&lt;Message&gt; findAll() {
+		Collection&lt;Message&gt; result;
+		
+<span class="fc" id="L61">		result = this.messageRepository.findAll();</span>
+<span class="fc" id="L62">		return result;</span>
+	}
+
+	public Message save(Message message) {
+<span class="fc" id="L66">		Assert.notNull(message);</span>
+<span class="fc" id="L67">		Assert.notNull(LoginService.getPrincipal());</span>
+		Message result;
+<span class="fc" id="L69">		Actor sender = this.actorService.findByPrincipal();</span>
+
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">		if (message.getId() == 0) {</span>
+<span class="fc" id="L72">			Assert.notNull(message);</span>
+
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">			if (!message.getSubject().contains(&quot;Change of status. Cambio del estado&quot;)) {</span>
+<span class="fc" id="L75">				message.setSender(sender);</span>
+			}
+
+<span class="fc" id="L78">			Collection&lt;Actor&gt; recipients = message.getRecipients();</span>
+<span class="fc" id="L79">			Assert.notNull(recipients);</span>
+<span class="fc" id="L80">			Assert.notEmpty(recipients);</span>
+
+<span class="fc" id="L82">			Boolean spam = this.checkSpam(message);</span>
+<span class="fc" id="L83">			Boolean notification = message.getIsNotification();</span>
+
+			
+			// Check for Notification or Spam
+<span class="fc bfc" id="L87" title="All 2 branches covered.">			if (notification) {</span>
+<span class="fc" id="L88">				message.getTags().add(&quot;SYSTEM&quot;);</span>
+			} 
+			
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">			if (spam) {</span>
+<span class="nc" id="L92">				message.setIsSpam(true);</span>
+			}
+
+<span class="fc" id="L95">			result = this.messageRepository.save(message);</span>
+			
+			// Add message to the list of the sender an the recipients
+<span class="fc" id="L98">			sender.getMessages().add(result);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">			for (final Actor recipient : recipients) {</span>
+<span class="fc" id="L100">				recipient.getMessages().add(result);</span>
+<span class="fc" id="L101">			}</span>
+
+<span class="fc" id="L103">		} else {</span>
+<span class="nc" id="L104">			result = this.messageRepository.save(message);</span>
+		}
+<span class="fc" id="L106">		return result;</span>
+	}
+
+	public void delete(Message message) {
+<span class="fc" id="L110">		Assert.notNull(message);</span>
+
+<span class="fc" id="L112">		Actor principal = this.actorService.findByPrincipal();</span>
+		
+		// Checke the principal is the sender or a recipient
+<span class="pc bpc" id="L115" title="1 of 4 branches missed.">		Assert.isTrue(message.getRecipients().contains(principal) || message.getSender().equals(principal));</span>
+
+		
+		// Check if the principal is the sender or a recipient
+		Boolean actorRole;
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (message.getSender() == null) {</span>
+<span class="nc" id="L121">			actorRole = true;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		} else if (message.getSender().equals(principal)) {</span>
+<span class="fc" id="L123">			actorRole = true;</span>
+		} else {
+<span class="nc" id="L125">			actorRole = false;</span>
+		}
+
+		// The message has Delete tag
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (message.getTags().contains(&quot;DELETED&quot;)) {</span>
+			
+			// The principal is a recipient
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			if (!actorRole) {</span>
+<span class="nc" id="L133">				message.getRecipients().remove(principal);</span>
+<span class="nc" id="L134">				principal.getMessages().remove(message);</span>
+<span class="nc" id="L135">				this.actorService.save(principal);</span>
+			
+			// the principal is the sender
+			} else {
+<span class="fc" id="L139">				message.setSender(null);</span>
+<span class="fc" id="L140">				principal.getMessages().remove(message);</span>
+<span class="fc" id="L141">				this.actorService.save(principal);</span>
+			}
+			
+			// Only when the message has not sender and recipient is deleted from the system
+<span class="pc bpc" id="L145" title="3 of 4 branches missed.">			if ((message.getRecipients().size() == 0) &amp;&amp; (message.getSender() == null)) {</span>
+<span class="nc" id="L146">				this.messageRepository.delete(message);</span>
+			} else {
+<span class="fc" id="L148">				this.messageRepository.save(message);</span>
+			}
+			
+		//The message has NOT Deleted tag
+		} else {
+<span class="nc" id="L153">			message.getTags().add(&quot;DELETED&quot;);</span>
+<span class="nc" id="L154">			this.messageRepository.save(message);</span>
+		}
+<span class="fc" id="L156">	}</span>
+
+	// Other methods
+	private Boolean checkSpam(final Message message) {
+<span class="fc" id="L160">		Boolean spam = false;</span>
+
+<span class="fc" id="L162">		final Configurations configuration = this.configurationsService.getConfiguration();</span>
+<span class="fc" id="L163">		final Collection&lt;String&gt; spamWords = configuration.getSpamWords();</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (final String word : spamWords) {</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			if (message.getSubject().contains(word)) {</span>
+<span class="nc" id="L166">				spam = true;</span>
+<span class="nc" id="L167">				break;</span>
+			}
+<span class="fc" id="L169">		}</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!spam) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			for (final String word : spamWords) {</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">				if (message.getBody().contains(word)) {</span>
+<span class="nc" id="L173">					spam = true;</span>
+<span class="nc" id="L174">					break;</span>
+				}
+<span class="fc" id="L176">			}</span>
+		}
+
+<span class="fc" id="L179">		return spam;</span>
+	}
+
+	public Collection&lt;Message&gt; findAllBySender(int senderID) {
+<span class="fc" id="L183">		final Collection&lt;Message&gt; result = this.messageRepository.findAllBySender(senderID);</span>
+<span class="fc" id="L184">		Assert.notNull(result);</span>
+
+<span class="fc" id="L186">		return result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

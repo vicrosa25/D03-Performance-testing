@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>StringToSocialProfileConverter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">converters</a> &gt; <span class="el_source">StringToSocialProfileConverter.java</span></div><h1>StringToSocialProfileConverter.java</h1><pre class="source lang-java linenums">package converters;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import domain.SocialProfile;
+import repositories.SocialProfileRepository;
+
+@Component
+@Transactional
+<span class="fc" id="L14">public class StringToSocialProfileConverter implements</span>
+Converter&lt;String, SocialProfile&gt; {
+
+	@Autowired
+	SocialProfileRepository socialProfileRepository;
+
+	@Override
+	public SocialProfile convert(String text) {
+		SocialProfile result;
+		int id;
+
+		try {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">			if (StringUtils.isEmpty(text))</span>
+<span class="nc" id="L27">				result = null;</span>
+			else {
+<span class="nc" id="L29">				id = Integer.valueOf(text);</span>
+<span class="nc" id="L30">				result = this.socialProfileRepository.findOne(id);</span>
+			}
+<span class="nc" id="L32">		} catch (Throwable oops) {</span>
+<span class="nc" id="L33">			throw new IllegalArgumentException(oops);</span>
+<span class="nc" id="L34">		}</span>
+<span class="nc" id="L35">		return result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

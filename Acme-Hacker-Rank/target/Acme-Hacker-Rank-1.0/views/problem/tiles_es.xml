@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="problem/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de Problemas" />
+		<put-attribute name="body" value="/views/problem/list.jsp" />
+	</definition>
+
+	<definition name="problem/company/edit" extends="master.page">	
+		<put-attribute name="title" value="Modificar problema" />
+		<put-attribute name="body" value="/views/problem/edit.jsp" />
+	</definition>
+
+	<definition name="problem/company/display" extends="master.page">	
+		<put-attribute name="title" value="Información de problema" />
+		<put-attribute name="body" value="/views/problem/display.jsp" />
+	</definition>
+
+	<definition name="problem/company/addAttachment" extends="master.page">	
+		<put-attribute name="title" value="Adjuntar enlace" />
+		<put-attribute name="body" value="/views/problem/addAttachment.jsp" />
+	</definition>
+	
+</tiles-definitions>

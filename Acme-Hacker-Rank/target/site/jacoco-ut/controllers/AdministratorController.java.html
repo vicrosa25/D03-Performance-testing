@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdministratorController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">AdministratorController.java</span></div><h1>AdministratorController.java</h1><pre class="source lang-java linenums">/*
+ * AdministratorController.java
+ * 
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
+ * http://www.tdg-seville.info/License.html
+ */
+
+package controllers;
+
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+import javax.validation.Valid;
+
+import org.hibernate.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import domain.Actor;
+import domain.Administrator;
+import domain.Company;
+import domain.Configurations;
+import domain.Hacker;
+import domain.Position;
+import services.ActorService;
+import services.AdministratorService;
+import services.ConfigurationsService;
+import utilities.Md5;
+
+@Controller
+@RequestMapping(&quot;/administrator&quot;)
+<span class="fc" id="L44">public class AdministratorController extends AbstractController {</span>
+
+	@Autowired
+	private AdministratorService	administratorService;
+
+	@Autowired
+	private ConfigurationsService	configurationsService;
+
+	@Autowired
+	private ActorService			actorService;
+
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
+<span class="nc" id="L58">		JOptionPane.showMessageDialog(null, &quot;Forbidden operation&quot;);</span>
+<span class="nc" id="L59">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	// List -------------------------------------------------------------
+	@RequestMapping(value = &quot;/list&quot;, method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result;
+		Collection&lt;Administrator&gt; admins;
+
+<span class="nc" id="L68">		admins = this.administratorService.findAll();</span>
+
+<span class="nc" id="L70">		result = new ModelAndView(&quot;administrator/list&quot;);</span>
+<span class="nc" id="L71">		result.addObject(&quot;administrators&quot;, admins);</span>
+<span class="nc" id="L72">		result.addObject(&quot;requestURI&quot;, &quot;administrator/list.do&quot;);</span>
+
+<span class="nc" id="L74">		return result;</span>
+	}
+
+	// Create -----------------------------------------------------------
+	@RequestMapping(value = &quot;/create&quot;, method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		Administrator admin;
+
+<span class="nc" id="L83">		admin = this.administratorService.create();</span>
+
+<span class="nc" id="L85">		result = new ModelAndView(&quot;administrator/create&quot;);</span>
+<span class="nc" id="L86">		result.addObject(&quot;administrator&quot;, admin);</span>
+
+<span class="nc" id="L88">		return result;</span>
+	}
+
+	// Save -----------------------------------------------------------
+	@RequestMapping(value = &quot;/create&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView save(@Valid final Administrator admin, final BindingResult binding) {
+		ModelAndView result;
+		String password;
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L97">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L99">				System.out.println(e.toString());</span>
+			//admin.setMessageBoxes(this.messageBoxService.createSystemMessageBox());
+<span class="nc" id="L101">			result = new ModelAndView(&quot;administrator/create&quot;);</span>
+<span class="nc" id="L102">			result.addObject(&quot;administrator&quot;, admin);</span>
+<span class="nc" id="L103">		} else</span>
+			try {
+<span class="nc" id="L105">				password = Md5.encodeMd5(admin.getUserAccount().getPassword());</span>
+<span class="nc" id="L106">				admin.getUserAccount().setPassword(password);</span>
+<span class="nc" id="L107">				this.administratorService.save(admin);</span>
+<span class="nc" id="L108">				result = new ModelAndView(&quot;redirect:list.do&quot;);</span>
+<span class="nc" id="L109">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L110">				result = new ModelAndView(&quot;administrator/create&quot;);</span>
+<span class="nc" id="L111">				result.addObject(&quot;administrator&quot;, admin);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">				if (oops instanceof DataIntegrityViolationException)</span>
+<span class="nc" id="L113">					result.addObject(&quot;message&quot;, &quot;admin.duplicated.username&quot;);</span>
+				else {
+<span class="nc" id="L115">					System.out.println(oops.getCause().toString());</span>
+<span class="nc" id="L116">					result.addObject(&quot;message&quot;, &quot;admin.registration.error&quot;);</span>
+				}
+<span class="nc" id="L118">			}</span>
+<span class="nc" id="L119">		return result;</span>
+	}
+
+	/*******************************************************************
+	 * 
+	 * Admin Dashboard Queries
+	 * 
+	 *******************************************************************/
+	@RequestMapping(&quot;/dashboard&quot;)
+	public ModelAndView dashboard() {
+		final ModelAndView result;
+
+		// Queries level C
+<span class="nc" id="L132">		Object[] query1 				= this.administratorService.query1();</span>
+<span class="nc" id="L133">		Object[] query2 				= this.administratorService.query2();</span>
+<span class="nc" id="L134">		Collection&lt;Company&gt; query3 		= this.administratorService.query3();</span>
+<span class="nc" id="L135">		Collection&lt;Hacker&gt; query4 		= this.administratorService.query4();</span>
+<span class="nc" id="L136">		Object[] query5 				= this.administratorService.query5();</span>
+<span class="nc" id="L137">		Collection&lt;Position&gt; query6a	= this.administratorService.query6a();</span>
+<span class="nc" id="L138">		Collection&lt;Position&gt; query6b	= this.administratorService.query6b();</span>
+<span class="nc" id="L139">		Object[] query7 				= this.administratorService.query7();</span>
+<span class="nc" id="L140">		Object[] query8 				= this.administratorService.query8();</span>
+<span class="nc" id="L141">		Double query9					= this.administratorService.query9();</span>
+
+
+<span class="nc" id="L144">		result = new ModelAndView(&quot;administrator/dashboard&quot;);</span>
+
+<span class="nc" id="L146">		result.addObject(&quot;query1&quot;, query1);</span>
+<span class="nc" id="L147">		result.addObject(&quot;query2&quot;, query2);</span>
+<span class="nc" id="L148">		result.addObject(&quot;query3&quot;, query3);</span>
+<span class="nc" id="L149">		result.addObject(&quot;query4&quot;, query4);</span>
+<span class="nc" id="L150">		result.addObject(&quot;query5&quot;, query5);</span>
+<span class="nc" id="L151">		result.addObject(&quot;query6a&quot;, query6a);</span>
+<span class="nc" id="L152">		result.addObject(&quot;query6b&quot;, query6b);</span>
+<span class="nc" id="L153">		result.addObject(&quot;query7&quot;, query7);</span>
+<span class="nc" id="L154">		result.addObject(&quot;query8&quot;, query8);</span>
+<span class="nc" id="L155">		result.addObject(&quot;query9&quot;, query9);</span>
+
+<span class="nc" id="L157">		return result;</span>
+	}
+
+
+	/**
+	 * 
+	 * Manage CACHE ****************************************************************************
+	 */
+
+	// Configurations cache -------------------------------------------------------------
+	@RequestMapping(value = &quot;/config/cache/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView cache() {
+		ModelAndView result;
+		Configurations configurations;
+
+<span class="nc" id="L172">		configurations = this.configurationsService.getConfiguration();</span>
+<span class="nc" id="L173">		result = new ModelAndView(&quot;administrator/config/cache/edit&quot;);</span>
+<span class="nc" id="L174">		result.addObject(&quot;configurations&quot;, configurations);</span>
+
+<span class="nc" id="L176">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/config/cache/edit&quot;, method = RequestMethod.POST, params = &quot;update&quot;)
+	public ModelAndView cache(@Valid Configurations configurations, BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L184">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L186">				System.out.println(e.toString());</span>
+<span class="nc" id="L187">			result = new ModelAndView(&quot;administrator/config/cache/edit&quot;);</span>
+<span class="nc" id="L188">			result.addObject(&quot;configurations&quot;, configurations);</span>
+<span class="nc" id="L189">		} else</span>
+			try {
+<span class="nc" id="L191">				this.configurationsService.update(configurations);</span>
+<span class="nc" id="L192">				result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L193">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L194">				result = new ModelAndView(&quot;administrator/config/cache/edit&quot;);</span>
+<span class="nc" id="L195">				result.addObject(&quot;configurations&quot;, configurations);</span>
+<span class="nc" id="L196">				result.addObject(&quot;message&quot;, &quot;administrator.commit.error&quot;);</span>
+<span class="nc" id="L197">			}</span>
+
+<span class="nc" id="L199">		return result;</span>
+	}
+
+	/**
+	 * 
+	 * Settings ****************************************************************************
+	 */
+
+	@RequestMapping(value = &quot;/config/aliveConfig/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView config() {
+		ModelAndView result;
+		Configurations configurations;
+
+<span class="nc" id="L212">		configurations = this.configurationsService.getConfiguration();</span>
+<span class="nc" id="L213">		result = new ModelAndView(&quot;administrator/config/aliveConfig/edit&quot;);</span>
+<span class="nc" id="L214">		result.addObject(&quot;configurations&quot;, configurations);</span>
+
+<span class="nc" id="L216">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/config/aliveConfig/edit&quot;, method = RequestMethod.POST, params = &quot;update&quot;)
+	public ModelAndView config(@Valid Configurations configurations, BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L224">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L226">				System.out.println(e.toString());</span>
+<span class="nc" id="L227">			result = new ModelAndView(&quot;administrator/config/aliveConfig/edit&quot;);</span>
+<span class="nc" id="L228">			result.addObject(&quot;configurations&quot;, configurations);</span>
+<span class="nc" id="L229">		} else</span>
+			try {
+<span class="nc" id="L231">				this.configurationsService.update(configurations);</span>
+<span class="nc" id="L232">				result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L233">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L234">				result = new ModelAndView(&quot;administrator/config/aliveConfig/edit&quot;);</span>
+<span class="nc" id="L235">				result.addObject(&quot;configurations&quot;, configurations);</span>
+<span class="nc" id="L236">				result.addObject(&quot;message&quot;, &quot;administrator.commit.error&quot;);</span>
+<span class="nc" id="L237">			}</span>
+
+<span class="nc" id="L239">		return result;</span>
+	}
+
+	/**
+	 * 
+	 * SPAM
+	 * ****************************************************************************
+	 */
+
+	// Spammer list ---------------------------------------------------------------------
+	@RequestMapping(value = &quot;/spammers&quot;, method = RequestMethod.GET)
+	public ModelAndView suspiciousList() {
+		ModelAndView result;
+		Collection&lt;Actor&gt; suspicious;
+
+<span class="nc" id="L254">		suspicious = this.administratorService.getSpammers();</span>
+
+<span class="nc" id="L256">		result = new ModelAndView(&quot;administrator/spammers&quot;);</span>
+<span class="nc" id="L257">		result.addObject(&quot;suspicious&quot;, suspicious);</span>
+<span class="nc" id="L258">		result.addObject(&quot;requestURI&quot;, &quot;administrator/spammers.do&quot;);</span>
+
+<span class="nc" id="L260">		return result;</span>
+	}
+
+	// Compute Spammers -------------------------------------------------------------------
+	@RequestMapping(value = &quot;/computeSpammers&quot;, method = RequestMethod.GET)
+	public ModelAndView computeSpammers() {
+
+<span class="nc" id="L267">		this.administratorService.computeSpammers();</span>
+
+<span class="nc" id="L269">		return this.suspiciousList();</span>
+	}
+
+	// Ban
+	// -----------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/ban&quot;, method = RequestMethod.GET)
+	public ModelAndView ban(@RequestParam final int actorId) {
+		ModelAndView result;
+<span class="nc" id="L277">		Actor actor = null;</span>
+
+		try {
+<span class="nc" id="L280">			actor = this.actorService.findOne(actorId);</span>
+<span class="nc" id="L281">		} catch (final Exception e) {</span>
+<span class="nc" id="L282">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L283">			return result;</span>
+<span class="nc" id="L284">		}</span>
+
+<span class="nc" id="L286">		this.administratorService.banAnActor(actor);</span>
+
+<span class="nc" id="L288">		result = this.suspiciousList();</span>
+<span class="nc" id="L289">		return result;</span>
+	}
+
+	// Unban
+	// -----------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/unban&quot;, method = RequestMethod.GET)
+	public ModelAndView unban(@RequestParam final int actorId) {
+		ModelAndView result;
+<span class="nc" id="L297">		Actor actor = null;</span>
+
+		try {
+<span class="nc" id="L300">			actor = this.actorService.findOne(actorId);</span>
+<span class="nc" id="L301">		} catch (final Exception e) {</span>
+<span class="nc" id="L302">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L303">			return result;</span>
+<span class="nc" id="L304">		}</span>
+<span class="nc" id="L305">		this.administratorService.unBanAnActor(actor);</span>
+
+<span class="nc" id="L307">		result = this.suspiciousList();</span>
+
+<span class="nc" id="L309">		return result;</span>
+	}
+
+
+	private ModelAndView forbiddenOpperation() {
+<span class="nc" id="L314">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	/**
+	 * 
+	 * Manage Spam Word ****************************************************************************
+	 */
+
+	// List SPAM Words-------------------------------------------------------------
+	@RequestMapping(value = &quot;config/spam/list&quot;, method = RequestMethod.GET)
+	public ModelAndView spamWordList() {
+		ModelAndView result;
+		Collection&lt;String&gt; spamWords;
+
+<span class="nc" id="L328">		spamWords = this.configurationsService.getConfiguration().getSpamWords();</span>
+
+<span class="nc" id="L330">		result = new ModelAndView(&quot;administrator/config/spam/list&quot;);</span>
+<span class="nc" id="L331">		result.addObject(&quot;requestURI&quot;, &quot;administrator/config/spam/list.do&quot;);</span>
+<span class="nc" id="L332">		result.addObject(&quot;spamWords&quot;, spamWords);</span>
+
+<span class="nc" id="L334">		return result;</span>
+	}
+
+	// Add  - SPAM Words GET-------------------------------------------------------------
+	@RequestMapping(value = &quot;/config/spam/add&quot;, method = RequestMethod.GET)
+	public ModelAndView addSpamWord() {
+		ModelAndView result;
+
+<span class="nc" id="L342">		result = new ModelAndView(&quot;administrator/config/spam/add&quot;);</span>
+<span class="nc" id="L343">		result.addObject(&quot;action&quot;, &quot;administrator/config/spam/add.do&quot;);</span>
+<span class="nc" id="L344">		return result;</span>
+	}
+
+	// Add  - SPAM Words POS-------------------------------------------------------------
+	@RequestMapping(value = &quot;/config/spam/add&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView addSpamWord(@RequestParam(&quot;word&quot;) final String word) {
+		ModelAndView result;
+
+		try {
+			// Add the word and update configurations
+<span class="nc" id="L354">			this.administratorService.addSpamWord(word);</span>
+<span class="nc" id="L355">		} catch (final Exception e) {</span>
+<span class="nc" id="L356">			result = new ModelAndView(&quot;administrator/config/spam/add&quot;);</span>
+<span class="nc" id="L357">			result.addObject(&quot;action&quot;, &quot;administrator/config/spam/add.do&quot;);</span>
+<span class="nc" id="L358">			result.addObject(&quot;message&quot;, &quot;config.field.error&quot;);</span>
+<span class="nc" id="L359">			return result;</span>
+<span class="nc" id="L360">		}</span>
+
+<span class="nc" id="L362">		result = this.spamWordList();</span>
+
+<span class="nc" id="L364">		return result;</span>
+	}
+
+	// Edit SPAM Word GET ------------------------------------------------------------------
+	@RequestMapping(value = &quot;/config/spam/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView editSpamWord(@RequestParam(&quot;word&quot;) final String word, @RequestParam(&quot;index&quot;) final int index) {
+		ModelAndView result;
+
+<span class="nc" id="L372">		result = new ModelAndView(&quot;administrator/config/spam/edit&quot;);</span>
+<span class="nc" id="L373">		result.addObject(&quot;action&quot;, &quot;administrator/config/spam/edit.do&quot;);</span>
+
+<span class="nc" id="L375">		result.addObject(&quot;word&quot;, word);</span>
+<span class="nc" id="L376">		result.addObject(&quot;index&quot;, index);</span>
+
+<span class="nc" id="L378">		return result;</span>
+	}
+
+	// Edit SPAM word SAVE ------------------------------------------------------------------
+	@RequestMapping(value = &quot;/config/spam/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView editSpamWordPost(@RequestParam(&quot;word&quot;) final String word, @RequestParam(&quot;index&quot;) final int index) {
+		ModelAndView result;
+
+		try {
+			// Add the word and update configurations
+<span class="nc" id="L388">			this.administratorService.editSpamWord(word, index - 1);</span>
+<span class="nc" id="L389">		} catch (final Exception e) {</span>
+<span class="nc" id="L390">			e.printStackTrace();</span>
+<span class="nc" id="L391">			result = new ModelAndView(&quot;administrator/config/spam/edit&quot;);</span>
+<span class="nc" id="L392">			result.addObject(&quot;action&quot;, &quot;administrator/config/spam/edit.do&quot;);</span>
+
+<span class="nc" id="L394">			result.addObject(&quot;word&quot;, word);</span>
+<span class="nc" id="L395">			result.addObject(&quot;index&quot;, index);</span>
+
+<span class="nc" id="L397">			result.addObject(&quot;message&quot;, &quot;config.field.error&quot;);</span>
+
+<span class="nc" id="L399">			return result;</span>
+<span class="nc" id="L400">		}</span>
+
+<span class="nc" id="L402">		result = this.spamWordList();</span>
+
+<span class="nc" id="L404">		return result;</span>
+	}
+
+	// Remove SPAM word ------------------------------------------------------------------
+	@RequestMapping(value = &quot;/removeSpamWord&quot;, method = RequestMethod.GET)
+	public ModelAndView removeSpamWord(@RequestParam(&quot;word&quot;) final String word) {
+
+<span class="nc" id="L411">		this.administratorService.removeSpamWord(word);</span>
+<span class="nc" id="L412">		return this.spamWordList();</span>
+	}
+
+	// Inform security breach -------------------------------------------------------------
+	@RequestMapping(value = &quot;/securityBreach&quot;, method = RequestMethod.GET)
+	public ModelAndView informBreach() {
+		ModelAndView result;
+
+		try {
+<span class="nc" id="L421">			this.administratorService.informSecurityBreach();</span>
+<span class="nc" id="L422">		} catch (final Exception e) {</span>
+<span class="nc" id="L423">			e.printStackTrace();</span>
+<span class="nc" id="L424">		}</span>
+
+<span class="nc" id="L426">		result = new ModelAndView(&quot;redirect:/&quot;);</span>
+<span class="nc" id="L427">		return result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

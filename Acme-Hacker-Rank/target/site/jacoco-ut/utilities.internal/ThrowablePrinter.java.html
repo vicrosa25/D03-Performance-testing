@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ThrowablePrinter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">utilities.internal</a> &gt; <span class="el_source">ThrowablePrinter.java</span></div><h1>ThrowablePrinter.java</h1><pre class="source lang-java linenums">/*
+ * ThrowablePrinter.java
+ * 
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
+ * http://www.tdg-seville.info/License.html
+ */
+
+package utilities.internal;
+
+import java.util.regex.Pattern;
+
+<span class="nc bnc" id="L15" title="All 2 branches missed.">public class ThrowablePrinter {</span>
+
+	public static void print(final Throwable oops) {
+<span class="nc bnc" id="L18" title="All 4 branches missed.">		assert oops != null;</span>
+
+		Throwable iterator;
+		String message;
+		int position;
+
+<span class="nc" id="L24">		System.err.println();</span>
+<span class="nc" id="L25">		iterator = oops;</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		while (iterator != null) {</span>
+<span class="nc" id="L27">			message = iterator.getMessage();</span>
+<span class="nc bnc" id="L28" title="All 4 branches missed.">			if (message != null &amp;&amp; Pattern.matches(&quot;^[a-zA-Z.]+:.*$&quot;, message)) {</span>
+<span class="nc" id="L29">				position = message.indexOf(':');</span>
+<span class="nc" id="L30">				message = message.substring(position + 1).trim();</span>
+			}
+<span class="nc" id="L32">			System.err.printf(&quot;%s: %s%n&quot;, iterator.getClass().getName(), message);</span>
+
+<span class="nc" id="L34">			iterator = iterator.getCause();</span>
+		}
+<span class="nc" id="L36">		System.err.println();</span>
+<span class="nc" id="L37">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

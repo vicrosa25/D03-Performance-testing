@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EducationData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">EducationData.java</span></div><h1>EducationData.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L22">public class EducationData extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private String	degree;
+	private String	institution;
+	private Double	mark;
+	private Date	startDate;
+	private Date	endDate;
+	// Relationship -----------------------------------------------------------
+	private Curricula	curricula;
+
+
+	@ManyToOne(optional = false)
+	public Curricula getCurricula() {
+<span class="fc" id="L36">		return this.curricula;</span>
+	}
+
+	public void setCurricula(Curricula curricula) {
+<span class="fc" id="L40">		this.curricula = curricula;</span>
+<span class="fc" id="L41">	}</span>
+
+	@NotBlank
+	public String getDegree() {
+<span class="fc" id="L45">		return degree;</span>
+	}
+	public void setDegree(String degree) {
+<span class="fc" id="L48">		this.degree = degree;</span>
+<span class="fc" id="L49">	}</span>
+
+	@NotBlank
+	public String getInstitution() {
+<span class="fc" id="L53">		return institution;</span>
+	}
+	public void setInstitution(String institution) {
+<span class="fc" id="L56">		this.institution = institution;</span>
+<span class="fc" id="L57">	}</span>
+
+	@NotNull
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+	public Date getStartDate() {
+<span class="fc" id="L64">		return startDate;</span>
+	}
+	public void setStartDate(Date startDate) {
+<span class="fc" id="L67">		this.startDate = startDate;</span>
+<span class="fc" id="L68">	}</span>
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+	public Date getEndDate() {
+<span class="fc" id="L73">		return endDate;</span>
+	}
+	public void setEndDate(Date endDate) {
+<span class="fc" id="L76">		this.endDate = endDate;</span>
+<span class="fc" id="L77">	}</span>
+
+	@NotNull
+	@DecimalMin(&quot;0.0&quot;)
+	@DecimalMax(&quot;10.0&quot;)
+	public Double getMark() {
+<span class="fc" id="L83">		return mark;</span>
+	}
+	public void setMark(Double mark) {
+<span class="fc" id="L86">		this.mark = mark;</span>
+<span class="fc" id="L87">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

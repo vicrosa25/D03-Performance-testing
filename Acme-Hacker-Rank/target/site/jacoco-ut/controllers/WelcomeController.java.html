@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>WelcomeController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">WelcomeController.java</span></div><h1>WelcomeController.java</h1><pre class="source lang-java linenums">/*
+ * WelcomeController.java
+ * 
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
+ * http://www.tdg-seville.info/License.html
+ */
+
+package controllers;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import domain.Actor;
+import services.ActorService;
+import services.ConfigurationsService;
+
+@Controller
+@RequestMapping(&quot;/welcome&quot;)
+public class WelcomeController extends AbstractController {
+	
+	@Autowired
+	private ActorService			actorService;
+	
+	@Autowired
+	private ConfigurationsService	configurationsService;
+
+	// Constructors -----------------------------------------------------------
+
+	public WelcomeController() {
+<span class="fc" id="L39">		super();</span>
+<span class="fc" id="L40">	}</span>
+
+	// Index ------------------------------------------------------------------		
+
+	@RequestMapping(value = &quot;/index&quot;)
+	public ModelAndView index(@CookieValue(value = &quot;language&quot;, defaultValue = &quot;&quot;) String language) {
+		ModelAndView result;
+		SimpleDateFormat formatter;
+		String moment;
+		String name;
+		Actor actor;
+		String englishMessage;
+		String spanishMessage;
+
+<span class="nc" id="L54">		formatter = new SimpleDateFormat(&quot;dd/MM/yyyy HH:mm&quot;);</span>
+<span class="nc" id="L55">		moment = formatter.format(new Date());</span>
+		
+<span class="nc" id="L57">		englishMessage = this.configurationsService.getConfiguration().getEnglishMessage();</span>
+<span class="nc" id="L58">		spanishMessage = this.configurationsService.getConfiguration().getSpanishMessage();</span>
+
+		try {
+<span class="nc" id="L61">			actor = this.actorService.findByPrincipal();</span>
+<span class="nc" id="L62">			name = actor.getName() + &quot; &quot; + actor.getSurname();</span>
+<span class="nc" id="L63">			result = new ModelAndView(&quot;welcome/index&quot;);</span>
+<span class="nc" id="L64">			result.addObject(&quot;moment&quot;, moment);</span>
+<span class="nc" id="L65">			result.addObject(&quot;name&quot;, name);</span>
+<span class="nc" id="L66">			result.addObject(&quot;englishMessage&quot;, englishMessage);</span>
+<span class="nc" id="L67">			result.addObject(&quot;spanishMessage&quot;, spanishMessage);</span>
+<span class="nc" id="L68">			result.addObject(&quot;language&quot;, language);</span>
+<span class="nc" id="L69">			return result;</span>
+<span class="nc" id="L70">		} catch (final Exception e) {</span>
+<span class="nc" id="L71">			result = new ModelAndView(&quot;welcome/index&quot;);</span>
+<span class="nc" id="L72">			result.addObject(&quot;moment&quot;, moment);</span>
+<span class="nc" id="L73">			result.addObject(&quot;englishMessage&quot;, englishMessage);</span>
+<span class="nc" id="L74">			result.addObject(&quot;spanishMessage&quot;, spanishMessage);</span>
+<span class="nc" id="L75">			result.addObject(&quot;language&quot;, language);</span>
+		}
+
+<span class="nc" id="L78">		return result;</span>
+	}
+	
+	@RequestMapping(value = &quot;/legal&quot;)
+	public ModelAndView legal(){
+		ModelAndView result;
+<span class="nc" id="L84">		result = new ModelAndView(&quot;welcome/legal&quot;);</span>
+<span class="nc" id="L85">		return result;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

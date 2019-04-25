@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MiscellaneousData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">MiscellaneousData.java</span></div><h1>MiscellaneousData.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L17">public class MiscellaneousData extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private String				text;
+	private Collection&lt;Url&gt;		attachments;
+	// Relationship -----------------------------------------------------------
+	private Curricula		curricula;
+
+
+	@ManyToOne(optional = false)
+	public Curricula getCurricula() {
+<span class="fc" id="L28">		return this.curricula;</span>
+	}
+
+	public void setCurricula(Curricula curricula) {
+<span class="fc" id="L32">		this.curricula = curricula;</span>
+<span class="fc" id="L33">	}</span>
+
+	@NotBlank
+	public String getText() {
+<span class="fc" id="L37">		return this.text;</span>
+	}
+
+	public void setText(final String text) {
+<span class="fc" id="L41">		this.text = text;</span>
+<span class="fc" id="L42">	}</span>
+
+	@Valid
+	@ElementCollection
+	public Collection&lt;Url&gt; getAttachments() {
+<span class="fc" id="L47">		return this.attachments;</span>
+	}
+
+	public void setAttachments(Collection&lt;Url&gt; attachments) {
+<span class="fc" id="L51">		this.attachments = attachments;</span>
+<span class="fc" id="L52">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

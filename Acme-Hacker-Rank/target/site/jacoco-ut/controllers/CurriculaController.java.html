@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CurriculaController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">controllers</a> &gt; <span class="el_source">CurriculaController.java</span></div><h1>CurriculaController.java</h1><pre class="source lang-java linenums">
+package controllers;
+
+import java.util.Collection;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.CurriculaService;
+import services.EducationDataService;
+import services.HackerService;
+import services.MiscellaneousDataService;
+import services.PersonalDataService;
+import services.PositionDataService;
+import domain.Curricula;
+import domain.EducationData;
+import domain.Hacker;
+import domain.MiscellaneousData;
+import domain.PersonalData;
+import domain.PositionData;
+import domain.Url;
+
+@Controller
+@RequestMapping(&quot;/curricula&quot;)
+<span class="fc" id="L37">public class CurriculaController extends AbstractController {</span>
+
+	@Autowired
+	private CurriculaService	curriculaService;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private PersonalDataService	personalDataService;
+
+	@Autowired
+	private PositionDataService	positionDataService;
+
+	@Autowired
+	private EducationDataService	educationDataService;
+
+	@Autowired
+	private MiscellaneousDataService	miscellaneousDataService;
+
+	@ExceptionHandler(TypeMismatchException.class)
+	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
+<span class="nc" id="L59">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+
+	// List -------------------------------------------------------------
+	@RequestMapping(value = &quot;/hacker/list&quot;, method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result;
+		Collection&lt;Curricula&gt; curriculas;
+		try {
+<span class="nc" id="L68">			Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L69">			Assert.notNull(principal);</span>
+<span class="nc" id="L70">			curriculas = this.curriculaService.findAllPrincipalNotApplied();</span>
+
+<span class="nc" id="L72">			result = new ModelAndView(&quot;curricula/list&quot;);</span>
+<span class="nc" id="L73">			result.addObject(&quot;curriculas&quot;, curriculas);</span>
+<span class="nc" id="L74">			result.addObject(&quot;requestURI&quot;, &quot;curricula/hacker/list.do&quot;);</span>
+
+<span class="nc" id="L76">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L77">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L78">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L79">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L80">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L82">		}</span>
+
+<span class="nc" id="L84">		return result;</span>
+	}
+
+	// Display -------------------------------------------------------------
+	@RequestMapping(value = &quot;/hacker/display&quot;, method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam int curriculaId) {
+		ModelAndView result;
+		Curricula curricula;
+		try {
+<span class="nc" id="L93">			Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L94">			curricula = this.curriculaService.findOne(curriculaId);</span>
+
+<span class="nc" id="L96">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+
+<span class="nc" id="L99">			result = new ModelAndView(&quot;curricula/display&quot;);</span>
+<span class="nc" id="L100">			result.addObject(&quot;curricula&quot;, curricula);</span>
+<span class="nc" id="L101">			result.addObject(&quot;requestURI&quot;, &quot;curricula/hacker/display.do&quot;);</span>
+
+<span class="nc" id="L103">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L104">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L105">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L106">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L107">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L109">		}</span>
+
+<span class="nc" id="L111">		return result;</span>
+	}
+
+	// create -------------------------------------------------------------
+	@RequestMapping(value = &quot;/hacker/create&quot;, method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		try {
+<span class="nc" id="L119">			Curricula curricula = this.curriculaService.create();</span>
+
+<span class="nc" id="L121">			result = new ModelAndView(&quot;curricula/hacker/create&quot;);</span>
+<span class="nc" id="L122">			result.addObject(curricula);</span>
+
+<span class="nc" id="L124">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L125">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L126">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L127">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L128">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L130">		}</span>
+
+<span class="nc" id="L132">		return result;</span>
+	}
+
+	// save ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/hacker/create&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView personalDataSave(@Valid final Curricula curricula, final BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L141">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L143">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L145">			result = new ModelAndView(&quot;curricula/hacker/create&quot;);</span>
+<span class="nc" id="L146">			result.addObject(curricula);</span>
+<span class="nc" id="L147">		}</span>
+
+		else
+			try {
+<span class="nc" id="L151">				Curricula clean = this.curriculaService.create();</span>
+<span class="nc" id="L152">				clean.setTitle(curricula.getTitle());</span>
+<span class="nc" id="L153">				this.curriculaService.save(clean);</span>
+<span class="nc" id="L154">				result = new ModelAndView(&quot;redirect:/curricula/hacker/list.do&quot;);</span>
+<span class="nc" id="L155">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L156">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L157">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L158">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L159">				oops.printStackTrace();</span>
+<span class="nc" id="L160">				result = new ModelAndView(&quot;curricula/hacker/create&quot;);</span>
+<span class="nc" id="L161">				result.addObject(curricula);</span>
+<span class="nc" id="L162">			}</span>
+<span class="nc" id="L163">		return result;</span>
+	}
+
+	// Delete -------------------------------------------------------------
+	@RequestMapping(value = &quot;/hacker/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam int curriculaId) {
+		ModelAndView result;
+		Curricula curricula;
+		try {
+<span class="nc" id="L172">			Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L173">			curricula = this.curriculaService.findOne(curriculaId);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+
+<span class="nc" id="L176">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+
+<span class="nc" id="L178">			this.curriculaService.delete(curricula);</span>
+
+<span class="nc" id="L180">			result = this.list();</span>
+
+<span class="nc" id="L182">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L183">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L184">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L185">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L186">			oops.printStackTrace();</span>
+<span class="nc" id="L187">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L189">		}</span>
+
+<span class="nc" id="L191">		return result;</span>
+	}
+
+	/** PERSONAL DATA **/
+	// create -------------------------------------------------------------
+	@RequestMapping(value = &quot;/personalData/hacker/create&quot;, method = RequestMethod.GET)
+	public ModelAndView personalDataCreate(@RequestParam int curriculaId) {
+		ModelAndView result;
+		PersonalData personalData;
+		Hacker principal;
+		Curricula curricula;
+		try {
+<span class="nc" id="L203">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L204">			curricula = this.curriculaService.findOne(curriculaId);</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+<span class="nc" id="L206">			personalData = this.personalDataService.create();</span>
+
+<span class="nc" id="L208">			personalData.setCurricula(curricula);</span>
+
+<span class="nc" id="L210">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+
+<span class="nc" id="L212">			result = new ModelAndView(&quot;curricula/personalData/hacker/edit&quot;);</span>
+<span class="nc" id="L213">			result.addObject(&quot;personalData&quot;, personalData);</span>
+
+<span class="nc" id="L215">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L216">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L217">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L218">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L219">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L221">		}</span>
+
+<span class="nc" id="L223">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/personalData/hacker/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView personalDataEdit(@RequestParam int curriculaId) {
+		ModelAndView result;
+		PersonalData personalData;
+		Hacker principal;
+		Curricula curricula;
+		try {
+<span class="nc" id="L233">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L234">			curricula = this.curriculaService.findOne(curriculaId);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">			Assert.isTrue(curricula.getPersonalData() != null);</span>
+<span class="nc" id="L238">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+
+<span class="nc" id="L240">			personalData = curricula.getPersonalData();</span>
+
+<span class="nc" id="L242">			result = new ModelAndView(&quot;curricula/personalData/hacker/edit&quot;);</span>
+<span class="nc" id="L243">			result.addObject(&quot;personalData&quot;, personalData);</span>
+
+<span class="nc" id="L245">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L246">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L247">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L248">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L249">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L251">		}</span>
+
+<span class="nc" id="L253">		return result;</span>
+	}
+
+	// save ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/personalData/hacker/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView personalDataSave(@Valid final PersonalData personalData, final BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L262">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L264">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L266">			result = new ModelAndView(&quot;curricula/personalData/hacker/edit&quot;);</span>
+<span class="nc" id="L267">			result.addObject(&quot;personalData&quot;, personalData);</span>
+<span class="nc" id="L268">		}</span>
+
+		else
+			try {
+<span class="nc" id="L272">				this.personalDataService.save(personalData);</span>
+<span class="nc" id="L273">				result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + personalData.getCurricula().getId());</span>
+<span class="nc" id="L274">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L275">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L276">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L277">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L278">				oops.printStackTrace();</span>
+<span class="nc" id="L279">				result = new ModelAndView(&quot;curricula/personalData/hacker/edit&quot;);</span>
+<span class="nc" id="L280">				result.addObject(&quot;personalData&quot;, personalData);</span>
+<span class="nc" id="L281">			}</span>
+<span class="nc" id="L282">		return result;</span>
+	}
+
+
+	/** POSITION DATA **/
+	// create -------------------------------------------------------------
+	@RequestMapping(value = &quot;/positionData/hacker/create&quot;, method = RequestMethod.GET)
+	public ModelAndView positionDataCreate(@RequestParam int curriculaId) {
+		ModelAndView result;
+		PositionData positionData;
+		Hacker principal;
+		Curricula curricula;
+		try {
+<span class="nc" id="L295">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L296">			curricula = this.curriculaService.findOne(curriculaId);</span>
+<span class="nc" id="L297">			positionData = this.positionDataService.create();</span>
+
+<span class="nc" id="L299">			positionData.setCurricula(curricula);</span>
+
+<span class="nc" id="L301">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+
+<span class="nc" id="L304">			result = new ModelAndView(&quot;curricula/positionData/hacker/edit&quot;);</span>
+<span class="nc" id="L305">			result.addObject(&quot;positionData&quot;, positionData);</span>
+
+<span class="nc" id="L307">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L308">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L309">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L310">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L311">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L313">		}</span>
+
+<span class="nc" id="L315">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/positionData/hacker/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView positionDataEdit(@RequestParam int positionDataId) {
+		ModelAndView result;
+		PositionData positionData;
+		Hacker principal;
+		try {
+<span class="nc" id="L324">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L325">			positionData = this.positionDataService.findOne(positionDataId);</span>
+
+<span class="nc" id="L327">			Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">			Assert.isTrue(!positionData.getCurricula().getApplied());</span>
+
+<span class="nc" id="L330">			result = new ModelAndView(&quot;curricula/positionData/hacker/edit&quot;);</span>
+<span class="nc" id="L331">			result.addObject(&quot;positionData&quot;, positionData);</span>
+
+<span class="nc" id="L333">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L334">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L335">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L336">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L337">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L339">		}</span>
+
+<span class="nc" id="L341">		return result;</span>
+	}
+
+	// save pos data ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/positionData/hacker/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView positionDataSave(@Valid final PositionData positionData, final BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L349" title="All 4 branches missed.">		if (positionData.getStartDate() != null &amp;&amp; positionData.getEndDate() != null) {</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">			if (positionData.getStartDate().after(positionData.getEndDate())) {</span>
+<span class="nc" id="L351">				binding.rejectValue(&quot;startDate&quot;, &quot;curricula.startDate.error&quot;, &quot;Start date must be before end date&quot;);</span>
+			}
+		}
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L356">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L358">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L360">			result = new ModelAndView(&quot;curricula/positionData/hacker/edit&quot;);</span>
+<span class="nc" id="L361">			result.addObject(&quot;positionData&quot;, positionData);</span>
+<span class="nc" id="L362">		}</span>
+
+		else
+			try {
+<span class="nc" id="L366">				this.positionDataService.save(positionData);</span>
+<span class="nc" id="L367">				result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + positionData.getCurricula().getId());</span>
+<span class="nc" id="L368">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L369">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L370">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L371">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L372">				oops.printStackTrace();</span>
+<span class="nc" id="L373">				result = new ModelAndView(&quot;curricula/positionData/hacker/edit&quot;);</span>
+<span class="nc" id="L374">				result.addObject(&quot;positionData&quot;, positionData);</span>
+<span class="nc" id="L375">			}</span>
+<span class="nc" id="L376">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/positionData/hacker/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView positionDataDelete(@RequestParam int positionDataId) {
+		ModelAndView result;
+		PositionData positionData;
+		Hacker principal;
+		try {
+<span class="nc" id="L385">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L386">			positionData = this.positionDataService.findOne(positionDataId);</span>
+
+<span class="nc" id="L388">			Assert.isTrue(principal.getCurriculas().contains(positionData.getCurricula()));</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">			Assert.isTrue(!positionData.getCurricula().getApplied());</span>
+
+<span class="nc" id="L391">			result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + positionData.getCurricula().getId());</span>
+
+<span class="nc" id="L393">			this.positionDataService.delete(positionData);</span>
+
+<span class="nc" id="L395">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L396">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L397">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L398">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L399">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L401">		}</span>
+
+<span class="nc" id="L403">		return result;</span>
+	}
+
+	/** EDUCATION DATA **/
+	// create -------------------------------------------------------------
+	@RequestMapping(value = &quot;/educationData/hacker/create&quot;, method = RequestMethod.GET)
+	public ModelAndView educationDataCreate(@RequestParam int curriculaId) {
+		ModelAndView result;
+		EducationData educationData;
+		Hacker principal;
+		Curricula curricula;
+		try {
+<span class="nc" id="L415">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L416">			curricula = this.curriculaService.findOne(curriculaId);</span>
+<span class="nc" id="L417">			educationData = this.educationDataService.create();</span>
+
+<span class="nc" id="L419">			educationData.setCurricula(curricula);</span>
+
+<span class="nc" id="L421">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+
+<span class="nc" id="L424">			result = new ModelAndView(&quot;curricula/educationData/hacker/edit&quot;);</span>
+<span class="nc" id="L425">			result.addObject(&quot;educationData&quot;, educationData);</span>
+
+<span class="nc" id="L427">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L428">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L429">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L430">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L431">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L433">		}</span>
+
+<span class="nc" id="L435">		return result;</span>
+	}
+
+	// edit education data-------------------------------------------------------------------
+	@RequestMapping(value = &quot;/educationData/hacker/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView educationDataEdit(@RequestParam int educationDataId) {
+		ModelAndView result;
+		EducationData educationData;
+		Hacker principal;
+		try {
+<span class="nc" id="L445">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L446">			educationData = this.educationDataService.findOne(educationDataId);</span>
+
+<span class="nc" id="L448">			Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">			Assert.isTrue(!educationData.getCurricula().getApplied());</span>
+
+<span class="nc" id="L451">			result = new ModelAndView(&quot;curricula/educationData/hacker/edit&quot;);</span>
+<span class="nc" id="L452">			result.addObject(&quot;educationData&quot;, educationData);</span>
+
+<span class="nc" id="L454">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L455">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L456">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L457">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L458">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L460">		}</span>
+
+<span class="nc" id="L462">		return result;</span>
+	}
+
+	// save educ data ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/educationData/hacker/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView educationDataSave(@Valid final EducationData educationData, final BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L470" title="All 4 branches missed.">		if (educationData.getStartDate() != null &amp;&amp; educationData.getEndDate() != null) {</span>
+<span class="nc bnc" id="L471" title="All 2 branches missed.">			if (educationData.getStartDate().after(educationData.getEndDate())) {</span>
+<span class="nc" id="L472">				binding.rejectValue(&quot;startDate&quot;, &quot;curricula.startDate.error&quot;, &quot;Start date must be before end date&quot;);</span>
+			}
+		}
+
+<span class="nc bnc" id="L476" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L477">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L479">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L481">			result = new ModelAndView(&quot;curricula/educationData/hacker/edit&quot;);</span>
+<span class="nc" id="L482">			result.addObject(&quot;educationData&quot;, educationData);</span>
+<span class="nc" id="L483">		}</span>
+
+		else
+			try {
+<span class="nc" id="L487">				this.educationDataService.save(educationData);</span>
+<span class="nc" id="L488">				result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + educationData.getCurricula().getId());</span>
+<span class="nc" id="L489">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L490">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L491">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L492">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L493">				oops.printStackTrace();</span>
+<span class="nc" id="L494">				result = new ModelAndView(&quot;curricula/educationData/hacker/edit&quot;);</span>
+<span class="nc" id="L495">				result.addObject(&quot;educationData&quot;, educationData);</span>
+<span class="nc" id="L496">			}</span>
+<span class="nc" id="L497">		return result;</span>
+	}
+
+	// delete educatiuon data -----------------------------------------------------------
+	@RequestMapping(value = &quot;/educationData/hacker/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView educationDataDelete(@RequestParam int educationDataId) {
+		ModelAndView result;
+		EducationData educationData;
+		Hacker principal;
+		try {
+<span class="nc" id="L507">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L508">			educationData = this.educationDataService.findOne(educationDataId);</span>
+
+<span class="nc" id="L510">			Assert.isTrue(principal.getCurriculas().contains(educationData.getCurricula()));</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">			Assert.isTrue(!educationData.getCurricula().getApplied());</span>
+
+<span class="nc" id="L513">			result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + educationData.getCurricula().getId());</span>
+
+<span class="nc" id="L515">			this.educationDataService.delete(educationData);</span>
+
+<span class="nc" id="L517">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L518">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L519">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L520">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L521">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L523">		}</span>
+
+<span class="nc" id="L525">		return result;</span>
+	}
+
+	/** MISCELLANEOUS DATA **/
+	// create -------------------------------------------------------------
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/create&quot;, method = RequestMethod.GET)
+	public ModelAndView miscellaneousDataCreate(@RequestParam int curriculaId) {
+		ModelAndView result;
+		MiscellaneousData miscellaneousData;
+		Hacker principal;
+		Curricula curricula;
+		try {
+<span class="nc" id="L537">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L538">			curricula = this.curriculaService.findOne(curriculaId);</span>
+<span class="nc" id="L539">			miscellaneousData = this.miscellaneousDataService.create();</span>
+
+<span class="nc" id="L541">			miscellaneousData.setCurricula(curricula);</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">			Assert.isTrue(!curricula.getApplied());</span>
+
+<span class="nc" id="L544">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+
+<span class="nc" id="L546">			result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/edit&quot;);</span>
+<span class="nc" id="L547">			result.addObject(&quot;miscellaneousData&quot;, miscellaneousData);</span>
+
+<span class="nc" id="L549">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L550">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L551">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L552">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L553">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L555">		}</span>
+
+<span class="nc" id="L557">		return result;</span>
+	}
+
+	// edit miscellaneous data-------------------------------------------------------------------
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/edit&quot;, method = RequestMethod.GET)
+	public ModelAndView miscellaneousDataEdit(@RequestParam int miscellaneousDataId) {
+		ModelAndView result;
+		MiscellaneousData miscellaneousData;
+		Hacker principal;
+		try {
+<span class="nc" id="L567">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L568">			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);</span>
+
+<span class="nc" id="L570">			Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">			Assert.isTrue(!miscellaneousData.getCurricula().getApplied());</span>
+
+<span class="nc" id="L573">			result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/edit&quot;);</span>
+<span class="nc" id="L574">			result.addObject(&quot;miscellaneousData&quot;, miscellaneousData);</span>
+
+<span class="nc" id="L576">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L577">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L578">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L579">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L580">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L582">		}</span>
+
+<span class="nc" id="L584">		return result;</span>
+	}
+
+	// save miscellaneous data ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/edit&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView miscellaneousDataSave(@Valid final MiscellaneousData miscellaneousData, final BindingResult binding) {
+		ModelAndView result;
+
+<span class="nc bnc" id="L592" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L593">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">			for (final ObjectError e : errors)</span>
+<span class="nc" id="L595">				System.out.println(e.toString());</span>
+
+<span class="nc" id="L597">			result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/edit&quot;);</span>
+<span class="nc" id="L598">			result.addObject(&quot;miscellaneousData&quot;, miscellaneousData);</span>
+<span class="nc" id="L599">		}</span>
+
+		else
+			try {
+<span class="nc" id="L603">				this.miscellaneousDataService.save(miscellaneousData);</span>
+<span class="nc" id="L604">				result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + miscellaneousData.getCurricula().getId());</span>
+<span class="nc" id="L605">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L606">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L607">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L608">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L609">				oops.printStackTrace();</span>
+<span class="nc" id="L610">				result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/edit&quot;);</span>
+<span class="nc" id="L611">				result.addObject(&quot;miscellaneousData&quot;, miscellaneousData);</span>
+<span class="nc" id="L612">			}</span>
+<span class="nc" id="L613">		return result;</span>
+	}
+
+	// delete misc data -----------------------------------------------------------
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/delete&quot;, method = RequestMethod.GET)
+	public ModelAndView miscellaneousDataDelete(@RequestParam int miscellaneousDataId) {
+		ModelAndView result;
+		MiscellaneousData miscellaneousData;
+		Hacker principal;
+		try {
+<span class="nc" id="L623">			principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L624">			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);</span>
+
+<span class="nc" id="L626">			Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+<span class="nc bnc" id="L627" title="All 2 branches missed.">			Assert.isTrue(!miscellaneousData.getCurricula().getApplied());</span>
+
+<span class="nc" id="L629">			result = new ModelAndView(&quot;redirect:/curricula/hacker/display.do?curriculaId=&quot; + miscellaneousData.getCurricula().getId());</span>
+
+<span class="nc" id="L631">			this.miscellaneousDataService.delete(miscellaneousData);</span>
+
+<span class="nc" id="L633">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L634">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L635">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L636">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L637">			result = this.forbiddenOpperation();</span>
+
+<span class="nc" id="L639">		}</span>
+
+<span class="nc" id="L641">		return result;</span>
+	}
+
+	// Attachment  ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/addAttachment&quot;, method = RequestMethod.GET)
+	public ModelAndView addAttachment(@RequestParam final int miscellaneousDataId) {
+		ModelAndView result;
+		final Url url;
+		MiscellaneousData miscellaneousData;
+
+		try {
+<span class="nc" id="L652">			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);</span>
+<span class="nc" id="L653">			Assert.notNull(miscellaneousData);</span>
+<span class="nc" id="L654">			Assert.isTrue(this.hackerService.findByPrincipal().getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+<span class="nc" id="L655">			url = new Url();</span>
+<span class="nc" id="L656">			url.setTargetId(miscellaneousDataId);</span>
+<span class="nc" id="L657">			result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/addAttachment&quot;);</span>
+<span class="nc" id="L658">			result.addObject(&quot;url&quot;, url);</span>
+<span class="nc" id="L659">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L660">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L661">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L662">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L663">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L664">		}</span>
+
+<span class="nc" id="L666">		return result;</span>
+	}
+
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/deleteAttachment&quot;, method = RequestMethod.GET)
+	public ModelAndView deletePicture(@RequestParam final String link, @RequestParam final int miscellaneousDataId) {
+		ModelAndView result;
+		MiscellaneousData miscellaneousData;
+		try {
+<span class="nc" id="L674">			System.out.println(&quot;Controller&quot;);</span>
+<span class="nc" id="L675">			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);</span>
+<span class="nc" id="L676">			Assert.notNull(miscellaneousData);</span>
+<span class="nc" id="L677">			Assert.isTrue(this.hackerService.findByPrincipal().getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+<span class="nc bnc" id="L678" title="All 2 branches missed.">			for (final Url attachment : miscellaneousData.getAttachments()) {</span>
+<span class="nc bnc" id="L679" title="All 2 branches missed.">				if (attachment.getLink().equals(link)) {</span>
+<span class="nc" id="L680">					System.out.println(&quot;URL igual encontrada, borrando y guardando&quot;);</span>
+<span class="nc" id="L681">					miscellaneousData.getAttachments().remove(attachment);</span>
+<span class="nc" id="L682">					this.miscellaneousDataService.save(miscellaneousData);</span>
+<span class="nc" id="L683">					break;</span>
+				}
+<span class="nc" id="L685">			}</span>
+<span class="nc" id="L686">			result = new ModelAndView(&quot;redirect:/curricula/miscellaneousData/hacker/edit.do?miscellaneousDataId=&quot; + miscellaneousData.getId());</span>
+<span class="nc" id="L687">		} catch (final Throwable oops) {</span>
+<span class="nc" id="L688">			System.out.println(oops.getMessage());</span>
+<span class="nc" id="L689">			System.out.println(oops.getClass());</span>
+<span class="nc" id="L690">			System.out.println(oops.getCause());</span>
+<span class="nc" id="L691">			result = this.forbiddenOpperation();</span>
+<span class="nc" id="L692">		}</span>
+
+<span class="nc" id="L694">		return result;</span>
+	}
+
+	// save attachment ------------------------------------------------------------------------------------
+	@RequestMapping(value = &quot;/miscellaneousData/hacker/addAttachment&quot;, method = RequestMethod.POST, params = &quot;save&quot;)
+	public ModelAndView savePicture(@Valid final Url url, final BindingResult binding) {
+		ModelAndView result;
+<span class="nc bnc" id="L701" title="All 2 branches missed.">		if (binding.hasErrors()) {</span>
+<span class="nc" id="L702">			final List&lt;ObjectError&gt; errors = binding.getAllErrors();</span>
+<span class="nc bnc" id="L703" title="All 2 branches missed.">			for (final ObjectError e : errors) {</span>
+<span class="nc" id="L704">				System.out.println(e.toString());</span>
+<span class="nc" id="L705">			}</span>
+
+<span class="nc" id="L707">			result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/addAttachment&quot;);</span>
+<span class="nc" id="L708">			result.addObject(&quot;url&quot;, url);</span>
+<span class="nc" id="L709">		} else {</span>
+			try {
+<span class="nc" id="L711">				MiscellaneousData miscellaneousData = this.miscellaneousDataService.findOne(url.getTargetId());</span>
+<span class="nc" id="L712">				Assert.notNull(miscellaneousData);</span>
+<span class="nc" id="L713">				Assert.isTrue(this.hackerService.findByPrincipal().getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+<span class="nc" id="L714">				miscellaneousData.getAttachments().add(url);</span>
+<span class="nc" id="L715">				miscellaneousData = this.miscellaneousDataService.save(miscellaneousData);</span>
+<span class="nc" id="L716">				result = new ModelAndView(&quot;redirect:/curricula/miscellaneousData/hacker/edit.do?miscellaneousDataId=&quot; + miscellaneousData.getId());</span>
+<span class="nc" id="L717">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L718">				System.out.println(url);</span>
+<span class="nc" id="L719">				System.out.println(oops.getMessage());</span>
+<span class="nc" id="L720">				System.out.println(oops.getClass());</span>
+<span class="nc" id="L721">				System.out.println(oops.getCause());</span>
+<span class="nc" id="L722">				oops.printStackTrace();</span>
+<span class="nc" id="L723">				result = new ModelAndView(&quot;curricula/miscellaneousData/hacker/addAttachment&quot;);</span>
+<span class="nc" id="L724">				result.addObject(&quot;url&quot;, url);</span>
+<span class="nc" id="L725">			}</span>
+		}
+<span class="nc" id="L727">		return result;</span>
+	}
+
+	// Ancillary methods ------------------------------------------------------
+
+	private ModelAndView forbiddenOpperation() {
+<span class="nc" id="L733">		return new ModelAndView(&quot;redirect:/&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CurriculaService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">CurriculaService.java</span></div><h1>CurriculaService.java</h1><pre class="source lang-java linenums">package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.CurriculaRepository;
+import domain.Curricula;
+import domain.EducationData;
+import domain.Hacker;
+import domain.MiscellaneousData;
+import domain.PersonalData;
+import domain.PositionData;
+
+@Service
+@Transactional
+<span class="fc" id="L22">public class CurriculaService {</span>
+
+	// Manage Repository
+	@Autowired
+	private CurriculaRepository	curriculaRepository;
+
+	// Supporting services
+	@Autowired
+	private HackerService			hackerService;
+
+	@Autowired
+	private PersonalDataService			personalDataService;
+
+	@Autowired
+	private PositionDataService			positionDataService;
+
+	@Autowired
+	private EducationDataService		educationDataService;
+
+	@Autowired
+	private MiscellaneousDataService	miscellaneousDataService;
+
+
+	// CRUD methods
+	public Curricula create() {
+<span class="fc" id="L47">		final Curricula result = new Curricula();</span>
+
+<span class="fc" id="L49">		result.setEducationData(new ArrayList&lt;EducationData&gt;());</span>
+<span class="fc" id="L50">		result.setPositionData(new ArrayList&lt;PositionData&gt;());</span>
+<span class="fc" id="L51">		result.setMiscellaneousData(new ArrayList&lt;MiscellaneousData&gt;());</span>
+
+<span class="fc" id="L53">		return result;</span>
+	}
+
+	public Curricula findOne(final int curriculaID) {
+<span class="nc" id="L57">		final Curricula result = this.curriculaRepository.findOne(curriculaID);</span>
+<span class="nc" id="L58">		Assert.notNull(result);</span>
+
+<span class="nc" id="L60">		return result;</span>
+	}
+
+	public Curricula save(final Curricula curricula) {
+<span class="fc" id="L64">		Assert.notNull(curricula);</span>
+<span class="fc" id="L65">		final Hacker principal = this.hackerService.findByPrincipal();</span>
+
+		//Check the owner is the principal, if it has no owner, assign the principal.
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">		if (curricula.getId() != 0) {</span>
+<span class="nc" id="L69">			Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+		} else {
+<span class="fc" id="L71">			curricula.setApplied(false);</span>
+<span class="fc" id="L72">			curricula.setHacker(principal);</span>
+		}
+<span class="fc" id="L74">		final Curricula result = this.curriculaRepository.save(curricula);</span>
+
+<span class="fc" id="L76">		return result;</span>
+	}
+
+	public void delete(final Curricula curricula) {
+<span class="nc" id="L80">		Assert.notNull(curricula);</span>
+<span class="nc" id="L81">		final Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L82">		Assert.isTrue(principal.getCurriculas().contains(curricula));</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (curricula.getPersonalData() != null) {</span>
+<span class="nc" id="L85">			this.personalDataService.delete(curricula.getPersonalData());</span>
+		}
+<span class="nc" id="L87">		Iterator&lt;EducationData&gt; education = new ArrayList&lt;EducationData&gt;(curricula.getEducationData()).iterator();</span>
+<span class="nc" id="L88">		Iterator&lt;MiscellaneousData&gt; misc = new ArrayList&lt;MiscellaneousData&gt;(curricula.getMiscellaneousData()).iterator();</span>
+<span class="nc" id="L89">		Iterator&lt;PositionData&gt; position = new ArrayList&lt;PositionData&gt;(curricula.getPositionData()).iterator();</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		while (education.hasNext()) {</span>
+<span class="nc" id="L92">			EducationData next = education.next();</span>
+<span class="nc" id="L93">			this.educationDataService.delete(next);</span>
+<span class="nc" id="L94">			education.remove();</span>
+<span class="nc" id="L95">		}</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		while (misc.hasNext()) {</span>
+<span class="nc" id="L98">			MiscellaneousData next = misc.next();</span>
+<span class="nc" id="L99">			this.miscellaneousDataService.delete(next);</span>
+<span class="nc" id="L100">			misc.remove();</span>
+<span class="nc" id="L101">		}</span>
+
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		while (position.hasNext()) {</span>
+<span class="nc" id="L104">			PositionData next = position.next();</span>
+<span class="nc" id="L105">			this.positionDataService.delete(next);</span>
+<span class="nc" id="L106">			position.remove();</span>
+<span class="nc" id="L107">		}</span>
+
+<span class="nc" id="L109">		curricula.getHacker().getCurriculas().remove(curricula);</span>
+
+<span class="nc" id="L111">		this.curriculaRepository.delete(curricula);</span>
+<span class="nc" id="L112">	}</span>
+	/*** Other methods ***/
+	
+	public void flush() {
+<span class="nc" id="L116">		this.curriculaRepository.flush();</span>
+<span class="nc" id="L117">	}</span>
+
+	public Curricula copyCurricula(Curricula curricula) {
+<span class="nc" id="L120">		Curricula result = this.create();</span>
+<span class="nc" id="L121">		result.setHacker(this.hackerService.findByPrincipal());</span>
+<span class="nc" id="L122">		result.setTitle(curricula.getTitle());</span>
+<span class="nc" id="L123">		result.setApplied(true);</span>
+		
+<span class="nc" id="L125">		result = this.curriculaRepository.save(result);</span>
+<span class="nc" id="L126">		curricula.getHacker().getCurriculas().add(result);</span>
+		
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if(curricula.getPersonalData()!=null){</span>
+<span class="nc" id="L129">			PersonalData copy = new PersonalData();</span>
+<span class="nc" id="L130">			PersonalData pd = curricula.getPersonalData();</span>
+			
+<span class="nc" id="L132">			copy.setCurricula(result);</span>
+<span class="nc" id="L133">			copy.setFullName(pd.getFullName());</span>
+<span class="nc" id="L134">			copy.setGitHub(pd.getGitHub());</span>
+<span class="nc" id="L135">			copy.setLinkedIn(pd.getLinkedIn());</span>
+<span class="nc" id="L136">			copy.setPhoneNumber(pd.getPhoneNumber());</span>
+<span class="nc" id="L137">			copy.setStatement(pd.getStatement());</span>
+<span class="nc" id="L138">			copy = this.personalDataService.save(copy);</span>
+<span class="nc" id="L139">			result.setPersonalData(copy);</span>
+		}
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		for(EducationData ed:curricula.getEducationData()){</span>
+<span class="nc" id="L142">			EducationData copy = new EducationData();</span>
+<span class="nc" id="L143">			copy.setCurricula(result);</span>
+<span class="nc" id="L144">			copy.setDegree(ed.getDegree());</span>
+<span class="nc" id="L145">			copy.setEndDate(ed.getEndDate());</span>
+<span class="nc" id="L146">			copy.setInstitution(ed.getInstitution());</span>
+<span class="nc" id="L147">			copy.setMark(ed.getMark());</span>
+<span class="nc" id="L148">			copy.setStartDate(ed.getStartDate());</span>
+<span class="nc" id="L149">			copy = this.educationDataService.save(copy);</span>
+<span class="nc" id="L150">			result.getEducationData().add(copy);</span>
+<span class="nc" id="L151">		}</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		for(MiscellaneousData md:curricula.getMiscellaneousData()){</span>
+<span class="nc" id="L153">			MiscellaneousData copy = new MiscellaneousData();</span>
+<span class="nc" id="L154">			copy.setCurricula(result);</span>
+<span class="nc" id="L155">			copy.setText(md.getText());</span>
+<span class="nc" id="L156">			copy.setAttachments(md.getAttachments());</span>
+<span class="nc" id="L157">			copy = this.miscellaneousDataService.save(copy);</span>
+<span class="nc" id="L158">			result.getMiscellaneousData().add(copy);</span>
+<span class="nc" id="L159">		}</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		for (PositionData pd : curricula.getPositionData()) {</span>
+<span class="nc" id="L161">			PositionData copy = new PositionData();</span>
+<span class="nc" id="L162">			copy.setCurricula(result);</span>
+<span class="nc" id="L163">			copy.setDescription(pd.getDescription());</span>
+<span class="nc" id="L164">			copy.setTitle(pd.getTitle());</span>
+<span class="nc" id="L165">			copy.setEndDate(pd.getEndDate());</span>
+<span class="nc" id="L166">			copy.setStartDate(pd.getStartDate());</span>
+<span class="nc" id="L167">			copy = this.positionDataService.save(copy);</span>
+<span class="nc" id="L168">			result.getPositionData().add(copy);</span>
+<span class="nc" id="L169">		}</span>
+
+<span class="nc" id="L171">		result.setApplied(true);</span>
+
+<span class="nc" id="L173">		return this.save(result);</span>
+	}
+
+	public Collection&lt;Curricula&gt; findAllPrincipalNotApplied() {
+<span class="fc" id="L177">		Collection&lt;Curricula&gt; result = this.curriculaRepository.findAllNoApplied(this.hackerService.findByPrincipal().getId());</span>
+<span class="fc" id="L178">		Assert.notNull(result);</span>
+
+<span class="fc" id="L180">		return result;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

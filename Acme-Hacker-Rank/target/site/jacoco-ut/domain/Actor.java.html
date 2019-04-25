@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Actor.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Actor.java</span></div><h1>Actor.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
+import security.UserAccount;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L27">public abstract class Actor extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+
+	private String	name;
+	private String	username;
+	private String	surname;
+	private Integer	vat;
+	private String	cardNumber;
+	private String	photo;
+	private String	email;
+	private String	phoneNumber;
+	private String	address;
+	private Boolean	isSpammer;
+	private Boolean	isBanned;
+
+
+	@NotBlank
+	public String getName() {
+<span class="fc" id="L46">		return this.name;</span>
+	}
+
+	public void setName(final String name) {
+<span class="fc" id="L50">		this.name = name;</span>
+<span class="fc" id="L51">	}</span>
+
+	public String getUsername() {
+<span class="fc" id="L54">		return this.username;</span>
+	}
+
+	public void setUsername(String username) {
+<span class="fc" id="L58">		this.username = username;</span>
+<span class="fc" id="L59">	}</span>
+
+	@NotBlank
+	public String getSurname() {
+<span class="fc" id="L63">		return this.surname;</span>
+	}
+
+	public void setSurname(final String surname) {
+<span class="fc" id="L67">		this.surname = surname;</span>
+<span class="fc" id="L68">	}</span>
+
+	@URL
+	public String getPhoto() {
+<span class="fc" id="L72">		return this.photo;</span>
+	}
+
+	public void setPhoto(final String photo) {
+<span class="fc" id="L76">		this.photo = photo;</span>
+<span class="fc" id="L77">	}</span>
+
+	@Email
+	@NotBlank
+	public String getEmail() {
+<span class="fc" id="L82">		return this.email;</span>
+	}
+
+	public void setEmail(final String email) {
+<span class="fc" id="L86">		this.email = email;</span>
+<span class="fc" id="L87">	}</span>
+
+	public String getPhoneNumber() {
+<span class="fc" id="L90">		return this.phoneNumber;</span>
+	}
+
+	public void setPhoneNumber(final String phoneNumber) {
+<span class="fc" id="L94">		this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L95">	}</span>
+
+	public String getAddress() {
+<span class="fc" id="L98">		return this.address;</span>
+	}
+
+	public void setAddress(final String address) {
+<span class="fc" id="L102">		this.address = address;</span>
+<span class="fc" id="L103">	}</span>
+
+	public Boolean getIsSpammer() {
+<span class="fc" id="L106">		return this.isSpammer;</span>
+	}
+
+	public void setIsSpammer(Boolean isSpammer) {
+<span class="fc" id="L110">		this.isSpammer = isSpammer;</span>
+<span class="fc" id="L111">	}</span>
+
+	public Boolean getIsBanned() {
+<span class="fc" id="L114">		return this.isBanned;</span>
+	}
+
+	public void setIsBanned(Boolean isBanned) {
+<span class="fc" id="L118">		this.isBanned = isBanned;</span>
+<span class="fc" id="L119">	}</span>
+
+	@NotNull
+	@Min(0)
+	public Integer getVat() {
+<span class="fc" id="L124">		return vat;</span>
+	}
+
+	public void setVat(Integer vat) {
+<span class="fc" id="L128">		this.vat = vat;</span>
+<span class="fc" id="L129">	}</span>
+
+	@NotBlank
+	@CreditCardNumber
+	public String getCardNumber() {
+<span class="fc" id="L134">		return cardNumber;</span>
+	}
+
+	public void setCardNumber(String cardNumber) {
+<span class="fc" id="L138">		this.cardNumber = cardNumber;</span>
+<span class="fc" id="L139">	}</span>
+
+
+	// Relationships ----------------------------------------------------------
+	private UserAccount					userAccount;
+	private Collection&lt;SocialProfile&gt;	socialProfiles;
+	private Collection&lt;Message&gt;			messages;
+
+
+	@Valid
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = &quot;actor&quot;, fetch = FetchType.EAGER)
+	public Collection&lt;SocialProfile&gt; getSocialProfiles() {
+<span class="fc" id="L151">		return this.socialProfiles;</span>
+	}
+
+	public void setSocialProfiles(Collection&lt;SocialProfile&gt; socialProfiles) {
+<span class="fc" id="L155">		this.socialProfiles = socialProfiles;</span>
+<span class="fc" id="L156">	}</span>
+
+	@NotNull
+	@Valid
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
+	public UserAccount getUserAccount() {
+<span class="fc" id="L162">		return this.userAccount;</span>
+	}
+
+	public void setUserAccount(final UserAccount userAccount) {
+<span class="fc" id="L166">		this.userAccount = userAccount;</span>
+<span class="fc" id="L167">	}</span>
+	
+	@NotNull
+	@ManyToMany
+	public Collection&lt;Message&gt; getMessages() {
+<span class="fc" id="L172">		return messages;</span>
+	}
+
+	
+	public void setMessages(Collection&lt;Message&gt; messages) {
+<span class="fc" id="L177">		this.messages = messages;</span>
+<span class="fc" id="L178">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L182">		return &quot;Actor [name=&quot; + this.name + &quot;, surname=&quot; + this.surname + &quot;]&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

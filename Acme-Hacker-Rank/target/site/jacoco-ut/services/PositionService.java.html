@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PositionService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">PositionService.java</span></div><h1>PositionService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import repositories.PositionRepository;
+import domain.Actor;
+import domain.Application;
+import domain.Company;
+import domain.Finder;
+import domain.Message;
+import domain.Position;
+import domain.Problem;
+
+@Service
+@Transactional
+<span class="fc" id="L28">public class PositionService {</span>
+
+	// Manage Repository
+	@Autowired
+	private PositionRepository	positionRepository;
+
+	// Supporting services
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private CompanyService		companyService;
+
+	@Autowired
+	private FinderService		finderService;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private MessageService		messageService;
+
+	@Autowired
+	private ApplicationService	applicationService;
+
+	@Autowired
+	private ProblemService		problemService;
+
+	@Autowired
+	@Qualifier(&quot;validator&quot;)
+	private Validator			validator;
+
+
+	/*************************************
+	 * CRUD methods
+	 *************************************/
+	public Position create() {
+		Position result;
+		Actor principal;
+
+<span class="fc" id="L68">		result = new Position();</span>
+
+		// Principal must be a Company
+<span class="fc" id="L71">		principal = this.actorService.findByPrincipal();</span>
+<span class="fc" id="L72">		Assert.isInstanceOf(Company.class, principal);</span>
+<span class="fc" id="L73">		final Company company = (Company) principal;</span>
+
+		// Generate a ticker for the position
+<span class="fc" id="L76">		result.setTicker(this.generateTicker(company.getCommercialName()));</span>
+
+<span class="fc" id="L78">		result.setApplications(new ArrayList&lt;Application&gt;());</span>
+<span class="fc" id="L79">		result.setProblems(new ArrayList&lt;Problem&gt;());</span>
+<span class="fc" id="L80">		result.setFinalMode(false);</span>
+<span class="fc" id="L81">		result.setCancelled(false);</span>
+
+<span class="fc" id="L83">		return result;</span>
+	}
+
+	public Position findOne(final int positionId) {
+<span class="fc" id="L87">		final Position result = this.positionRepository.findOne(positionId);</span>
+<span class="fc" id="L88">		Assert.notNull(result);</span>
+
+<span class="fc" id="L90">		return result;</span>
+	}
+
+	public Collection&lt;Position&gt; findAll() {
+<span class="fc" id="L94">		final Collection&lt;Position&gt; result = this.positionRepository.findAll();</span>
+<span class="fc" id="L95">		Assert.notNull(result);</span>
+
+<span class="fc" id="L97">		return result;</span>
+	}
+
+	public Collection&lt;Position&gt; findAllFinal() {
+<span class="fc" id="L101">		final Collection&lt;Position&gt; result = this.positionRepository.findAllFinal();</span>
+<span class="fc" id="L102">		Assert.notNull(result);</span>
+
+<span class="fc" id="L104">		return result;</span>
+	}
+
+	public Position save(final Position position) {
+<span class="fc" id="L108">		Assert.notNull(position);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		Assert.isTrue(position.getCompany() == this.companyService.findByPrincipal());</span>
+
+		// If there is no problems, assign an empty collection to avoid nullPointerException
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (position.getProblems() == null)</span>
+<span class="nc" id="L113">			position.setProblems(new ArrayList&lt;Problem&gt;());</span>
+
+<span class="fc" id="L115">		final Position result = this.positionRepository.save(position);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (final Problem p : result.getCompany().getProblems()) {</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">			if (!p.getPositions().contains(result) &amp;&amp; position.getProblems().contains(p))</span>
+<span class="nc" id="L118">				p.getPositions().add(result);</span>
+<span class="pc bpc" id="L119" title="3 of 4 branches missed.">			if (p.getPositions().contains(result) &amp;&amp; !position.getProblems().contains(p))</span>
+<span class="nc" id="L120">				p.getPositions().remove(result);</span>
+<span class="fc" id="L121">		}</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (position.getFinalMode())</span>
+<span class="nc" id="L123">			this.automaticNotification(result);</span>
+
+<span class="fc" id="L125">		return result;</span>
+	}
+
+	public void delete(final Position position) {
+<span class="fc" id="L129">		Assert.notNull(position);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		Assert.isTrue(!position.getFinalMode());</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (final Problem p : position.getProblems())</span>
+<span class="fc" id="L134">			p.getPositions().remove(position);</span>
+
+<span class="fc" id="L136">		this.positionRepository.delete(position);</span>
+<span class="fc" id="L137">	}</span>
+
+	public void forceDelete(final Position position) {
+<span class="nc" id="L140">		Assert.notNull(position);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());</span>
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (final Problem p : this.problemService.findAll())</span>
+<span class="nc" id="L144">			p.getPositions().remove(position);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (final Finder finder : this.finderService.findAll())</span>
+<span class="nc" id="L146">			finder.getPositions().remove(position);</span>
+<span class="nc" id="L147">		final Iterator&lt;Application&gt; apps = new ArrayList&lt;Application&gt;(position.getApplications()).iterator();</span>
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		while (apps.hasNext()) {</span>
+<span class="nc" id="L150">			final Application next = apps.next();</span>
+<span class="nc" id="L151">			this.applicationService.forceDelete(next);</span>
+<span class="nc" id="L152">			position.getApplications().remove(next);</span>
+<span class="nc" id="L153">			apps.remove();</span>
+<span class="nc" id="L154">		}</span>
+
+<span class="nc" id="L156">		this.positionRepository.delete(position);</span>
+<span class="nc" id="L157">	}</span>
+
+	public void cancel(final Position position) {
+<span class="fc" id="L160">		Assert.notNull(position);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		Assert.isTrue(this.companyService.findByPrincipal() == position.getCompany());</span>
+<span class="fc" id="L162">		Assert.isTrue(position.getFinalMode());</span>
+
+<span class="fc" id="L164">		position.setCancelled(true);</span>
+
+<span class="fc" id="L166">		this.positionRepository.save(position);</span>
+<span class="fc" id="L167">	}</span>
+
+	/*************************************
+	 * Other methods
+	 *************************************/
+	public String generateTicker(final String companyName) {
+<span class="fc" id="L173">		String ticker = &quot;&quot;;</span>
+<span class="fc" id="L174">		final String tickerText = companyName.substring(0, 4);</span>
+<span class="fc" id="L175">		final String tickerAlphanumeric = RandomStringUtils.randomNumeric(4);</span>
+<span class="fc" id="L176">		ticker = ticker.concat(tickerText).concat(&quot;-&quot;).concat(tickerAlphanumeric);</span>
+<span class="fc" id="L177">		return ticker;</span>
+	}
+
+	public Position reconstruct(final Position position, final Errors errors) {
+<span class="fc" id="L181">		final Position result = this.create();</span>
+
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (position.getId() != 0) {</span>
+<span class="nc" id="L184">			final Position temp = this.findOne(position.getId());</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			Assert.isTrue(this.companyService.findByPrincipal() == temp.getCompany());</span>
+
+			// Not updated attributes
+<span class="nc" id="L188">			result.setId(temp.getId());</span>
+<span class="nc" id="L189">			result.setVersion(temp.getVersion());</span>
+<span class="nc" id="L190">			result.setTicker(temp.getTicker());</span>
+
+			// Relantionships
+<span class="nc" id="L193">			result.setProblems(temp.getProblems());</span>
+<span class="nc" id="L194">		} else</span>
+<span class="fc" id="L195">			result.setTicker(this.generateTicker(this.companyService.findByPrincipal().getCommercialName()));</span>
+
+		// Updated attributes
+<span class="fc" id="L198">		result.setId(position.getId());</span>
+<span class="fc" id="L199">		result.setDeadline(position.getDeadline());</span>
+<span class="fc" id="L200">		result.setDescription(position.getDescription());</span>
+<span class="fc" id="L201">		result.setFinalMode(position.getFinalMode());</span>
+<span class="fc" id="L202">		result.setProfile(position.getProfile());</span>
+<span class="fc" id="L203">		result.setSalary(position.getSalary());</span>
+<span class="fc" id="L204">		result.setSkills(position.getSkills());</span>
+<span class="fc" id="L205">		result.setTechnologies(position.getTechnologies());</span>
+<span class="fc" id="L206">		result.setTitle(position.getTitle());</span>
+
+<span class="fc" id="L208">		result.setCompany(this.companyService.findByPrincipal());</span>
+<span class="fc" id="L209">		result.setProblems(position.getProblems());</span>
+
+<span class="fc" id="L211">		this.validator.validate(result, errors);</span>
+
+<span class="fc" id="L213">		return result;</span>
+	}
+
+	private void automaticNotification(final Position position) {
+<span class="nc" id="L217">		final Collection&lt;Actor&gt; recipients = new ArrayList&lt;Actor&gt;();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (Finder finder : this.finderService.findAll()) {</span>
+<span class="nc" id="L219">			finder = this.finderService.updateResults(finder);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (finder.getPositions().contains(position))</span>
+<span class="nc" id="L221">				recipients.add(this.hackerService.findByFinder(finder));</span>
+<span class="nc" id="L222">		}</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (!recipients.isEmpty()) {</span>
+<span class="nc" id="L224">			final Message notification = this.messageService.create();</span>
+
+<span class="nc" id="L226">			notification.setBody(&quot;Your finder has a new match&quot;);</span>
+<span class="nc" id="L227">			notification.setIsNotification(true);</span>
+<span class="nc" id="L228">			notification.setPriority(&quot;MEDIUM&quot;);</span>
+<span class="nc" id="L229">			notification.setRecipients(recipients);</span>
+<span class="nc" id="L230">			notification.setSubject(&quot;The company &quot; + position.getCompany().getCommercialName() + &quot; has made a new offer that match your finder: &quot; + position.getTitle());</span>
+
+<span class="nc" id="L232">			this.messageService.save(notification);</span>
+		}
+<span class="nc" id="L234">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

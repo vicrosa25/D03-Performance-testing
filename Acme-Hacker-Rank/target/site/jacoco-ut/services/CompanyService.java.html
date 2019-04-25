@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CompanyService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">CompanyService.java</span></div><h1>CompanyService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+
+import repositories.CompanyRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
+import domain.Company;
+import domain.Message;
+import domain.Position;
+import domain.Problem;
+import domain.SocialProfile;
+import forms.CompanyForm;
+
+@Service
+@Transactional
+<span class="fc" id="L29">public class CompanyService {</span>
+
+	// Manage Repository
+	@Autowired
+	private CompanyRepository		companyRepository;
+
+	// Supporting services
+	@Autowired
+	private MessageService		messageService;
+	@Autowired
+	private PositionService			positionService;
+	@Autowired
+	private ProblemService			problemService;
+	@Autowired
+	private SocialProfileService	socialProfileService;
+
+	@Autowired
+	@Qualifier(&quot;validator&quot;)
+	private Validator				validator;
+
+
+	// CRUD methods
+	public Company create() {
+<span class="fc" id="L52">		final Company result = new Company();</span>
+
+<span class="fc" id="L54">		final UserAccount userAccount = new UserAccount();</span>
+<span class="fc" id="L55">		final Collection&lt;Authority&gt; authorities = new ArrayList&lt;Authority&gt;();</span>
+<span class="fc" id="L56">		final Authority authority = new Authority();</span>
+<span class="fc" id="L57">		authority.setAuthority(Authority.COMPANY);</span>
+<span class="fc" id="L58">		authorities.add(authority);</span>
+<span class="fc" id="L59">		userAccount.setAuthorities(authorities);</span>
+		
+		// Set Messages
+<span class="fc" id="L62">		Collection&lt;Message&gt; messages = new ArrayList&lt;Message&gt;();</span>
+
+<span class="fc" id="L64">		result.setUserAccount(userAccount);</span>
+<span class="fc" id="L65">		result.setMessages(messages);</span>
+<span class="fc" id="L66">		result.setPositions(new ArrayList&lt;Position&gt;());</span>
+<span class="fc" id="L67">		result.setProblems(new ArrayList&lt;Problem&gt;());</span>
+
+<span class="fc" id="L69">		return result;</span>
+	}
+
+	public Company findOne(final int companyId) {
+<span class="fc" id="L73">		final Company result = this.companyRepository.findOne(companyId);</span>
+<span class="fc" id="L74">		Assert.notNull(result);</span>
+
+<span class="fc" id="L76">		return result;</span>
+	}
+
+	public Collection&lt;Company&gt; findAll() {
+<span class="fc" id="L80">		final Collection&lt;Company&gt; result = this.companyRepository.findAll();</span>
+<span class="fc" id="L81">		Assert.notNull(result);</span>
+<span class="fc" id="L82">		Assert.notEmpty(result);</span>
+
+<span class="fc" id="L84">		return result;</span>
+	}
+
+	public Company save(final Company company) {
+<span class="fc" id="L88">		Assert.notNull(company);</span>
+
+<span class="fc" id="L90">		final Company result = this.companyRepository.save(company);</span>
+
+<span class="fc" id="L92">		return result;</span>
+	}
+
+	public void delete(final Company company) {
+<span class="nc" id="L96">		Assert.notNull(company);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		Assert.isTrue(this.findByPrincipal() == company);</span>
+
+<span class="nc" id="L99">		Iterator&lt;Message&gt; messages = new ArrayList&lt;Message&gt;(company.getMessages()).iterator();</span>
+<span class="nc" id="L100">		Iterator&lt;Position&gt; positions = new ArrayList&lt;Position&gt;(company.getPositions()).iterator();</span>
+<span class="nc" id="L101">		Iterator&lt;Problem&gt; problems = new ArrayList&lt;Problem&gt;(company.getProblems()).iterator();</span>
+<span class="nc" id="L102">		Iterator&lt;SocialProfile&gt; socialIs 	= new ArrayList&lt;SocialProfile&gt;</span>
+<span class="nc" id="L103">			(company.getSocialProfiles()).iterator();</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		while (messages.hasNext()) {</span>
+<span class="nc" id="L106">			Message next = messages.next();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			if (next.getSender() == company)</span>
+<span class="nc" id="L108">				next.setSender(null);</span>
+<span class="nc" id="L109">			next.getRecipients().remove(company);</span>
+<span class="nc" id="L110">			this.messageService.save(next);</span>
+<span class="nc" id="L111">			company.getMessages().remove(next);</span>
+<span class="nc" id="L112">			messages.remove();</span>
+<span class="nc" id="L113">		}</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		while (positions.hasNext()) {</span>
+<span class="nc" id="L115">			Position next = positions.next();</span>
+<span class="nc" id="L116">			this.positionService.forceDelete(next);</span>
+<span class="nc" id="L117">			company.getPositions().remove(next);</span>
+<span class="nc" id="L118">			positions.remove();</span>
+<span class="nc" id="L119">		}</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		while (problems.hasNext()) {</span>
+<span class="nc" id="L121">			Problem p = problems.next();</span>
+<span class="nc" id="L122">			this.problemService.delete(p);</span>
+<span class="nc" id="L123">			company.getProblems().remove(p);</span>
+<span class="nc" id="L124">			problems.remove();</span>
+<span class="nc" id="L125">		}</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		while (socialIs.hasNext()) {</span>
+<span class="nc" id="L127">			SocialProfile si = socialIs.next();</span>
+<span class="nc" id="L128">			this.socialProfileService.delete(si);</span>
+<span class="nc" id="L129">			company.getSocialProfiles().remove(si);</span>
+<span class="nc" id="L130">			socialIs.remove();</span>
+<span class="nc" id="L131">		}</span>
+
+<span class="nc" id="L133">		this.companyRepository.delete(company);</span>
+<span class="nc" id="L134">	}</span>
+
+	/*** Reconstruct object, check validity and update binding ***/
+	public Company reconstruct(final CompanyForm form, final BindingResult binding) {
+<span class="nc" id="L138">		final Company company = this.create();</span>
+
+<span class="nc" id="L140">		company.getUserAccount().setPassword(form.getUserAccount().getPassword());</span>
+<span class="nc" id="L141">		company.getUserAccount().setUsername(form.getUserAccount().getUsername());</span>
+
+<span class="nc" id="L143">		company.setAddress(form.getAddress());</span>
+<span class="nc" id="L144">		company.setEmail(form.getEmail());</span>
+<span class="nc" id="L145">		company.setName(form.getName());</span>
+<span class="nc" id="L146">		company.setPhoneNumber(form.getPhoneNumber());</span>
+<span class="nc" id="L147">		company.setPhoto(form.getPhoto());</span>
+<span class="nc" id="L148">		company.setSurname(form.getSurname());</span>
+<span class="nc" id="L149">		company.setVat(form.getVat());</span>
+<span class="nc" id="L150">		company.setCardNumber(form.getCardNumber());</span>
+<span class="nc" id="L151">		company.setCommercialName(form.getCommercialName());</span>
+
+		// Default attributes from Actor
+<span class="nc" id="L154">		company.setIsSpammer(false);</span>
+<span class="nc" id="L155">		company.setIsBanned(false);</span>
+
+<span class="nc" id="L157">		this.validator.validate(company, binding);</span>
+
+<span class="nc" id="L159">		return company;</span>
+	}
+
+	public Company reconstruct(final Company company, final BindingResult binding) {
+<span class="fc" id="L163">		final Company result = this.create();</span>
+<span class="fc" id="L164">		final Company temp = this.findOne(company.getId());</span>
+
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		Assert.isTrue(this.findByPrincipal().getId() == company.getId());</span>
+
+		// Updated attributes
+<span class="fc" id="L169">		result.setAddress(company.getAddress());</span>
+<span class="fc" id="L170">		result.setEmail(company.getEmail());</span>
+<span class="fc" id="L171">		result.setName(company.getName());</span>
+<span class="fc" id="L172">		result.setPhoneNumber(company.getPhoneNumber());</span>
+<span class="fc" id="L173">		result.setPhoto(company.getPhoto());</span>
+<span class="fc" id="L174">		result.setSurname(company.getSurname());</span>
+<span class="fc" id="L175">		result.setVat(company.getVat());</span>
+<span class="fc" id="L176">		result.setCardNumber(company.getCardNumber());</span>
+<span class="fc" id="L177">		result.setCommercialName(company.getCommercialName());</span>
+
+		// Not updated attributes
+<span class="fc" id="L180">		result.setId(temp.getId());</span>
+<span class="fc" id="L181">		result.setVersion(temp.getVersion());</span>
+<span class="fc" id="L182">		result.setIsSpammer(temp.getIsSpammer());</span>
+<span class="fc" id="L183">		result.setIsBanned(temp.getIsBanned());</span>
+		
+
+		// Relantionships
+<span class="fc" id="L187">		result.setPositions(temp.getPositions());</span>
+<span class="fc" id="L188">		result.setProblems(temp.getProblems());</span>
+<span class="fc" id="L189">		result.setSocialProfiles(temp.getSocialProfiles());</span>
+<span class="fc" id="L190">		result.setUserAccount(temp.getUserAccount());</span>
+		
+<span class="fc" id="L192">		this.validator.validate(result, binding);</span>
+
+<span class="fc" id="L194">		return result;</span>
+	}
+
+	/************************************************************************************************/
+
+	// Other business methods
+	public Company findByPrincipal() {
+		Company result;
+		UserAccount userAccount;
+
+<span class="fc" id="L204">		userAccount = LoginService.getPrincipal();</span>
+<span class="fc" id="L205">		Assert.notNull(userAccount);</span>
+
+<span class="fc" id="L207">		result = this.findByUserAccount(userAccount);</span>
+<span class="fc" id="L208">		Assert.notNull(result);</span>
+
+<span class="fc" id="L210">		return result;</span>
+	}
+
+	public Company findByUserAccount(final UserAccount userAccount) {
+<span class="fc" id="L214">		Assert.notNull(userAccount);</span>
+
+		Company result;
+
+<span class="fc" id="L218">		result = this.companyRepository.findByUserAccountId(userAccount.getId());</span>
+
+<span class="fc" id="L220">		return result;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

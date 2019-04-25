@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SocialProfileService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">SocialProfileService.java</span></div><h1>SocialProfileService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import domain.Actor;
+import domain.SocialProfile;
+import repositories.SocialProfileRepository;
+
+@Service
+@Transactional
+<span class="fc" id="L17">public class SocialProfileService {</span>
+
+	// Manage Repository
+	@Autowired
+	private SocialProfileRepository		socialProfileRepository;
+
+	// Supporting services
+	@Autowired
+	private ActorService				actorService;
+
+
+	// CRUD methods
+	public SocialProfile create() {
+<span class="fc" id="L30">		final SocialProfile result = new SocialProfile();</span>
+
+<span class="fc" id="L32">		return result;</span>
+	}
+
+	public SocialProfile findOne(int socialProfileID) {
+<span class="fc" id="L36">		final SocialProfile result = this.socialProfileRepository.findOne(socialProfileID);</span>
+<span class="fc" id="L37">		Assert.notNull(result);</span>
+
+<span class="fc" id="L39">		return result;</span>
+	}
+
+	public Collection&lt;SocialProfile&gt; findAll() {
+<span class="fc" id="L43">		final Collection&lt;SocialProfile&gt; result = this.socialProfileRepository.findAll();</span>
+<span class="fc" id="L44">		Assert.notNull(result);</span>
+
+<span class="fc" id="L46">		return result;</span>
+	}
+
+	public SocialProfile save(SocialProfile socialProfile) {
+<span class="fc" id="L50">		Assert.notNull(socialProfile);</span>
+		SocialProfile saved;
+		
+<span class="fc" id="L53">		Actor principal = this.actorService.findByPrincipal();</span>
+
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		if (socialProfile.getId() == 0) {</span>
+<span class="fc" id="L56">			socialProfile.setActor(principal);</span>
+<span class="fc" id="L57">			saved = this.socialProfileRepository.save(socialProfile);</span>
+		} else {
+<span class="fc" id="L59">			Assert.isTrue(this.socialProfileRepository.findByActor(principal.getId()).contains(socialProfile));</span>
+<span class="fc" id="L60">			saved = this.update(socialProfile);</span>
+		}
+<span class="fc" id="L62">		return saved;</span>
+	}
+	
+	public SocialProfile update(SocialProfile socialProfile) {
+<span class="fc" id="L66">		Assert.notNull(socialProfile);</span>
+
+<span class="fc" id="L68">		return this.socialProfileRepository.save(socialProfile);</span>
+	}
+
+	
+	
+	public void delete(SocialProfile socialProfile) {
+		
+<span class="fc" id="L75">		Actor principal = this.actorService.findByPrincipal();</span>
+		
+<span class="fc" id="L77">		Assert.notNull(principal);</span>
+<span class="fc" id="L78">		Assert.isTrue(this.socialProfileRepository.findByActor(principal.getId()).contains(socialProfile));</span>
+		
+<span class="fc" id="L80">		principal.getSocialProfiles().remove(socialProfile);</span>
+		
+<span class="fc" id="L82">		this.socialProfileRepository.delete(socialProfile);</span>
+<span class="fc" id="L83">	}</span>
+
+	// Other methods
+
+	public Collection&lt;SocialProfile&gt; findAllByActor(int actorID) {
+<span class="nc" id="L88">		return this.socialProfileRepository.findByActor(actorID);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

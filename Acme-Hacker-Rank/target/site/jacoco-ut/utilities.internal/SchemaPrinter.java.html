@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SchemaPrinter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">utilities.internal</a> &gt; <span class="el_source">SchemaPrinter.java</span></div><h1>SchemaPrinter.java</h1><pre class="source lang-java linenums">/*
+ * SchemaPrinter.java
+ * 
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
+ * http://www.tdg-seville.info/License.html
+ */
+
+package utilities.internal;
+
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+<span class="nc" id="L20">public class SchemaPrinter {</span>
+
+	public static void print(final Collection&lt;?&gt; objects) {
+<span class="nc bnc" id="L23" title="All 2 branches missed.">		for (final Object obj : objects)</span>
+<span class="nc" id="L24">			SchemaPrinter.print(obj);</span>
+<span class="nc" id="L25">	}</span>
+
+	public static void print(final Object obj) {
+		String text;
+		StringBuffer buffer;
+
+<span class="nc" id="L31">		buffer = new StringBuffer();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">		if (SchemaPrinter.isValue(obj))</span>
+<span class="nc" id="L33">			SchemaPrinter.printValue(buffer, obj, true);</span>
+		else
+<span class="nc" id="L35">			SchemaPrinter.printRecord(buffer, obj, false);</span>
+
+<span class="nc" id="L37">		text = buffer.toString();</span>
+<span class="nc" id="L38">		System.out.printf(&quot;%s%n&quot;, text);</span>
+<span class="nc" id="L39">	}</span>
+
+	protected static void printValue(final StringBuffer buffer, final Object value, final boolean summary) {
+<span class="nc bnc" id="L42" title="All 4 branches missed.">		if (SchemaPrinter.isPrimitive(value) || SchemaPrinter.isEnum(value))</span>
+<span class="nc" id="L43">			SchemaPrinter.printPrimitive(buffer, value, summary);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">		else if (SchemaPrinter.isArray(value))</span>
+<span class="nc" id="L45">			SchemaPrinter.printArray(buffer, (Object[]) value, summary);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">		else if (SchemaPrinter.isCollection(value))</span>
+<span class="nc" id="L47">			SchemaPrinter.printCollection(buffer, (Collection&lt;?&gt;) value, summary);</span>
+		else
+<span class="nc" id="L49">			SchemaPrinter.printRecord(buffer, value, true);</span>
+<span class="nc" id="L50">	}</span>
+
+	protected static void printRecord(final StringBuffer buffer, final Object obj, final boolean summary) {
+		List&lt;Class&lt;?&gt;&gt; superClazzes;
+		Class&lt;?&gt; clazz;
+
+<span class="nc" id="L56">		buffer.append(obj.toString());</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">		if (!summary) {</span>
+<span class="nc" id="L58">			clazz = obj.getClass();</span>
+<span class="nc" id="L59">			superClazzes = new ArrayList&lt;Class&lt;?&gt;&gt;();</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">			while (clazz != null) {</span>
+<span class="nc" id="L61">				superClazzes.add(clazz);</span>
+<span class="nc" id="L62">				clazz = clazz.getSuperclass();</span>
+			}
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">			for (int i = superClazzes.size() - 1; i &gt;= 0; i--) {</span>
+<span class="nc" id="L66">				clazz = superClazzes.get(i);</span>
+<span class="nc" id="L67">				SchemaPrinter.printFieldsInClazz(buffer, clazz, obj);</span>
+			}
+		}
+<span class="nc" id="L70">	}</span>
+	protected static void printFieldsInClazz(final StringBuffer buffer, final Class&lt;?&gt; clazz, final Object obj) {
+		Field fields[];
+		String name;
+		Class&lt;?&gt; type;
+		Object value;
+
+<span class="nc" id="L77">		fields = clazz.getDeclaredFields();</span>
+<span class="nc" id="L78">		AccessibleObject.setAccessible(fields, true);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		for (final Field field : fields) {</span>
+<span class="nc" id="L80">			name = field.getName();</span>
+<span class="nc" id="L81">			type = field.getType();</span>
+			try {
+<span class="nc" id="L83">				value = field.get(obj);</span>
+<span class="nc" id="L84">			} catch (final Throwable oops) {</span>
+<span class="nc" id="L85">				value = String.format(&quot;{%s}&quot;, oops.getMessage());</span>
+<span class="nc" id="L86">			}</span>
+
+<span class="nc" id="L88">			buffer.append(&quot;\n\t&quot;);</span>
+<span class="nc" id="L89">			buffer.append(clazz.getName());</span>
+<span class="nc" id="L90">			buffer.append(&quot;::&quot;);</span>
+<span class="nc" id="L91">			buffer.append(name);</span>
+<span class="nc" id="L92">			buffer.append(&quot;: &quot;);</span>
+<span class="nc" id="L93">			SchemaPrinter.printType(buffer, type);</span>
+<span class="nc" id="L94">			buffer.append(&quot; = &quot;);</span>
+<span class="nc" id="L95">			SchemaPrinter.printValue(buffer, value, true);</span>
+		}
+<span class="nc" id="L97">	}</span>
+
+	protected static void printPrimitive(final StringBuffer buffer, final Object value, final boolean summary) {
+		String left, right;
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (value == null)</span>
+<span class="nc" id="L103">			left = right = &quot;&quot;;</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		else if (value instanceof String)</span>
+<span class="nc" id="L105">			left = right = &quot;\&quot;&quot;;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		else if (value instanceof Number)</span>
+<span class="nc" id="L107">			left = right = &quot;&quot;;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		else if (value instanceof Character)</span>
+<span class="nc" id="L109">			left = right = &quot;\'&quot;;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		else if (value instanceof Boolean)</span>
+<span class="nc" id="L111">			left = right = &quot;&quot;;</span>
+		else {
+<span class="nc" id="L113">			left = &quot;&lt;&lt;&quot;;</span>
+<span class="nc" id="L114">			right = &quot;&gt;&gt;&quot;;</span>
+		}
+
+<span class="nc" id="L117">		buffer.append(left);</span>
+<span class="nc" id="L118">		buffer.append(value);</span>
+<span class="nc" id="L119">		buffer.append(right);</span>
+<span class="nc" id="L120">	}</span>
+
+	protected static void printArray(final StringBuffer buffer, final Object[] value, final boolean summary) {
+		String separator;
+
+<span class="nc" id="L125">		separator = &quot;&quot;;</span>
+<span class="nc" id="L126">		buffer.append(&quot;[&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (final Object item : value) {</span>
+<span class="nc" id="L128">			buffer.append(separator);</span>
+<span class="nc" id="L129">			SchemaPrinter.printValue(buffer, item, summary);</span>
+<span class="nc" id="L130">			separator = &quot;, &quot;;</span>
+		}
+<span class="nc" id="L132">		buffer.append(&quot;]&quot;);</span>
+<span class="nc" id="L133">	}</span>
+
+	private static void printCollection(final StringBuffer buffer, final Collection&lt;?&gt; value, final boolean summary) {
+		String separator;
+
+<span class="nc" id="L138">		separator = &quot;&quot;;</span>
+<span class="nc" id="L139">		buffer.append(&quot;[&quot;);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (final Object item : value) {</span>
+<span class="nc" id="L141">			buffer.append(separator);</span>
+<span class="nc" id="L142">			SchemaPrinter.printValue(buffer, item, summary);</span>
+<span class="nc" id="L143">			separator = &quot;, &quot;;</span>
+<span class="nc" id="L144">		}</span>
+<span class="nc" id="L145">		buffer.append(&quot;]&quot;);</span>
+<span class="nc" id="L146">	}</span>
+
+	protected static void printType(final StringBuffer buffer, final Class&lt;?&gt; clazz) {
+		String type;
+
+<span class="nc" id="L151">		type = clazz.getName();</span>
+<span class="nc" id="L152">		buffer.append(type);</span>
+<span class="nc" id="L153">	}</span>
+
+	protected static void printType(final StringBuffer buffer, final Object value) {
+		String type;
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (value == null)</span>
+<span class="nc" id="L159">			type = Object.class.getName();</span>
+		else
+<span class="nc" id="L161">			type = value.getClass().getName();</span>
+<span class="nc" id="L162">		buffer.append(type);</span>
+<span class="nc" id="L163">	}</span>
+
+	protected static boolean isPrimitive(final Object obj) {
+		boolean result;
+
+<span class="nc bnc" id="L168" title="All 16 branches missed.">		result = (obj == null || obj instanceof String || obj instanceof Number || obj instanceof Character || obj instanceof Boolean || obj instanceof java.util.Date || obj instanceof java.sql.Date || obj instanceof Timestamp);</span>
+
+<span class="nc" id="L170">		return result;</span>
+	}
+
+	protected static boolean isArray(final Object obj) {
+		boolean result;
+
+<span class="nc bnc" id="L176" title="All 4 branches missed.">		result = (obj != null &amp;&amp; obj.getClass().getName().charAt(0) == '[');</span>
+
+<span class="nc" id="L178">		return result;</span>
+	}
+
+	protected static boolean isEnum(final Object obj) {
+		boolean result;
+
+<span class="nc bnc" id="L184" title="All 4 branches missed.">		result = (obj == null || obj instanceof Enum);</span>
+
+<span class="nc" id="L186">		return result;</span>
+	}
+
+	protected static boolean isCollection(final Object obj) {
+		boolean result;
+
+<span class="nc bnc" id="L192" title="All 4 branches missed.">		result = (obj != null &amp;&amp; obj instanceof Collection);</span>
+
+<span class="nc" id="L194">		return result;</span>
+	}
+
+	protected static boolean isValue(final Object obj) {
+		boolean result;
+
+<span class="nc bnc" id="L200" title="All 6 branches missed.">		result = (SchemaPrinter.isPrimitive(obj) || SchemaPrinter.isArray(obj) || SchemaPrinter.isEnum(obj));</span>
+
+<span class="nc" id="L202">		return result;</span>
+	}
+
+	protected static boolean isRecord(final Object obj) {
+		boolean result;
+
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		result = !SchemaPrinter.isValue(obj);</span>
+
+<span class="nc" id="L210">		return result;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

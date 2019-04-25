@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Curricula.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Curricula.java</span></div><h1>Curricula.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L18">public class Curricula extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	//	private Integer							dataNumber;
+	private String							title;
+	// Relationships ----------------------------------------------------------
+	private PersonalData					personalData;
+	private Collection&lt;PositionData&gt;		positionData;
+	private Collection&lt;EducationData&gt;		educationData;
+	private Collection&lt;MiscellaneousData&gt;	miscellaneousData;
+	private Hacker							hacker;
+	private Boolean							applied;
+
+
+	//	public Integer getRecordNumber(){
+	//		return this.recordNumber;
+	//	}
+	//	public void setRecordNumber(Integer recordNumber){
+	//		this.recordNumber = recordNumber;
+	//	}
+
+	@ManyToOne(optional = false)
+	public Hacker getHacker() {
+<span class="fc" id="L41">		return hacker;</span>
+	}
+
+	public void setHacker(Hacker hacker) {
+<span class="fc" id="L45">		this.hacker = hacker;</span>
+<span class="fc" id="L46">	}</span>
+
+	@Valid
+	@OneToOne(optional = true)
+	public PersonalData getPersonalData() {
+<span class="fc" id="L51">		return this.personalData;</span>
+	}
+
+	public void setPersonalData(final PersonalData personalData) {
+<span class="fc" id="L55">		this.personalData = personalData;</span>
+<span class="fc" id="L56">	}</span>
+
+	@Valid
+	@OneToMany(mappedBy = &quot;curricula&quot;)
+	public Collection&lt;PositionData&gt; getPositionData() {
+<span class="fc" id="L61">		return this.positionData;</span>
+	}
+
+	public void setPositionData(final Collection&lt;PositionData&gt; positionData) {
+<span class="fc" id="L65">		this.positionData = positionData;</span>
+<span class="fc" id="L66">	}</span>
+
+	@Valid
+	@OneToMany(mappedBy = &quot;curricula&quot;)
+	public Collection&lt;EducationData&gt; getEducationData() {
+<span class="fc" id="L71">		return this.educationData;</span>
+	}
+
+	public void setEducationData(final Collection&lt;EducationData&gt; educationData) {
+<span class="fc" id="L75">		this.educationData = educationData;</span>
+<span class="fc" id="L76">	}</span>
+
+	@Valid
+	@OneToMany(mappedBy = &quot;curricula&quot;)
+	public Collection&lt;MiscellaneousData&gt; getMiscellaneousData() {
+<span class="fc" id="L81">		return this.miscellaneousData;</span>
+	}
+
+	public void setMiscellaneousData(final Collection&lt;MiscellaneousData&gt; miscellaneousData) {
+<span class="fc" id="L85">		this.miscellaneousData = miscellaneousData;</span>
+<span class="fc" id="L86">	}</span>
+
+	public Boolean getApplied() {
+<span class="fc" id="L89">		return applied;</span>
+	}
+
+	public void setApplied(Boolean applied) {
+<span class="fc" id="L93">		this.applied = applied;</span>
+<span class="fc" id="L94">	}</span>
+
+	@NotBlank
+	public String getTitle() {
+<span class="fc" id="L98">		return title;</span>
+	}
+
+	public void setTitle(String title) {
+<span class="fc" id="L102">		this.title = title;</span>
+<span class="fc" id="L103">	}</span>
+	
+	//	public Integer updateRecordNumber(){
+	//		Integer total = this.getMiscellaneousData().size()+this.getEducationData().size()+this.getPositionData().size()+1;
+	//		this.setRecordNumber(total);
+	//		return total;
+	//	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

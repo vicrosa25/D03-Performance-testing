@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Company.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Company.java</span></div><h1>Company.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L15">public class Company extends Actor {</span>
+
+	// Attributes -------------------------------------------------------------
+	private String					commercialName;
+
+	// Relationships ----------------------------------------------------------
+	private Collection&lt;Position&gt;	positions;
+	private Collection&lt;Problem&gt;		problems;
+
+
+	// ------------------------------------------------------------
+	@NotBlank
+	public String getCommercialName() {
+<span class="fc" id="L28">		return this.commercialName;</span>
+	}
+
+	public void setCommercialName(final String commercialName) {
+<span class="fc" id="L32">		this.commercialName = commercialName;</span>
+<span class="fc" id="L33">	}</span>
+
+	//--------------------------------------------------------------
+	@OneToMany(mappedBy = &quot;company&quot;)
+	public Collection&lt;Position&gt; getPositions() {
+<span class="fc" id="L38">		return this.positions;</span>
+	}
+
+	public void setPositions(Collection&lt;Position&gt; positions) {
+<span class="fc" id="L42">		this.positions = positions;</span>
+<span class="fc" id="L43">	}</span>
+
+	@OneToMany(mappedBy = &quot;company&quot;)
+	public Collection&lt;Problem&gt; getProblems() {
+<span class="fc" id="L47">		return this.problems;</span>
+	}
+
+	public void setProblems(Collection&lt;Problem&gt; problems) {
+<span class="fc" id="L51">		this.problems = problems;</span>
+<span class="fc" id="L52">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

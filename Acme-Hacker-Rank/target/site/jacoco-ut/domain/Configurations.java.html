@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Configurations.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Configurations.java</span></div><h1>Configurations.java</h1><pre class="source lang-java linenums">
+package domain;
+
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.URL;
+
+@Entity
+@Access(AccessType.PROPERTY)
+<span class="fc" id="L20">public class Configurations extends DomainEntity {</span>
+
+	// Attributes -------------------------------------------------------------
+	private Integer				cacheTime;
+	private Integer				finderMaxResult;
+	private String				spanishMessage;
+	private String				englishMessage;
+	private Collection&lt;String&gt;	spamWords;
+	private String				countryCode;
+	private String				title;
+	private String				logo;
+
+	@NotNull
+	@Range(min = 1, max = 24)
+	public Integer getCacheTime() {
+<span class="fc" id="L35">		return this.cacheTime;</span>
+	}
+
+	public void setCacheTime(Integer cacheTime) {
+<span class="fc" id="L39">		this.cacheTime = cacheTime;</span>
+<span class="fc" id="L40">	}</span>
+
+	@NotNull
+	@Range(min = 10, max = 100)
+	public Integer getFinderMaxResult() {
+<span class="fc" id="L45">		return this.finderMaxResult;</span>
+	}
+
+	public void setFinderMaxResult(Integer finderMaxResult) {
+<span class="fc" id="L49">		this.finderMaxResult = finderMaxResult;</span>
+<span class="fc" id="L50">	}</span>
+
+	@NotNull
+	@NotEmpty
+	@ElementCollection
+	public Collection&lt;String&gt; getSpamWords() {
+<span class="fc" id="L56">		return this.spamWords;</span>
+	}
+
+	public void setSpamWords(final Collection&lt;String&gt; spamWords) {
+<span class="fc" id="L60">		this.spamWords = spamWords;</span>
+<span class="fc" id="L61">	}</span>
+
+	@NotBlank
+	@Pattern(regexp = &quot;([+]?\\d{1,2})&quot;)
+	public String getCountryCode() {
+<span class="fc" id="L66">		return this.countryCode;</span>
+	}
+
+	public void setCountryCode(final String countryCode) {
+<span class="fc" id="L70">		this.countryCode = countryCode;</span>
+<span class="fc" id="L71">	}</span>
+
+	@NotEmpty
+	public String getTitle() {
+<span class="fc" id="L75">		return this.title;</span>
+	}
+
+	public void setTitle(String title) {
+<span class="fc" id="L79">		this.title = title;</span>
+<span class="fc" id="L80">	}</span>
+
+	@NotEmpty
+	@URL
+	public String getLogo() {
+<span class="fc" id="L85">		return this.logo;</span>
+	}
+
+	public void setLogo(String logo) {
+<span class="fc" id="L89">		this.logo = logo;</span>
+<span class="fc" id="L90">	}</span>
+
+	@NotBlank
+	public String getSpanishMessage() {
+<span class="fc" id="L94">		return this.spanishMessage;</span>
+	}
+
+	public void setSpanishMessage(String spanishMessage) {
+<span class="fc" id="L98">		this.spanishMessage = spanishMessage;</span>
+<span class="fc" id="L99">	}</span>
+
+	@NotBlank
+	public String getEnglishMessage() {
+<span class="fc" id="L103">		return this.englishMessage;</span>
+	}
+
+	public void setEnglishMessage(String englishMessage) {
+<span class="fc" id="L107">		this.englishMessage = englishMessage;</span>
+<span class="fc" id="L108">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

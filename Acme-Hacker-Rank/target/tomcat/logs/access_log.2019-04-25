@@ -1,0 +1,10 @@
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/ HTTP/1.1" 200 4258 http-bio-8080-exec-1 943
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/scripts/jquery-ui.js HTTP/1.1" 200 465012 http-bio-8080-exec-2 6
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/scripts/jquery.js HTTP/1.1" 200 275527 http-bio-8080-exec-3 6
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/scripts/jmenu.js HTTP/1.1" 200 10578 http-bio-8080-exec-4 2
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/styles/displaytag.css HTTP/1.1" 200 2826 http-bio-8080-exec-7 3
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/styles/common.css HTTP/1.1" 304 - http-bio-8080-exec-6 2
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/scripts/Chart.js HTTP/1.1" 200 568324 http-bio-8080-exec-5 8
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/styles/jmenu.css HTTP/1.1" 304 - http-bio-8080-exec-8 6
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:18 +0200] "GET /Acme-Hacker-Rank/styles/cookies.css HTTP/1.1" 200 2573 http-bio-8080-exec-11 3
+0:0:0:0:0:0:0:1 - - [25/Apr/2019:11:01:19 +0200] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-2 0

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MiscellaneousDataService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Acme Hacker Rank</a> &gt; <a href="index.source.html" class="el_package">services</a> &gt; <span class="el_source">MiscellaneousDataService.java</span></div><h1>MiscellaneousDataService.java</h1><pre class="source lang-java linenums">
+package services;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.MiscellaneousDataRepository;
+import domain.Hacker;
+import domain.MiscellaneousData;
+
+@Service
+@Transactional
+<span class="fc" id="L17">public class MiscellaneousDataService {</span>
+
+	// Manage Repository
+	@Autowired
+	private MiscellaneousDataRepository	miscellaneousDataRepository;
+
+	// Supporting services
+	@Autowired
+	private HackerService				hackerService;
+
+
+	// CRUD methods
+	public MiscellaneousData create() {
+<span class="fc" id="L30">		final MiscellaneousData result = new MiscellaneousData();</span>
+
+<span class="fc" id="L32">		return result;</span>
+	}
+
+	public MiscellaneousData findOne(final int miscellaneousDataID) {
+<span class="nc" id="L36">		final MiscellaneousData result = this.miscellaneousDataRepository.findOne(miscellaneousDataID);</span>
+<span class="nc" id="L37">		Assert.notNull(result);</span>
+
+<span class="nc" id="L39">		return result;</span>
+	}
+
+	public Collection&lt;MiscellaneousData&gt; findAll() {
+<span class="fc" id="L43">		final Collection&lt;MiscellaneousData&gt; result = this.miscellaneousDataRepository.findAll();</span>
+<span class="fc" id="L44">		Assert.notNull(result);</span>
+
+<span class="fc" id="L46">		return result;</span>
+	}
+
+	public MiscellaneousData save(final MiscellaneousData miscellaneousData) {
+<span class="fc" id="L50">		boolean nuevo = false;</span>
+<span class="fc" id="L51">		final Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="fc" id="L52">		Assert.notNull(miscellaneousData);</span>
+<span class="fc" id="L53">		Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">		if (miscellaneousData.getId() == 0)</span>
+<span class="fc" id="L56">			nuevo = true;</span>
+<span class="fc" id="L57">		final MiscellaneousData result = this.miscellaneousDataRepository.save(miscellaneousData);</span>
+
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">		if (nuevo)</span>
+<span class="fc" id="L60">			result.getCurricula().getMiscellaneousData().add(result);</span>
+
+<span class="fc" id="L62">		return result;</span>
+	}
+
+	public void delete(final MiscellaneousData miscellaneousData) {
+<span class="nc" id="L66">		Assert.notNull(miscellaneousData);</span>
+<span class="nc" id="L67">		final Hacker principal = this.hackerService.findByPrincipal();</span>
+<span class="nc" id="L68">		Assert.isTrue(principal.getCurriculas().contains(miscellaneousData.getCurricula()));</span>
+
+<span class="nc" id="L70">		miscellaneousData.getCurricula().getMiscellaneousData().remove(miscellaneousData);</span>
+
+<span class="nc" id="L72">		this.miscellaneousDataRepository.delete(miscellaneousData);</span>
+<span class="nc" id="L73">	}</span>
+	/*** Other methods ***/
+
+	public void flush() {
+<span class="fc" id="L77">		this.miscellaneousDataRepository.flush();</span>
+<span class="fc" id="L78">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
