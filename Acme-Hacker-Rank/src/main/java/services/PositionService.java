@@ -218,7 +218,8 @@ public class PositionService {
 		for (Finder finder : this.finderService.findAll()) {
 			finder = this.finderService.updateResults(finder);
 			if (finder.getPositions().contains(position))
-				recipients.add(this.hackerService.findByFinder(finder));
+				if(this.hackerService.findByFinder(finder) != null)
+					recipients.add(this.hackerService.findByFinder(finder));
 		}
 		if (!recipients.isEmpty()) {
 			final Message notification = this.messageService.create();

@@ -99,7 +99,7 @@ public class MessageService {
 
 			// Add message to the list of the sender an the recipients
 			sender.getMessages().add(result);
-			for (final Actor recipient : recipients) {
+			for (Actor recipient : recipients) {
 				recipient.getMessages().add(result);
 			}
 
