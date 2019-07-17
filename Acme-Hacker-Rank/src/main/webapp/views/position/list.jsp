@@ -95,6 +95,6 @@
 </display:table>
 
 <!-- Create Link -->
-<security:authorize access="hasRole('COMPANY')">
+<jstl:if test="${requestURI == 'position/company/list.do'}">
 	<a href=position/company/create.do><spring:message code="position.create" /></a>
-</security:authorize>
+</jstl:if>
