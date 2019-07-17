@@ -266,7 +266,7 @@
 	
 	<!-- Positions  ********************************************************************************* -->
 	<bean id="position1" class="domain.Position">
-		<property name="deadline" value="2019/06/12" />
+		<property name="deadline" value="2019/08/12" />
 		<property name="ticker" value="comp-1234" />
 		<property name="title" value="Programador en  javascript" />
 		<property name="description" value="Se busca programador en javascript" />
@@ -287,7 +287,7 @@
 	</bean>
 	
 	<bean id="position2" class="domain.Position">
-		<property name="deadline" value="2019/07/12" />
+		<property name="deadline" value="2019/08/12" />
 		<property name="ticker" value="posi-4239" />
 		<property name="title" value="Consultor de seguridad" />
 		<property name="description" value="Puesto de trabajo para consultor en seguridad" />
@@ -308,7 +308,7 @@
 	</bean>
 	
 	<bean id="position3" class="domain.Position">
-		<property name="deadline" value="2019/06/20" />
+		<property name="deadline" value="2019/08/20" />
 		<property name="ticker" value="abcd-4739" />
 		<property name="title" value="Analista de sistemas web" />
 		<property name="description" value="Se busca analista de sistemas web" />
@@ -328,7 +328,7 @@
 	</bean>
 	
 	<bean id="position4" class="domain.Position">
-		<property name="deadline" value="2019/07/18" />
+		<property name="deadline" value="2019/08/18" />
 		<property name="ticker" value="posi-4999" />
 		<property name="title" value="Especialista en Big Data" />
 		<property name="description" value="Puesto de trabajo para especialistas en big data" />
