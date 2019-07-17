@@ -232,4 +232,15 @@ public class PositionService {
 			this.messageService.save(notification);
 		}
 	}
+
+	public Collection<Position> findByKeyword(String keyword) {
+		Collection<Position> result;
+		if(keyword.isEmpty()){
+			result = this.findAllFinal();
+		}else{
+			result = this.finderService.filterByKeyword(keyword);
+		}
+		Assert.notNull(result);
+		return result;
+	}
 }

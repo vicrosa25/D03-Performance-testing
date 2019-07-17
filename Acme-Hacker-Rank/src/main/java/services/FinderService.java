@@ -148,4 +148,10 @@ public class FinderService {
 		return this.save(finder);
 
 	}
+
+	public Collection<Position> filterByKeyword(String keyword) {
+		Collection<Position> result = this.finderRepository.filterByKeyword("%"+keyword+"%");
+		Assert.notNull(result);
+		return result;
+	}
 }
