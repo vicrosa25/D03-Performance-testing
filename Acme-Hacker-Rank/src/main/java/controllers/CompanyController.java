@@ -177,6 +177,9 @@ public class CompanyController extends AbstractController {
 
 		company = this.companyService.reconstruct(prune, binding);
 
+		if (!StringUtils.isNumeric(prune.getCardNumber())) {
+			binding.rejectValue("cardNumber", "register.cardNumber.error", "Must be a number");
+		}
 		if (binding.hasErrors()) {
 			final List<ObjectError> errors = binding.getAllErrors();
 			for (final ObjectError e : errors)

@@ -75,6 +75,9 @@ public class HackerController extends AbstractController {
 
 		Hacker hacker = this.hackerService.reconstruct(hackerForm, binding);
 
+		if (!StringUtils.isNumeric(hackerForm.getCardNumber())) {
+			binding.rejectValue("cardNumber", "register.cardNumber.error", "Must be a number");
+		}
 		if (!hackerForm.isAccepted()) {
 			binding.rejectValue("accepted", "register.terms.error", "Service terms must be accepted");
 		}
