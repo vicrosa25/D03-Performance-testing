@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Hacker;
-import forms.HackerForm;
 import services.ActorService;
 import services.HackerService;
 import utilities.Md5;
+import domain.Hacker;
+import forms.HackerForm;
 
 @Controller
 @RequestMapping("/hacker")
@@ -33,8 +34,8 @@ public class HackerController extends AbstractController {
 
 	@Autowired
 	private HackerService hackerService;
-	
-	
+
+
 	@Autowired
 	private ActorService actorService;
 
@@ -128,7 +129,9 @@ public class HackerController extends AbstractController {
 		Hacker hacker;
 
 		hacker = this.hackerService.reconstruct(prune, binding);
-
+		if (!StringUtils.isNumeric(prune.getCardNumber())) {
+			binding.rejectValue("cardNumber", "register.cardNumber.error", "Must be a number");
+		}
 		if (binding.hasErrors()) {
 			List<ObjectError> errors = binding.getAllErrors();
 			for (final ObjectError e : errors) {

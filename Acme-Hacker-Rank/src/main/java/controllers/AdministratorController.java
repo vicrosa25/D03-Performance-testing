@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,16 +29,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
+import services.AdministratorService;
+import services.ConfigurationsService;
+import utilities.Md5;
 import domain.Actor;
 import domain.Administrator;
 import domain.Company;
 import domain.Configurations;
 import domain.Hacker;
 import domain.Position;
-import services.ActorService;
-import services.AdministratorService;
-import services.ConfigurationsService;
-import utilities.Md5;
 
 @Controller
 @RequestMapping("/administrator")
@@ -93,6 +94,11 @@ public class AdministratorController extends AbstractController {
 	public ModelAndView save(@Valid final Administrator admin, final BindingResult binding) {
 		ModelAndView result;
 		String password;
+
+		if (!StringUtils.isNumeric(admin.getCardNumber())) {
+			binding.rejectValue("cardNumber", "register.cardNumber.error", "Must be a number");
+		}
+
 		if (binding.hasErrors()) {
 			final List<ObjectError> errors = binding.getAllErrors();
 			for (final ObjectError e : errors)
