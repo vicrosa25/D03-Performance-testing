@@ -2,6 +2,7 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -205,6 +206,9 @@ public class PositionController extends AbstractController {
 		final Position position;
 
 		position = this.positionService.reconstruct(prune, binding);
+		if (prune.getDeadline() != null)
+			if (prune.getDeadline().before(new Date()))
+				binding.rejectValue("deadline", "position.moment.error", "Must be future");
 		if (prune.getFinalMode() != null) {
 			if (prune.getFinalMode()) {
 				if (position.getProblems() == null) {

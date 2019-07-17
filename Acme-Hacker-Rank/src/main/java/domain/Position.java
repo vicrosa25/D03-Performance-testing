@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -39,7 +38,6 @@ public class Position extends DomainEntity {
 
 
 	@NotNull
-	@Future
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getDeadline() {
@@ -167,7 +165,7 @@ public class Position extends DomainEntity {
 	public void setProblems(Collection<Problem> problems) {
 		this.problems = problems;
 	}
-	
+
 	// Other methods
 	@Override
 	public String toString() {
