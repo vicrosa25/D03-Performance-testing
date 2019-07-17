@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,11 +37,11 @@ public class CompanyController extends AbstractController {
 
 	@Autowired
 	private CompanyService	companyService;
-	
+
 	@Autowired
 	private ActorService	actorService;
-	
-	
+
+
 
 	@ExceptionHandler(TypeMismatchException.class)
 	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
@@ -64,7 +65,7 @@ public class CompanyController extends AbstractController {
 			System.out.println(oops.getCause());
 			result = this.forbiddenOpperation();
 		}
-		
+
 
 		return result;
 	}
@@ -95,9 +96,13 @@ public class CompanyController extends AbstractController {
 		ModelAndView result;
 		Company company;
 		String password;
-		
+
 		company = this.companyService.reconstruct(companyForm, binding);
-		
+
+
+		if (!StringUtils.isNumeric(companyForm.getCardNumber())) {
+			binding.rejectValue("cardNumber", "register.cardNumber.error", "Must be a number");
+		}
 		if (!companyForm.isAccepted()) {
 			binding.rejectValue("accepted", "register.terms.error", "Service terms must be accepted");
 		}if (binding.hasErrors()) {
