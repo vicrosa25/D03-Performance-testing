@@ -4,6 +4,7 @@ package services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.MessageRepository;
+import security.LoginService;
 import domain.Actor;
 import domain.Configurations;
 import domain.Message;
-import repositories.MessageRepository;
-import security.LoginService;
 
 @Service
 @Transactional
@@ -42,7 +43,9 @@ public class MessageService {
 
 		result.setRecipients(recipients);
 		result.setTags(tags);
-		result.setMoment(calendar.getTime());
+		Date moment = calendar.getTime();
+		moment.setTime(moment.getTime()-1000);
+		result.setMoment(moment);
 
 		return result;
 	}
@@ -53,11 +56,11 @@ public class MessageService {
 
 		return result;
 	}
-	
-	
+
+
 	public Collection<Message> findAll() {
 		Collection<Message> result;
-		
+
 		result = this.messageRepository.findAll();
 		return result;
 	}
@@ -82,18 +85,18 @@ public class MessageService {
 			Boolean spam = this.checkSpam(message);
 			Boolean notification = message.getIsNotification();
 
-			
+
 			// Check for Notification or Spam
 			if (notification) {
 				message.getTags().add("SYSTEM");
-			} 
-			
+			}
+
 			if (spam) {
 				message.setIsSpam(true);
 			}
 
 			result = this.messageRepository.save(message);
-			
+
 			// Add message to the list of the sender an the recipients
 			sender.getMessages().add(result);
 			for (final Actor recipient : recipients) {
@@ -110,11 +113,11 @@ public class MessageService {
 		Assert.notNull(message);
 
 		Actor principal = this.actorService.findByPrincipal();
-		
+
 		// Checke the principal is the sender or a recipient
 		Assert.isTrue(message.getRecipients().contains(principal) || message.getSender().equals(principal));
 
-		
+
 		// Check if the principal is the sender or a recipient
 		Boolean actorRole;
 		if (message.getSender() == null) {
@@ -127,28 +130,28 @@ public class MessageService {
 
 		// The message has Delete tag
 		if (message.getTags().contains("DELETED")) {
-			
+
 			// The principal is a recipient
 			if (!actorRole) {
 				message.getRecipients().remove(principal);
 				principal.getMessages().remove(message);
 				this.actorService.save(principal);
-			
-			// the principal is the sender
+
+				// the principal is the sender
 			} else {
 				message.setSender(null);
 				principal.getMessages().remove(message);
 				this.actorService.save(principal);
 			}
-			
+
 			// Only when the message has not sender and recipient is deleted from the system
 			if ((message.getRecipients().size() == 0) && (message.getSender() == null)) {
 				this.messageRepository.delete(message);
 			} else {
 				this.messageRepository.save(message);
 			}
-			
-		//The message has NOT Deleted tag
+
+			//The message has NOT Deleted tag
 		} else {
 			message.getTags().add("DELETED");
 			this.messageRepository.save(message);
