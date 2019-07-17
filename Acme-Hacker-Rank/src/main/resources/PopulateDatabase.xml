@@ -275,6 +275,7 @@
 		<property name="technologies" value="tech1, tech2, tech3" />
 		<property name="salary" value="20000.0" />
 		<property name="finalMode" value="true" />
+		<property name="cancelled" value="false" />
 		<property name="company" ref="company1" />
 		<property name="problems">
 			<list>
@@ -296,6 +297,7 @@
 		<property name="technologies" value="tech1, tech2, tech3" />
 		<property name="salary" value="34000.0" />
 		<property name="finalMode" value="true" />
+		<property name="cancelled" value="false" />
 		<property name="company" ref="company1" />
 		<property name="problems">
 			<list>
@@ -317,6 +319,7 @@
 		<property name="technologies" value="tech1, tech2, tech3" />
 		<property name="salary" value="17000.0" />
 		<property name="finalMode" value="true" />
+		<property name="cancelled" value="false" />
 		<property name="company" ref="company2" />
 		<property name="problems">
 			<list>

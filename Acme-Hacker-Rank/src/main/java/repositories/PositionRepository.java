@@ -12,7 +12,7 @@ import domain.Position;
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Integer> {
 
-	@Query("select p from Position p where p.finalMode='1'")
+	@Query("select p from Position p where p.finalMode='1' and p.cancelled='0'")
 	Collection<Position> findAllFinal();
 
 }
